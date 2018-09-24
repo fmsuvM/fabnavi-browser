@@ -11,22 +11,21 @@ import {
 
 const debug = Debug('fabnavi:jsx:ImageSelector');
 
-class ImageSelector extends React.Component {
+export class ImageSelector extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    componentDidMount() {}
-    componentWillUnmount() {}
-
     render() {
         return (
             <Root>
-                <Title>Project Images</Title>
+                <Title>{`${this.props.contentType} List`}</Title>
                 <ThumbnailList
                     figures={this.props.contents.filter(content => content.figure).map(content => content.figure)}
-                    onClick={this.props.handleThumbnailClick}
+                    contentType={this.props.contentType}
+                    size={this.props.size}
                     isEditable={this.props.isEditable}
+                    onClick={this.props.handleThumbnailClick}
                     onThumbnailDeleteButtonClick={this.props.handleThumbnailDeleteButtonClick}
                 />
             </Root>
@@ -34,16 +33,19 @@ class ImageSelector extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    project: state.player.project
+export const mapStateToProps = state => ({
+    project: state.player.project,
+    contentType: state.player.contentType
 });
 
 ImageSelector.propTypes = {
     project: PropTypes.object,
     contents: PropTypes.array,
+    contentType: PropTypes.string,
     handleThumbnailClick: PropTypes.func,
     handleThumbnailDeleteButtonClick: PropTypes.func,
+    size: PropTypes.string,
     isEditable: PropTypes.bool
 };
 
-export default connect(mapStateToProps)(ImageSelector);
+export default connect(mapStateToProps, null)(ImageSelector);

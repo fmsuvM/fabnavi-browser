@@ -7,42 +7,44 @@ import {
     EditBanner,
     StyledCaptionsField,
     CaptionFieldSpan,
-    StyledCaptionField,
+    StyledCaptionFieldHeader,
     CaptionFieldWrapper,
     CaptionFieldIndex,
+    CaptionFieldList,
     AddCaptionButton
 } from '../../stylesheets/application/ProjectEditForm/CaptionsField';
 
-const CaptionsField = ({ figures, handleCaptionsChange, onAddCaptionButtonClick }) => {
+const CaptionsField = ({ figures, contentType, handleCaptionsChange, onAddCaptionButtonClick }) => {
     return (
         <StyledCaptionsField>
             <EditBanner className="edit">Captions</EditBanner>
-            <StyledCaptionField>
-                <CaptionFieldSpan text="start">start</CaptionFieldSpan>
-                <CaptionFieldSpan>end</CaptionFieldSpan>
-                <CaptionFieldSpan text="text">text</CaptionFieldSpan>
-                <CaptionFieldSpan>destroy?</CaptionFieldSpan>
-            </StyledCaptionField>
+            <StyledCaptionFieldHeader>
+                <CaptionFieldSpan text="start" contentType={contentType}>start(h:m:s)</CaptionFieldSpan>
+                <CaptionFieldSpan text="end" contentType={contentType}>end(h:m:s)</CaptionFieldSpan>
+                <CaptionFieldSpan text="text" contentType={contentType}>caption</CaptionFieldSpan>
+                <CaptionFieldSpan>delete</CaptionFieldSpan>
+            </StyledCaptionFieldHeader>
             {figures.map((figure, figureIndex) => {
                 return (
                     <CaptionFieldWrapper
                         key={`figure_${figureIndex}_captions`}
                         figureWillBeDeleted={figure._destroy}
                     >
-                        <CaptionFieldIndex>Image: {`${figureIndex + 1}`}</CaptionFieldIndex>
-                        <ul style={{ margin: '0', padding: '0' }}>
+                        <CaptionFieldIndex> {`${contentType}#${figureIndex + 1}`}</CaptionFieldIndex>
+                        <CaptionFieldList>
                             {figure.captions.map((caption, index) => {
                                 return (
                                     <CaptionField
                                         caption={caption}
                                         index={index}
                                         figureIndex={figureIndex}
+                                        contentType={contentType}
                                         handleCaptionsChange={handleCaptionsChange}
                                         key={`caption_0_${index}`}
                                     />
                                 );
                             })}
-                        </ul>
+                        </CaptionFieldList>
                         <AddCaptionButton
                             className="addCaptionButton"
                             onClick={onAddCaptionButtonClick}
@@ -59,6 +61,7 @@ const CaptionsField = ({ figures, handleCaptionsChange, onAddCaptionButtonClick 
 
 CaptionsField.propTypes = {
     figures: PropTypes.array,
+    contentType: PropTypes.string,
     handleCaptionsChange: PropTypes.func,
     onAddCaptionButtonClick: PropTypes.func
 };

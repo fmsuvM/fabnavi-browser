@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 
 export const Title = styled.div`
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     margin-bottom: 10px;
+    text-transform: capitalize;
 `;
 
 export const StyledThumbnailList = styled.ul`
     overflow-x: hidden;
     overflow-y: scroll;
     list-style: none;
-    height: 718px;
+    height: 505px;
     width: 220px;
     padding: 0;
     margin: 0;

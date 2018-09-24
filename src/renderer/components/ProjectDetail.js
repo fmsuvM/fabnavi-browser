@@ -4,41 +4,59 @@ import { connect } from 'react-redux';
 import Debug from 'debug';
 import { push } from 'react-router-redux';
 import Player from './Player';
-import BackButton from './BackButton';
+import DeleteModal from '../components/DeleteModal';
+import CaptionList from './CaptionList';
 
 import { sanitizeProject } from '../utils/projectUtils';
 
-import { PageLayout, ProjectTitle, ProjectDescription } from '../stylesheets/application/ProjectDetail';
+import {
+    StyledDetailFrame,
+    ProjectTitle,
+    ContentsFrame,
+    DescriptionFrame,
+    StyledHead,
+    StyledDescription,
+    StatusFrame,
+    StatusText,
+    TitleFrame,
+    PrivateNotation
+} from '../stylesheets/application/ProjectShow/StyledProjectDetail';
 
 const debug = Debug('fabnavi:jsx:ProjectDetail');
 
-class ProjectDetail extends React.Component {
+export class ProjectDetail extends React.Component {
     constructor(props) {
         super(props);
-        this.showEdit = () => {
-            if(this.props.project) {
-                this.props.showEdit(this.props.project.id);
-            }
-        };
     }
 
     render() {
         if(!this.props.project) return <div />;
         const project = sanitizeProject(this.props.project);
-        const isEditable = this.props.userIsAdmin || project.user.id === this.props.userId;
+        const isPrivate = project.private;
         return (
             <div>
                 {project ? (
-                    <PageLayout>
+                    <StyledDetailFrame>
+                        <ProjectTitle lang="ja">{project.name} {isPrivate && <PrivateNotation>Private Project</PrivateNotation>}</ProjectTitle>
                         <Player />
-                        <ProjectTitle>{project.name}</ProjectTitle>
-                        <hr />
-                        <div>
-                            <ProjectDescription>{project.description}</ProjectDescription>
-                        </div>
-                        <BackButton />
-                        {isEditable ? <EditButton handleClick={this.showEdit} /> : null}
-                    </PageLayout>
+                        <ContentsFrame>
+                            <DescriptionFrame>
+                                <StyledHead>Description</StyledHead>
+                                <StyledDescription>{project.description}</StyledDescription>
+                            </DescriptionFrame>
+                            <StatusFrame>
+                                <StyledHead>Author</StyledHead>
+                                <StatusText>{project.user.nickname}</StatusText>
+                                <StyledHead>Created Date</StyledHead>
+                                <StatusText>{project.date}</StatusText>
+                            </StatusFrame>
+                        </ContentsFrame>
+                        <CaptionList
+                            figures={project.content.map(content => content.figure)}
+                            contentType={this.props.contentType}
+                        />
+                        {this.props.showDeleteConfirmation ? <DeleteModal /> : <span />}
+                    </StyledDetailFrame>
                 ) : (
                     <div> loading project... </div>
                 )}
@@ -47,34 +65,25 @@ class ProjectDetail extends React.Component {
     }
 }
 
-const EditButton = ({ handleClick }) => {
-    return <div onClick={() => handleClick()}>Edit Project</div>;
-};
-
-EditButton.propTypes = {
-    handleClick: PropTypes.func
-};
-
 ProjectDetail.propTypes = {
     project: PropTypes.object,
     userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    showEdit: PropTypes.func,
-    userIsAdmin: PropTypes.bool
+    userIsAdmin: PropTypes.bool,
+    showDeleteConfirmation: PropTypes.bool,
+    targetProject: PropTypes.number,
+    contentType: PropTypes.string
 };
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
     project: state.manager.targetProject,
     userId: state.user.id,
-    userIsAdmin: state.user.isAdmin
-});
-
-const mapDispatchToProps = dispatch => ({
-    showEdit: projectId => {
-        dispatch(push(`/edit/${projectId}`));
-    }
+    userIsAdmin: state.user.isAdmin,
+    showDeleteConfirmation: state.modals.showDeleteConfirmation,
+    targetProject: state.modals.targetProject,
+    contentType: state.player.contentType
 });
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    null
 )(ProjectDetail);

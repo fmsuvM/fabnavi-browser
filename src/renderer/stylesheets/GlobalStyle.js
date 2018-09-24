@@ -17,7 +17,7 @@ injectGlobal`
         src: url(${NotoSansR});
     }
     body {
-        font-family: NotoSans-Regular;
+        font-family: Helvetica, Arial, '游ゴシック', 'Yu Gothic', '游ゴシック体', YuGothic, sans-serif;
         margin: 0;
     }
     li {

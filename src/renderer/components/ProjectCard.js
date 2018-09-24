@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Debug from 'debug';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
 import { sanitizeProject } from '../utils/projectUtils';
 const debug = Debug('fabnavi:jsx:ProjectCard');
@@ -8,94 +10,79 @@ import { assetsPath } from '../utils/assetsUtils';
 
 import {
     ProjectFrame,
-    ProjectThumbnail,
+    InsideFrame,
+    ProjectThumb,
     ProjectTitle,
-    ProjectName,
-    ProjectIcon,
-    CardBorder,
-    ProjectBox,
     ProjectDescription,
+    StatusFrame,
+    ProjectUser,
+    UserStatusFrame,
+    ProjectDate,
+    UserName,
     ProjectMenu,
-    MenuColmun
-} from '../stylesheets/application/Card';
+    MenuColmun,
+    PrivateLabel,
+    ProjectTypeLabel,
+    CardProjectTypeLabel
+} from '../stylesheets/application/ProjectIndex/StyledProjectCard';
 
-export default class ProjectCard extends React.Component {
+export class ProjectCard extends React.Component {
     constructor(props) {
         super(props);
-        this.selectItem = mode => () => {
-            this.props.selectMenuItem(props.id, mode);
+        this.toProjectDetail = () => {
+            this.props.toProjectDetail(this.props.id);
         };
     }
 
     render() {
         const project = sanitizeProject(this.props);
-        const isSelected = this.props.selectedId === this.props.id;
-        const isOwn = project.user.id === this.props.currentUserId;
         const projectType =
             typeof project.content[0] === 'undefined' ? 'Photo' : project.content[0].type.split('::')[1];
+        const isPrivate = project.private;
 
         return (
             <div>
-                <ProjectFrame onClick={this.props.toggleMenu(this.props.id)} selected={isSelected}>
-                    <ProjectThumbnail>
+                <ProjectFrame onClick={this.toProjectDetail} index={this.props.index}>
+                    <ProjectThumb>
                         <img src={project.thumbnail} />
-                    </ProjectThumbnail>
-                    <ProjectTitle>
-                        {projectType === 'Frame' ? (
-                            <ProjectIcon src={`${assetsPath}/images/video-icon.png`} user={false} />
-                        ) : (
-                            <ProjectIcon src={`${assetsPath}/images/photo-icon.png`} user={false} />
-                        )}
-                        <ProjectName>{project.name}</ProjectName>
-                        <ProjectIcon src={project.userIcon} user={true} />
-                    </ProjectTitle>
-
-                    <CardBorder />
-
-                    <ProjectBox>
+                    </ProjectThumb>
+                    <InsideFrame>
+                        <ProjectTitle lang="ja">{project.name}</ProjectTitle>
                         {project.description === '' ? (
-                            <ProjectDescription>No Description</ProjectDescription>
+                            <ProjectDescription />
                         ) : (
                             <ProjectDescription>{project.description}</ProjectDescription>
                         )}
-                        {isSelected ? <Menu isOwn={isOwn} selectItem={this.selectItem} /> : null}
-                    </ProjectBox>
+                        <StatusFrame>
+                            <ProjectUser src={project.userIcon} user={true} />
+                            <UserName>{project.user.nickname}</UserName>
+                            <CardProjectTypeLabel type={projectType} />
+                        </StatusFrame>
+                    </InsideFrame>
+                    {isPrivate && <PrivateLabel src={`${assetsPath}/images/PrivateLabel.png`}/>}
+                    <ProjectTypeLabel type={projectType} />
                 </ProjectFrame>
             </div>
         );
     }
 }
 
-const Menu = ({ isOwn, selectItem }) => {
-    return (
-        <ProjectMenu>
-            {isOwn ? (
-                <div>
-                    <MenuItem actionName="play" onClick={selectItem} />
-                    <MenuItem actionName="detail" onClick={selectItem} />
-                    <MenuItem actionName="edit" onClick={selectItem} />
-                    <MenuItem actionName="delete" onClick={selectItem} />
-                </div>
-            ) : (
-                <div>
-                    <MenuItem actionName="play" onClick={selectItem} />
-                    <MenuItem actionName="detail" onClick={selectItem} />
-                </div>
-            )}
-        </ProjectMenu>
-    );
-};
-
-const MenuItem = ({ actionName, onClick }) => (
-    <MenuColmun onClick={onClick(actionName)}>
-        <img src={`${assetsPath}/images/p_${actionName}.png`} />
-        <span> {actionName} </span>
-    </MenuColmun>
-);
-
 ProjectCard.propTypes = {
     content: PropTypes.arrayOf(PropTypes.object),
     selectMenuItem: PropTypes.func,
     toggleMenu: PropTypes.func,
-    selectedId: PropTypes.number
+    selectedId: PropTypes.number,
+    toProjectDetail: PropTypes.func,
+    index: PropTypes.number
 };
+
+const mapDispatchToProps = dispatch => ({
+    toProjectDetail: projectId => {
+        dispatch(push(`/detail/${projectId}`));
+    }
+});
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(ProjectCard);
