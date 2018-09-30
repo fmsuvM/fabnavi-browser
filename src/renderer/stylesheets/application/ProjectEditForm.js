@@ -72,3 +72,15 @@ export const SaveButton = styled.button`
         backgroundColor: colors.button.green
     })};
 `;
+
+export const AddTagButton = styled.button`
+    font-size: 16px;
+    border-style: none;
+    margin-top: 10px;
+    ${buttonProperties({
+        width: 360,
+        height: 40,
+        color: 'white',
+        backgroundColor: colors.button.green
+    })};
+`;

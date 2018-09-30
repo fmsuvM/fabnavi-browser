@@ -9,6 +9,7 @@ import { updateProject } from '../actions/manager';
 
 import Player from './Player';
 import CaptionsField from './ProjectEditForm/CaptionsField';
+import TagField from './ProjectEditForm/TagField';
 
 import {
     EditPage,
@@ -19,7 +20,8 @@ import {
     DescriptionFieldWrapper,
     DescriptionField,
     SaveButton,
-    EditTarget
+    EditTarget,
+    AddTagButton
 } from '../stylesheets/application/ProjectEditForm';
 
 const debug = Debug('fabnavi:jsx:ProjectEditForm');
@@ -179,6 +181,8 @@ export class ProjectEditForm extends React.Component {
 
     render() {
         const project = this.props.project;
+        const isTag = this.state.tag_list.length > 0;
+        const tagList = this.state.tag_list;
         return (
             <div>
                 <EditPage>
@@ -234,31 +238,17 @@ export class ProjectEditForm extends React.Component {
                                 />
                             </EditCaption>
                             <div>
-                                <p>Tag List</p>
-                                <ul>
-                                    {this.state.tag_list.length > 0 ? (
-                                        this.state.tag_list.map((tag, index) => {
-                                            return (
-                                                <li key={index}>
-                                                    #{index + 1} :
-                                                    <input
-                                                        name="edit_tag"
-                                                        data-index={index}
-                                                        type="text"
-                                                        defaultValue={tag}
-                                                        onChange={e => this.handleTagNameChange(e, index)}
-                                                    />
-                                                    <button onClick={e => this.onDeleteTgButtonClick(e, index)}>
-                                                        destroy!
-                                                    </button>
-                                                </li>
-                                            );
-                                        })
-                                    ) : (
-                                        <span># --： add project tag !</span>
-                                    )}
-                                </ul>
-                                <button onClick={this.onAddTagButtonClick}>add tag</button>
+                                <EditTarget>Tag List</EditTarget>
+                                {isTag ? (
+                                    <TagField
+                                        tags={tagList}
+                                        onChange={this.handleTagNameChange}
+                                        onDelete={this.onDeleteTgButtonClick}
+                                    />
+                                ) : (
+                                    <span># --： add project tag !</span>
+                                )}
+                                <AddTagButton onClick={this.onAddTagButtonClick}>add tag</AddTagButton>
                             </div>
                             <DescriptionFieldWrapper>
                                 <EditTarget>Description</EditTarget>
