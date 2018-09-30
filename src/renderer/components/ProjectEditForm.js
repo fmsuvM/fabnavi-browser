@@ -10,7 +10,17 @@ import { updateProject } from '../actions/manager';
 import Player from './Player';
 import CaptionsField from './ProjectEditForm/CaptionsField';
 
-import { EditPage, PageTitle, EditCaption, InputTitle, InputPrivate, DescriptionFieldWrapper, DescriptionField, SaveButton, EditTarget } from '../stylesheets/application/ProjectEditForm';
+import {
+    EditPage,
+    PageTitle,
+    EditCaption,
+    InputTitle,
+    InputPrivate,
+    DescriptionFieldWrapper,
+    DescriptionField,
+    SaveButton,
+    EditTarget
+} from '../stylesheets/application/ProjectEditForm';
 
 const debug = Debug('fabnavi:jsx:ProjectEditForm');
 
@@ -21,13 +31,14 @@ export class ProjectEditForm extends React.Component {
         this.onSubmit = e => {
             e.preventDefault();
             const figures = this.state.figures.map(figure => {
-                const captions = figure.captions.filter(caption => caption.text && !!caption.text.trim())
+                const captions = figure.captions.filter(caption => caption.text && !!caption.text.trim());
                 figure.captions = captions;
                 return figure;
-            })
+            });
             this.props.updateProject(
                 Object.assign({}, this.props.project, {
                     name: this.state.name,
+                    tag_list: this.state.tag_list,
                     description: this.state.description,
                     private: this.state.private,
                     figures: figures
@@ -68,6 +79,29 @@ export class ProjectEditForm extends React.Component {
             });
         };
 
+        this.onAddTagButtonClick = e => {
+            e.preventDefault();
+            this.state.tag_list.push('');
+            this.setState({
+                tag_list: this.state.tag_list
+            });
+        };
+
+        this.handleTagNameChange = (e, index) => {
+            this.state.tag_list[index] = e.target.value;
+            this.setState({
+                tag_list: this.state.tag_list
+            });
+        };
+
+        this.onDeleteTgButtonClick = (e, index) => {
+            e.preventDefault();
+            this.state.tag_list.splice(index, 1);
+            this.setState({
+                tag_list: this.state.tag_list
+            });
+        };
+
         this.updatePlayer = figures => {
             const content = this.props.project.content.map((cont, i) => {
                 cont.figure = figures[i];
@@ -81,6 +115,7 @@ export class ProjectEditForm extends React.Component {
 
         this.state = {
             name: '',
+            tag_list: [],
             description: '',
             private: false,
             figures: [],
@@ -104,7 +139,9 @@ export class ProjectEditForm extends React.Component {
             } else if(name === '_destroy') {
                 figure.captions[captionIndex][name] = e.target.checked;
             } else {
-                figure.captions[captionIndex][name] = isNaN(e.target.valueAsNumber) ? 0 : parseInt(e.target.valueAsNumber, 10) / 1000;
+                figure.captions[captionIndex][name] = isNaN(e.target.valueAsNumber) ?
+                    0 :
+                    parseInt(e.target.valueAsNumber, 10) / 1000;
             }
             return figure;
         });
@@ -131,6 +168,7 @@ export class ProjectEditForm extends React.Component {
         if(props.project !== null) {
             this.setState({
                 name: props.project.name,
+                tag_list: props.project.tags.tags.map(tag => tag.name),
                 description: props.project.description,
                 private: props.project.private,
                 figures: props.project.content.map(content => content.figure),
@@ -149,11 +187,7 @@ export class ProjectEditForm extends React.Component {
                         <form onSubmit={this.onSubmit}>
                             <div>
                                 <EditTarget>Project Name</EditTarget>
-                                <InputTitle
-                                    onChange={this.handleNameChange}
-                                    value={this.state.name}
-                                    type="text"
-                                />
+                                <InputTitle onChange={this.handleNameChange} value={this.state.name} type="text" />
                             </div>
                             <div>
                                 <EditTarget>Privacy Settings</EditTarget>
@@ -165,7 +199,10 @@ export class ProjectEditForm extends React.Component {
                                         name="private"
                                         defaultChecked={project.private}
                                     />
-                                    <label>This project is <span style={{ textDecoration: 'underline' }}>Private</span>. Only you can see this project.</label>
+                                    <label>
+                                        This project is <span style={{ textDecoration: 'underline' }}>Private</span>.
+                                        Only you can see this project.
+                                    </label>
                                 </div>
                                 <div>
                                     <InputPrivate
@@ -175,7 +212,10 @@ export class ProjectEditForm extends React.Component {
                                         name="private"
                                         defaultChecked={!project.private}
                                     />
-                                    <label>This project is <span style={{ textDecoration: 'underline' }}>Public</span>. Anyone can see this project.</label>
+                                    <label>
+                                        This project is <span style={{ textDecoration: 'underline' }}>Public</span>.
+                                        Anyone can see this project.
+                                    </label>
                                 </div>
                             </div>
                             <EditCaption>
@@ -193,8 +233,33 @@ export class ProjectEditForm extends React.Component {
                                     onAddCaptionButtonClick={this.onAddCaptionButtonClick}
                                 />
                             </EditCaption>
-
-
+                            <div>
+                                <p>Tag List</p>
+                                <ul>
+                                    {this.state.tag_list.length > 0 ? (
+                                        this.state.tag_list.map((tag, index) => {
+                                            return (
+                                                <li key={index}>
+                                                    #{index + 1} :
+                                                    <input
+                                                        name="edit_tag"
+                                                        data-index={index}
+                                                        type="text"
+                                                        defaultValue={tag}
+                                                        onChange={e => this.handleTagNameChange(e, index)}
+                                                    />
+                                                    <button onClick={e => this.onDeleteTgButtonClick(e, index)}>
+                                                        destroy!
+                                                    </button>
+                                                </li>
+                                            );
+                                        })
+                                    ) : (
+                                        <span># --： add project tag !</span>
+                                    )}
+                                </ul>
+                                <button onClick={this.onAddTagButtonClick}>add tag</button>
+                            </div>
                             <DescriptionFieldWrapper>
                                 <EditTarget>Description</EditTarget>
                                 <DescriptionField
@@ -203,7 +268,9 @@ export class ProjectEditForm extends React.Component {
                                     rows="10"
                                 />
                             </DescriptionFieldWrapper>
-                            <SaveButton type="submit" onClick={this.onSubmit}>save</SaveButton>
+                            <SaveButton type="submit" onClick={this.onSubmit}>
+                                save
+                            </SaveButton>
                         </form>
                     ) : (
                         <div> loading project... </div>
