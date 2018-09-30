@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Debug from 'debug';
-import { push } from 'react-router-redux';
 import Player from './Player';
 import DeleteModal from '../components/DeleteModal';
 import CaptionList from './CaptionList';
@@ -18,8 +17,11 @@ import {
     StyledDescription,
     StatusFrame,
     StatusText,
-    TitleFrame,
-    PrivateNotation
+    PrivateNotation,
+    TagFrame,
+    TagHeader,
+    TagField,
+    StyledTagName
 } from '../stylesheets/application/ProjectShow/StyledProjectDetail';
 
 const debug = Debug('fabnavi:jsx:ProjectDetail');
@@ -42,15 +44,18 @@ export class ProjectDetail extends React.Component {
                         <ProjectTitle lang="ja">
                             {project.name} {isPrivate && <PrivateNotation>Private Project</PrivateNotation>}
                         </ProjectTitle>
-                        <ul>
-                            {isTag ? (
-                                tags.map((tag, index) => {
-                                    return <li key={index}>#{tag.name}</li>;
-                                })
-                            ) : (
-                                <p>none</p>
-                            )}
-                        </ul>
+                        <TagFrame>
+                            <TagHeader>Tag: </TagHeader>
+                            <TagField>
+                                {isTag ? (
+                                    tags.map((tag, index) => {
+                                        return <StyledTagName key={index}>{tag.name}</StyledTagName>;
+                                    })
+                                ) : (
+                                    <TagHeader>none</TagHeader>
+                                )}
+                            </TagField>
+                        </TagFrame>
                         <Player />
                         <ContentsFrame>
                             <DescriptionFrame>
