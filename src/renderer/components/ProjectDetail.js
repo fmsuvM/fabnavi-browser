@@ -33,11 +33,24 @@ export class ProjectDetail extends React.Component {
         if(!this.props.project) return <div />;
         const project = sanitizeProject(this.props.project);
         const isPrivate = project.private;
+        const tags = project.tags.tags;
+        const isTag = tags.length > 0 ? true : false;
         return (
             <div>
                 {project ? (
                     <StyledDetailFrame>
-                        <ProjectTitle lang="ja">{project.name} {isPrivate && <PrivateNotation>Private Project</PrivateNotation>}</ProjectTitle>
+                        <ProjectTitle lang="ja">
+                            {project.name} {isPrivate && <PrivateNotation>Private Project</PrivateNotation>}
+                        </ProjectTitle>
+                        <ul>
+                            {isTag ? (
+                                tags.map((tag, index) => {
+                                    return <li key={index}>#{tag.name}</li>;
+                                })
+                            ) : (
+                                <p>none</p>
+                            )}
+                        </ul>
                         <Player />
                         <ContentsFrame>
                             <DescriptionFrame>
