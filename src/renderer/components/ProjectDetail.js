@@ -5,6 +5,7 @@ import Debug from 'debug';
 import Player from './Player';
 import DeleteModal from '../components/DeleteModal';
 import CaptionList from './CaptionList';
+import RelatedProjects from './ProjectDetail/RelatedProjects';
 
 import { sanitizeProject } from '../utils/projectUtils';
 
@@ -21,7 +22,10 @@ import {
     TagFrame,
     TagHeader,
     TagField,
-    StyledTagName
+    StyledTagName,
+    RelatedProjectFrame,
+    FramePerTag,
+    TopTag
 } from '../stylesheets/application/ProjectShow/StyledProjectDetail';
 
 const debug = Debug('fabnavi:jsx:ProjectDetail');
@@ -37,6 +41,19 @@ export class ProjectDetail extends React.Component {
         const isPrivate = project.private;
         const tags = project.tags.tags;
         const isTag = tags.length > 0 ? true : false;
+        // const relatedProjectsForm = (index, tag) => (
+        //     <FramePerTag key={index}>
+        //         <TopTag>{tag}</TopTag>
+        //         <RelatedProjects tag={tag} />
+        //     </FramePerTag>
+        // );
+        // const relatedProjects = [];
+        // tags.forEach((tag, index) => {
+        //     if(this.props.isFetching) {
+        //         return;
+        //     }
+        //     relatedProjects.push(relatedProjectsForm(index, tag.name));
+        // });
         return (
             <div>
                 {project ? (
@@ -73,6 +90,21 @@ export class ProjectDetail extends React.Component {
                             figures={project.content.map(content => content.figure)}
                             contentType={this.props.contentType}
                         />
+                        <RelatedProjectFrame>
+                            <StyledHead>Related Projects</StyledHead>
+                            {isTag ? (
+                                tags.map((tag, index) => {
+                                    return (
+                                        <FramePerTag key={index}>
+                                            <TopTag>{tag.name}</TopTag>
+                                            <RelatedProjects tag={tag.name} />
+                                        </FramePerTag>
+                                    );
+                                })
+                            ) : (
+                                <p>hoge</p>
+                            )}
+                        </RelatedProjectFrame>
                         {this.props.showDeleteConfirmation ? <DeleteModal /> : <span />}
                     </StyledDetailFrame>
                 ) : (
@@ -89,7 +121,8 @@ ProjectDetail.propTypes = {
     userIsAdmin: PropTypes.bool,
     showDeleteConfirmation: PropTypes.bool,
     targetProject: PropTypes.number,
-    contentType: PropTypes.string
+    contentType: PropTypes.string,
+    isFetching: PropTypes.bool
 };
 
 export const mapStateToProps = state => ({
@@ -98,7 +131,8 @@ export const mapStateToProps = state => ({
     userIsAdmin: state.user.isAdmin,
     showDeleteConfirmation: state.modals.showDeleteConfirmation,
     targetProject: state.modals.targetProject,
-    contentType: state.player.contentType
+    contentType: state.player.contentType,
+    isFetching: state.manager.isFetching
 });
 
 export default connect(
