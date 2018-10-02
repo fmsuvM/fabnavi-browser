@@ -12,6 +12,7 @@ import {
     RELOAD_PROJECTS,
     DELETE_PROJECT,
     CONFIRM_DELETE_PROJECT,
+    SEARCH_RELATED_PROJECTS,
     fetchingProjects,
     fetchProjects,
     receiveProject,
@@ -20,7 +21,8 @@ import {
     receiveReloadedProjectsResult,
     openDeleteConfirmation,
     closeDeleteConfirmation,
-    reloadProjects
+    reloadProjects,
+    searchRelatedProjectsResult
 } from '../../actions/manager';
 
 const debug = Debug('fabnavi:epics');
@@ -145,6 +147,16 @@ const reloadProjectsEpic = (action$, store) =>
             return receiveReloadedProjectsResult(data);
         });
 
+const searchRelatedProjectsEpic = (action$, store) =>
+    action$
+        .ofType(SEARCH_RELATED_PROJECTS)
+        .do(_ => store.dispatch(fetchingProjects()))
+        .switchMap(action => {
+            const{ query } = action.payload;
+            return api.searchProjects(query);
+        })
+        .map(({ data }) => searchRelatedProjectsResult(data));
+
 export default createEpicMiddleware(
     combineEpics(
         signIn,
@@ -157,6 +169,7 @@ export default createEpicMiddleware(
         searchProjectEpic,
         reloadProjectsEpic,
         goBackHomeEpic,
-        changedProjectListPageHookEpic
+        changedProjectListPageHookEpic,
+        searchRelatedProjectsEpic
     )
 );
