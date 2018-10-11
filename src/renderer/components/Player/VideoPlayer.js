@@ -42,7 +42,10 @@ export class VideoPlayer extends React.Component {
     updatePlaylist(project, index = 0) {
         this.player.playlist([]);
         setTimeout(() => {
-            const figures = project.content.filter(content => content.figure && !content.figure._destroy).map(content => content.figure);
+            const figures = project.content
+                .filter(content => content.figure && !content.figure._destroy)
+                .map(content => content.figure)
+                .sort((fig1, fig2) => fig1.position - fig2.position);
             const buildPlaylistOption = figure => {
                 return {
                     sources: [
@@ -151,9 +154,9 @@ export class VideoPlayer extends React.Component {
                         />
                     </div>
                 </div>
-                <div className="field_summary">
-                    <p className="summary">Summary Play</p>
+                <div className="field_summary" style={{ verticalAlign: 'center', marginTop: '30px', marginBottom: '50px' }}>
                     <input onChange={this.handleSummaryStatusChange} type="checkbox" />
+                    <p style={{ display: 'inline', marginLeft: '10px' }} className="summary">Summary Play</p>
                 </div>
             </div>
         );
