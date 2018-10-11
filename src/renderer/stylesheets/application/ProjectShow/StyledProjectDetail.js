@@ -1,8 +1,6 @@
 import styled, { css } from 'styled-components';
 import { colors } from '../../common/colors';
 
-import { colors } from '../../common/colors';
-
 export const StyledDetailFrame = styled.div`
     display: flex;
     flex-direction: column;
