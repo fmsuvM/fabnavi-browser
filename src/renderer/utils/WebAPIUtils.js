@@ -5,7 +5,7 @@ import 'babel-polyfill';
 
 import { signedIn } from '../actions/users';
 
-const isDev = require('electron-is-dev');
+const isDev = true;
 import { host } from './host';
 
 const debug = Debug('fabnavi:api');
