@@ -1,5 +1,5 @@
 const Vtt = require('vtt-creator');
-const isDev = require('electron-is-dev');
+const isDev = true;
 import { host } from './host';
 
 function createBlobUrl(content, { mimetype = 'text/plain' }) {
@@ -10,10 +10,10 @@ function createBlobUrl(content, { mimetype = 'text/plain' }) {
 }
 
 /**
-* @typedef {Object} Caption
-* @property {Number} start_sec start is described in sec
-* @property {Number} end_sec end is described in sec
-* @property {String} text text is json or
+ * @typedef {Object} Caption
+ * @property {Number} start_sec start is described in sec
+ * @property {Number} end_sec end is described in sec
+ * @property {String} text text is json or
  */
 
 /**
@@ -33,7 +33,7 @@ function createVttText(textTracks, type) {
             textTracks.forEach(textTrack => vtt.add(textTrack.start_sec, textTrack.end_sec, textTrack.name));
             break;
         default:
-            console.warn(`in 'createVttText()', type should be 'captions' or 'chapters'.your put '${type}'.`)
+            console.warn(`in 'createVttText()', type should be 'captions' or 'chapters'.your put '${type}'.`);
             break;
     }
     return vtt.toString();
@@ -50,7 +50,6 @@ function getVttUrl(textTracks, type) {
     return createBlobUrl(createVttText(textTracks, type), 'text/vtt');
 }
 
-
 /**
  * buildCaptions - Videojsのplayer用にCaption Objectを作成して返す
  *
@@ -65,7 +64,7 @@ export function buildCaptions(captions) {
         label: '日本語',
         mode: 'showing', // <track>のdefault attribute に相当
         src: getVttUrl(captions, 'captions')
-    }
+    };
 }
 
 /**
@@ -82,13 +81,12 @@ export function buildChapters(chapters) {
         label: 'Chapter',
         mode: 'showing', // <track>のdefault attribute に相当
         src: getVttUrl(chapters, 'chapters')
-    }
+    };
 }
 
 export function buildFigureUrl(url) {
     return isDev && host.url.includes('localhost') ? host.url + url : url;
 }
-
 
 /**
  * secondsToHHMMSS - 秒数をHH:MM:SSのstringに変換する

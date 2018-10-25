@@ -1,4 +1,4 @@
-const isDev = require('electron-is-dev');
+const isDev = true;
 
 class Host {
     constructor() {
