@@ -29,11 +29,15 @@ RightNav.propTypes = {
     Uid: PropTypes.string
 };
 
+const checkCredential = _credential => {
+    return _credential ? _credential : { Uid: 0 };
+};
+
 const mapStateToProps = state => ({
     isLoggedIn: state.user.isLoggedIn,
     isAdmin: state.user.isAdmin,
     isDeveloper: state.user.isDeveloper,
-    Uid: state.user.credential.Uid
+    Uid: checkCredential(state.user.credential).Uid
 });
 
 export default connect(mapStateToProps)(RightNav);

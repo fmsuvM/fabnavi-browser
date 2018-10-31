@@ -22,30 +22,21 @@ export class MenuIcon extends React.Component {
 
         this.signIn = () => {
             debug('sign in process is starting');
-            // const onMessage = e => {
-            //     debug('e: ', e.data);
-            // };
-            // window.addEventListener('message', onMessage);
-            // const testurl = 'http://example.com/';
-            // window.open(testurl, 'test');
-            const _url = window.location.href;
-            const authUrl = `${host.url}/auth/github?auth_origin_url=${_url}`;
+            const authUrl = `${host.url}/auth/github?auth_origin_url=${window.location.href}`;
             window.open(authUrl, 'GitHub Login');
-            debug('href uri?: ', window.location.href);
             const onMessage = e => {
                 debug('onmessage: ', e);
                 window.removeEventListener('message', onMessage, false);
-                const url = window.location.href;
-                if(url.includes('uid') && url.includes('client_id') && url.includes('auth_token')) {
-                    debug('hoge');
-                    props.signedIn({
-                        'Access-Token': authUrl.match(/auth_token=([a-zA-Z0-9\-_]*)/)[1],
-                        Uid: authUrl.match(/uid=([a-zA-Z0-9\-_]*)/)[1],
-                        Client: authUrl.match(/client_id=([a-zA-Z0-9\-_]*)/)[1]
-                    });
+                if(e.origin == window.location.origin) {
+                    try{
+                        debug('>>', e.data);
+                        this.props.signedIn(JSON.parse(e.data));
+                    } catch(error) {
+                        this.props.signInFailed(error, e);
+                    }
                 }
             };
-            window.addEventListener('message', onMessage); // 親window
+            window.addEventListener('message', onMessage);
         };
 
         this._onClick = () => {
@@ -72,15 +63,6 @@ export class MenuIcon extends React.Component {
         };
     }
 
-    // onMessage(e) {
-    //     debug('event: ', e);
-    // }
-
-    // componentDidMount() {
-    //     window.opener.postMessage('waiwai', '*')
-    //     window.addEventListener('message', this.onMessage);
-    // }
-
     render() {
         return (
             <div>
@@ -101,44 +83,11 @@ export class MenuIcon extends React.Component {
         );
     }
 }
-// export const _MenuIcon = props => {
-//     const signIn = () => {
-//         debug('sign in process is starting');
-//         const testurl = 'http://example.com/';
-//         window.open(testurl, 'test');
-//         const onMessage = e => {
-//             debug('e: ', e.data);
-//         };
-//         document.addEventListener('message', onMessage);
-//         // const authUrl = `${host.url}/auth/github?auth_origin_url=${host.url}`;
-//         // window.open(authUrl, 'GitHub Login');
-//         // const onMessage = e => {
-//         //     debug('onmessage');
-//         //     window.removeEventListener('message', onMessage, false);
-//         //     const url = window.location.href;
-//         //     if(url.includes('uid') && url.includes('client_id') && url.includes('auth_token')) {
-//         //         debug('hoge');
-//         //         props.signedIn({
-//         //             'Access-Token': authUrl.match(/auth_token=([a-zA-Z0-9\-_]*)/)[1],
-//         //             Uid: authUrl.match(/uid=([a-zA-Z0-9\-_]*)/)[1],
-//         //             Client: authUrl.match(/client_id=([a-zA-Z0-9\-_]*)/)[1]
-//         //         });
-//         //     }
-//         // };
-//         // window.addEventListener('message', onMessage); // 親window
-//     };
-
-//     const _onClick = () => {
-
-//     };
-//     return (
-
-//     );
-// };
 
 MenuIcon.propTypes = {
     jump: PropTypes.func,
     signedIn: PropTypes.func,
+    signInFailed: PropTypes.func,
     signedOut: PropTypes.func,
     signingOut: PropTypes.func,
     src: PropTypes.string,

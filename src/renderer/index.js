@@ -34,7 +34,7 @@ const debug = Debug('fabnavi:jsx:FabnaviApp');
 
 const forceSignIn = store => {
     debug('force login');
-    const authUrl = `${host.url}/auth/github?auth_origin_url=${window.location.href}`;
+    const authUrl = `${host.url}/auth/github?auth_origin_url=${host.url}`;
     window.open(authUrl);
     const url = window.location.href;
     debug('url: ', url);
@@ -75,11 +75,6 @@ window.addEventListener('DOMContentLoaded', () => {
     api.init(store);
     debug(api.loadCredential());
     if(!api.loadCredential()) forceSignIn(store);
-    // if(isAuthWindow(window.location.href)) {
-    //     window.opener.postMessage(JSON.stringify(parseAuthInfo(window.location.href)), window.location.origin);
-    //     window.close();
-    //     return;
-    // }
     store.dispatch(fetchProjects(0, 'all'));
     ReactDOM.render(
         <Provider store={store}>
