@@ -74,7 +74,13 @@ window.addEventListener('DOMContentLoaded', () => {
     );
     api.init(store);
     debug(api.loadCredential());
-    if(!api.loadCredential()) forceSignIn(store);
+    // if(!api.loadCredential()) forceSignIn(store);
+    const url = window.location.href;
+    if(isAuthWindow(url)) {
+        window.opener.postMessage(JSON.stringify(parseAuthInfo(url)), window.location.origin);
+        window.close();
+        return;
+    }
     store.dispatch(fetchProjects(0, 'all'));
     ReactDOM.render(
         <Provider store={store}>
