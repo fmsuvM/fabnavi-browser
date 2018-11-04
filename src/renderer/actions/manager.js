@@ -17,6 +17,8 @@ export const CONFIRM_DELETE_PROJECT = 'CONFIRM_DELETE_PROJECT';
 export const OPEN_DELETE_CONFIRMATION = 'OPEN_DELETE_CONFIRMATION';
 export const CLOSE_DELETE_CONFIRMATION = 'CLOSE_DELETE_CONFIRMATION';
 export const DELETE_PROJECT = 'DELETE_PROJECT';
+export const SEARCH_RELATED_PROJECTS = 'SEARCH_RELATED_PROJECTS';
+export const RECEIVE_RELATED_PROJECTS = 'RECEIVE_RELATED_PROJECTS';
 
 export const fetchingProjects = createAction(FETCHING_PROJECTS);
 export const selectProjectMenu = createAction(SELECT_PROJECT_MENU);
@@ -24,45 +26,55 @@ export const receiveProject = createAction(RECEIVE_PROJECT);
 export const receiveProjects = createAction(RECEIVE_PROJECTS);
 export const willUpdateProjectList = createAction(WILL_UPDATE_PROJECT_LIST);
 export const changeProjectListPage = createAction(CHANGE_PROJECT_LIST_PAGE, page => {
-    return page;
+  return page;
 });
 export const fetchProjects = createAction(FETCH_PROJECTS, (page, mode) => {
-    return {
-        page,
-        mode
-    };
+  return {
+    page,
+    mode
+  };
 });
 export const updateProject = createAction(UPDATE_PROJECT);
 export const updateProjects = createAction(UPDATE_PROJECTS);
 export const requestSearchProjects = createAction(REQUEST_SEARCH_PROJECTS, keyword => {
-    return {
-        keyword
-    };
+  return {
+    keyword
+  };
 });
 export const receiveSearchProjectsResult = createAction(RECEIVE_SEARCHING_PROJECTS_RESULT, data => {
-    return {
-        data
-    };
+  return {
+    data
+  };
 });
 export const reloadProjects = createAction(RELOAD_PROJECTS);
 export const receiveReloadedProjectsResult = createAction(RECEIVE_RELOADED_PROJECTS_RESULT, data => {
-    return {
-        data
-    };
+  return {
+    data
+  };
 });
 export const confirmDeleteProject = createAction(CONFIRM_DELETE_PROJECT, projectId => {
-    return {
-        projectId
-    };
+  return {
+    projectId
+  };
 });
 export const openDeleteConfirmation = createAction(OPEN_DELETE_CONFIRMATION, project => {
-    return {
-        project
-    };
+  return {
+    project
+  };
 });
 export const closeDeleteConfirmation = createAction(CLOSE_DELETE_CONFIRMATION);
 export const deleteProject = createAction(DELETE_PROJECT, projectId => {
-    return {
-        projectId
-    };
+  return {
+    projectId
+  };
+});
+export const searchRelatedProjects = createAction(SEARCH_RELATED_PROJECTS, query => {
+  return {
+    query
+  };
+});
+export const receiveRelatedProjects = createAction(RECEIVE_RELATED_PROJECTS, data => {
+  return {
+    data
+  };
 });
