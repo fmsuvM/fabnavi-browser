@@ -5,6 +5,7 @@ import Debug from 'debug';
 import Player from './Player';
 import DeleteModal from '../components/DeleteModal';
 import CaptionList from './CaptionList';
+import { searchRelatedProjects } from '../actions/manager';
 
 import { sanitizeProject } from '../utils/projectUtils';
 
@@ -25,11 +26,15 @@ import {
 } from '../stylesheets/application/ProjectShow/StyledProjectDetail';
 
 const debug = Debug('fabnavi:jsx:ProjectDetail');
+const RelatedProjects = lazy(() => import('./ProjectDetail/RelatedProjects'));
 
 export class ProjectDetail extends React.Component {
     constructor(props) {
         super(props);
     }
+    this.state = {
+      tag: '2018' // TODO: API側でタグを複数検索できるようにする
+    };
 
     render() {
         if(!this.props.project) return <div />;
@@ -75,12 +80,26 @@ export class ProjectDetail extends React.Component {
                         />
                         {this.props.showDeleteConfirmation ? <DeleteModal /> : <span />}
                     </StyledDetailFrame>
+    this.searchRelatedProjects = () => {
+      this.props.searchRelatedProjects(this.state.tag);
+    };
+  }
+
+  componentDidMount() {
+    this.searchRelatedProjects();
+  }
+    const relatedProjects = (
+      <Suspense fallback={loadingRelatedProjects}>
+        <RelatedProjects projects={this.props.relatedProjects} />
+      </Suspense>
+    );
                 ) : (
                     <div> loading project... </div>
                 )}
             </div>
         );
     }
+            <div>{relatedProjects}</div>
 }
 
 ProjectDetail.propTypes = {
@@ -90,6 +109,8 @@ ProjectDetail.propTypes = {
     showDeleteConfirmation: PropTypes.bool,
     targetProject: PropTypes.number,
     contentType: PropTypes.string
+  searchRelatedProjects: PropTypes.func,
+  relatedProjects: PropTypes.object
 };
 
 export const mapStateToProps = state => ({
@@ -99,9 +120,18 @@ export const mapStateToProps = state => ({
     showDeleteConfirmation: state.modals.showDeleteConfirmation,
     targetProject: state.modals.targetProject,
     contentType: state.player.contentType
+  relatedProjects: state.manager.relatedProjects
+});
+
+const mapDispatchToProps = dispatch => ({
+  searchRelatedProjects: query => {
+    dispatch(searchRelatedProjects(query));
+  }
 });
 
 export default connect(
     mapStateToProps,
     null
+  mapStateToProps,
+  mapDispatchToProps
 )(ProjectDetail);
