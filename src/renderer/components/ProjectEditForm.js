@@ -68,7 +68,7 @@ export class ProjectEditForm extends React.Component {
             if(!this.state.figures) return;
             const currentTime = this.player.getWrappedInstance().getCurrentTime();
             this.setState({
-                figures: this.state.figures.map((figure, i) => {
+                figures: this.state.figures.sort((a, b) => a.position - b.position).map((figure, i) => {
                     if(i !== index) return figure;
                     figure.captions.push({
                         id: null,
@@ -105,7 +105,7 @@ export class ProjectEditForm extends React.Component {
         };
 
         this.updatePlayer = figures => {
-            const content = this.props.project.content.map((cont, i) => {
+            const content = this.state.project.content.map((cont, i) => {
                 cont.figure = figures[i];
                 return cont;
             });
@@ -116,6 +116,7 @@ export class ProjectEditForm extends React.Component {
         };
 
         this.state = {
+            project: this.props.project,
             name: '',
             tag_list: [],
             description: '',
@@ -136,14 +137,13 @@ export class ProjectEditForm extends React.Component {
         const name = e.target.name;
         const figures = this.state.figures.map((figure, i) => {
             if(i !== figureIndex) return figure;
+            const caption = figure.captions[captionIndex];
             if(name === 'text') {
-                figure.captions[captionIndex][name] = e.target.value;
+                caption[name] = e.target.value;
             } else if(name === '_destroy') {
-                figure.captions[captionIndex][name] = e.target.checked;
+                caption[name] = e.target.checked;
             } else {
-                figure.captions[captionIndex][name] = isNaN(e.target.valueAsNumber) ?
-                    0 :
-                    parseInt(e.target.valueAsNumber, 10) / 1000;
+                caption[name] = isNaN(e.target.valueAsNumber) ? 0 : parseInt(e.target.valueAsNumber, 10) / 1000;
             }
             return figure;
         });
@@ -152,7 +152,24 @@ export class ProjectEditForm extends React.Component {
     }
 
     handleThumbnailDeleteButtonClick(e) {
+        e.stopPropagation();
         this.changeFigureState(e.nativeEvent);
+    }
+
+    handleThumbanailOrderChange(figures) {
+        const content = this.props.project.content.map((cont, i) => {
+            cont.figure = figures[i];
+            return cont;
+        });
+
+        const project = Object.assign({}, this.state.project, {
+            content: content
+        });
+
+        this.setState({
+            project: project,
+            figures: figures
+        });
     }
 
     changeFigureState(e) {
@@ -173,8 +190,14 @@ export class ProjectEditForm extends React.Component {
                 tag_list: props.project.tags.tags.map(tag => tag.name),
                 description: props.project.description,
                 private: props.project.private,
-                figures: props.project.content.map(content => content.figure),
-                captions: props.project.content[0].figure.captions
+                figures: props.project.content
+                    .map(content => {
+                        const figure = content.figure;
+                        figure.captions = figure.captions.sort((a, b) => a.start_sec - b.start_sec);
+                        return figure;
+                    })
+                    .sort((a, b) => a.position - b.position),
+                captions: props.project.content[0].figure.captions.sort((a, b) => a.start_sec - b.start_sec)
             });
         }
     }
@@ -193,6 +216,7 @@ export class ProjectEditForm extends React.Component {
                                 <EditTarget>Project Name</EditTarget>
                                 <InputTitle onChange={this.handleNameChange} value={this.state.name} type="text" />
                             </div>
+
                             <div>
                                 <EditTarget>Privacy Settings</EditTarget>
                                 <div>
@@ -222,16 +246,18 @@ export class ProjectEditForm extends React.Component {
                                     </label>
                                 </div>
                             </div>
+
                             <EditCaption>
                                 <Player
                                     project={this.state.project}
                                     size="small"
                                     isEditable={true}
                                     handleThumbnailDeleteButtonClick={this.handleThumbnailDeleteButtonClick.bind(this)}
+                                    handleThumbanailOrderChange={this.handleThumbanailOrderChange.bind(this)}
                                     ref={instance => (this.player = instance)}
                                 />
                                 <CaptionsField
-                                    figures={project.content.map(content => content.figure)}
+                                    figures={this.state.figures}
                                     contentType={project.content[0].type === 'Figure::Frame' ? 'movie' : 'photo'}
                                     handleCaptionsChange={this.handlerCaptionsChange.bind(this)}
                                     onAddCaptionButtonClick={this.onAddCaptionButtonClick}
