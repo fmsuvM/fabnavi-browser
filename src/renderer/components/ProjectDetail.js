@@ -23,7 +23,10 @@ import {
   TagFrame,
   TagHeader,
   TagField,
-  StyledTagName
+  StyledTagName,
+  RelatedProjectFrame,
+  FramePerTag,
+  TopTag
 } from '../stylesheets/application/ProjectShow/StyledProjectDetail';
 
 const debug = Debug('fabnavi:jsx:ProjectDetail');
@@ -55,7 +58,7 @@ export class ProjectDetail extends React.Component {
     const loadingRelatedProjects = <div>なうろーでぃんぐ</div>;
     const relatedProjects = (
       <Suspense fallback={loadingRelatedProjects}>
-        <RelatedProjects projects={this.props.relatedProjects} />
+        <RelatedProjects projects={this.props.relatedProjects} tag={this.state.tag} />
       </Suspense>
     );
     return (
@@ -96,7 +99,13 @@ export class ProjectDetail extends React.Component {
                 .sort((fig1, fig2) => fig1.position - fig2.position)}
               contentType={this.props.contentType}
             />
-            <div>{relatedProjects}</div>
+            <RelatedProjectFrame>
+              <StyledHead>Related Projects</StyledHead>
+              <FramePerTag>
+                <TopTag>2018</TopTag>
+                {relatedProjects}
+              </FramePerTag>
+            </RelatedProjectFrame>
             {this.props.showDeleteConfirmation ? <DeleteModal /> : <span />}
           </StyledDetailFrame>
         ) : (

@@ -3,34 +3,39 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Debug from 'debug';
 
+import ProjectCard from './ProjectCard';
+import { ProjectFrame } from '../../stylesheets/application/ProjectShow/RelatedProjects';
+
 const debug = Debug('fabnavi:componens:RelatedProjects');
 
 class RelatedProjects extends React.Component {
   constructor(props) {
     super(props);
-
-    // this.searchRelatedProjects = () => {
-    //   this.props.searchRelatedProjects('2018'); // test tag
-    // };
   }
 
-  componentDidMount() {
-    // this.searchRelatedProjects();
-  }
+  componentDidMount() {}
 
   render() {
-    debug('related projects: ', this.props.projects);
+    const _projects = this.props.projects;
+    const tag = this.props.tag;
+    const projects = _projects[tag];
+    // const relatedProjects = projects.map((content, index) => (
+    //   <ProjectCard project={content} key={index} id={content.id} />
+    // ));
+
     return (
-      <div>
-        <p>this is the searching test</p>
-        <p>button</p>
-      </div>
+      <ProjectFrame>
+        {projects.map((content, index) => (
+          <ProjectCard project={content} key={index} id={content.id} />
+        ))}
+      </ProjectFrame>
     );
   }
 }
 
 RelatedProjects.propTypes = {
-  projects: PropTypes.object
+  projects: PropTypes.object,
+  tag: PropTypes.string
 };
 
 export default connect(
