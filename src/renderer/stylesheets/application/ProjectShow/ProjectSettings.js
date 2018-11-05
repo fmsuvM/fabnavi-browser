@@ -7,11 +7,11 @@ export const StyledEditButton = styled.button`
     border: none;
     margin-right: 50px;
     ${buttonProperties({
-        width: 205,
-        height: 100,
-        color: '#fff',
-        backgroundColor: colors.button.green
-    })};
+    width: 205,
+    height: 100,
+    color: '#fff',
+    backgroundColor: colors.button.green
+  })};
 `;
 
 export const StyledDeleteButton = styled.button`
@@ -20,9 +20,9 @@ export const StyledDeleteButton = styled.button`
     margin-top: 20px;
     margin-right: 50px;
     ${buttonProperties({
-        width: 205,
-        height: 50,
-        color: '#707070',
-        backgroundColor: '#fff'
-    })};
+    width: 205,
+    height: 50,
+    color: '#707070',
+    backgroundColor: '#fff'
+  })};
 `;

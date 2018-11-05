@@ -13,17 +13,17 @@ export const StyledCaptionField = styled.li`
 
 
 export const InputID = styled.input.attrs({
-    type: 'hidden'
+  type: 'hidden'
 })`
     margin: 0 18px;
 `;
 
 const inputTimeProperty = props => {
-    if(props.contentType === 'photo') {
-        return css`
+  if(props.contentType === 'photo') {
+    return css`
             display: none;
         `
-    }
+  }
 }
 
 const baseProperty = css`
@@ -34,7 +34,7 @@ const baseProperty = css`
 `
 
 export const InputTime = styled.input.attrs({
-    type: 'time'
+  type: 'time'
 })`
     margin: 0 10px 0 0 ;
     padding: 0 5px;
@@ -43,13 +43,13 @@ export const InputTime = styled.input.attrs({
 `;
 
 export const InputNumber = styled.input.attrs({
-    type: 'number'
+  type: 'number'
 })`
     width: 70px;
 `;
 
 export const InputText = styled.input.attrs({
-    type: 'text'
+  type: 'text'
 })`
     width: 170px;
     padding: 0 5px;
@@ -57,7 +57,7 @@ export const InputText = styled.input.attrs({
 `;
 
 export const InputDestroy = styled.input.attrs({
-    type: 'checkbox'
+  type: 'checkbox'
 })`
     margin: 0 18px;
 `;

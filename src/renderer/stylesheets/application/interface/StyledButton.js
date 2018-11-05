@@ -52,7 +52,7 @@ export const Button = styled.button`
     }
 
     ${props =>
-        props.cancel &&
+    props.cancel &&
         css`
             background: #707070;
             color: white;
@@ -60,7 +60,7 @@ export const Button = styled.button`
         `};
 
     ${props =>
-        props.delete &&
+    props.delete &&
         css`
             background: white;
             color: black;

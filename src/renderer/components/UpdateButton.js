@@ -11,39 +11,39 @@ const debug = Debug('fabnavi:jsx:UpdateButton');
 import { UpdateButtonStyle } from '../stylesheets/application/UpdateButton';
 
 export class UpdateButton extends Component {
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
 
-    render() {
-        return (
-            <div>
-                <div>
-                    {this.props.canUpdatePage ? (
-                        <a onClick={this.handleClick}>
-                            <UpdateButtonStyle src={`${assetsPath}/images/update.png`} />
-                        </a>
-                    ) : (
-                        <UpdateButtonStyle src={`${assetsPath}/images/no-update.png`} />
-                    )}
-                </div>
-            </div>
-        );
-    }
-    handleClick() {
-        api.getAllProjects();
-    }
+  render() {
+    return (
+      <div>
+        <div>
+          {this.props.canUpdatePage ? (
+            <a onClick={this.handleClick}>
+              <UpdateButtonStyle src={`${assetsPath}/images/update.png`} />
+            </a>
+          ) : (
+            <UpdateButtonStyle src={`${assetsPath}/images/no-update.png`} />
+          )}
+        </div>
+      </div>
+    );
+  }
+  handleClick() {
+    api.getAllProjects();
+  }
 }
 
 UpdateButton.propTypes = {
-    canUpdatePage: PropTypes.bool
+  canUpdatePage: PropTypes.bool
 };
 
 export function mapStateToProps(state) {
-    return {
-        canUpdatePage: state.manager.canUpdatePage
-    };
+  return {
+    canUpdatePage: state.manager.canUpdatePage
+  };
 }
 
 export default connect(mapStateToProps)(UpdateButton);

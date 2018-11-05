@@ -4,9 +4,8 @@ import Debug from 'debug';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
-import { sanitizeProject } from '../utils/projectUtils';
-const debug = Debug('fabnavi:jsx:ProjectCard');
-import { assetsPath } from '../utils/assetsUtils';
+const debug = Debug('fabnavi:RelatedProjects:ProjectCard');
+import { assetsPath } from '../../utils/assetsUtils';
 
 import {
   ProjectFrame,
@@ -24,7 +23,8 @@ import {
   PrivateLabel,
   ProjectTypeLabel,
   CardProjectTypeLabel
-} from '../stylesheets/application/ProjectIndex/StyledProjectCard';
+} from '../../stylesheets/application/ProjectIndex/StyledProjectCard';
+import { sanitizeProject } from '../../utils/projectUtils';
 
 export class ProjectCard extends React.Component {
   constructor(props) {
@@ -35,7 +35,7 @@ export class ProjectCard extends React.Component {
   }
 
   render() {
-    const project = sanitizeProject(this.props);
+    const project = sanitizeProject(this.props.project);
     const projectType = typeof project.content[0] === 'undefined' ? 'Photo' : project.content[0].type.split('::')[1];
     const isPrivate = project.private;
 
@@ -72,7 +72,9 @@ ProjectCard.propTypes = {
   toggleMenu: PropTypes.func,
   selectedId: PropTypes.number,
   toProjectDetail: PropTypes.func,
-  index: PropTypes.number
+  index: PropTypes.number,
+  project: PropTypes.object,
+  id: PropTypes.number
 };
 
 const mapDispatchToProps = dispatch => ({

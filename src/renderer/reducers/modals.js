@@ -6,25 +6,25 @@ import { OPEN_DELETE_CONFIRMATION, CLOSE_DELETE_CONFIRMATION } from '../actions/
 const debug = Debug('fabnavi:reducer:modals');
 
 const initialState = {
-    targetProject: null,
-    showDeleteConfirmation: false
+  targetProject: null,
+  showDeleteConfirmation: false
 };
 
 export default handleActions(
-    {
-        [OPEN_DELETE_CONFIRMATION]: (state, action) => {
-            const{ project } = action.payload;
-            return Object.assign({}, state, {
-                targetProject: project,
-                showDeleteConfirmation: true
-            });
-        },
-        [CLOSE_DELETE_CONFIRMATION]: (state, action) => {
-            return Object.assign({}, state, {
-                targetProject: null,
-                showDeleteConfirmation: false
-            });
-        }
+  {
+    [OPEN_DELETE_CONFIRMATION]: (state, action) => {
+      const{ project } = action.payload;
+      return Object.assign({}, state, {
+        targetProject: project,
+        showDeleteConfirmation: true
+      });
     },
-    initialState
+    [CLOSE_DELETE_CONFIRMATION]: (state, action) => {
+      return Object.assign({}, state, {
+        targetProject: null,
+        showDeleteConfirmation: false
+      });
+    }
+  },
+  initialState
 );

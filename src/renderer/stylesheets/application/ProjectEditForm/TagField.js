@@ -32,9 +32,9 @@ export const DeleteButton = styled.button`
     margin-left: 20px;
     font-weight: 100;
     ${buttonProperties({
-        width: 100,
-        height: 35,
-        color: 'white',
-        backgroundColor: colors.button.gray
-    })};
+    width: 100,
+    height: 35,
+    color: 'white',
+    backgroundColor: colors.button.gray
+  })};
 `;

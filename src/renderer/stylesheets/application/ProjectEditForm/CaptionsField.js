@@ -22,16 +22,16 @@ export const StyledCaptionFieldHeader = styled.div`
 `;
 
 const SpanProperty = props => {
-    if(props.contentType === 'photo' && ['start', 'end'].includes(props.text)) {
-        return css`
+  if(props.contentType === 'photo' && ['start', 'end'].includes(props.text)) {
+    return css`
             display: none;
         `
-    }
-    if(props.text === 'start') {
-        return css`
+  }
+  if(props.text === 'start') {
+    return css`
             margin-left: 0;
         `;
-    }
+  }
 };
 
 export const CaptionFieldSpan = styled.span`
@@ -82,9 +82,9 @@ export const AddCaptionButton = styled.button`
     font-size: 12px;
     border: none;
     ${buttonProperties({
-        width: 425,
-        height: 34,
-        color: '#FFF',
-        backgroundColor: colors.button.green
-    })};
+    width: 425,
+    height: 34,
+    color: '#FFF',
+    backgroundColor: colors.button.green
+  })};
 `;

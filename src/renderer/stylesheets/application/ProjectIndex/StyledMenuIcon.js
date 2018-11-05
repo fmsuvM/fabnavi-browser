@@ -14,7 +14,7 @@ export const IconStyle = styled.img`
     }
 
     ${props =>
-        props.help &&
+    props.help &&
         css`
             width: 42px;
             height: 42px;

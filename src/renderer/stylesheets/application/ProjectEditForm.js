@@ -66,11 +66,11 @@ export const SaveButton = styled.button`
     font-size: 20px;
     border-style: none;
     ${buttonProperties({
-        width: 300,
-        height: 50,
-        color: '#FFF',
-        backgroundColor: colors.button.green
-    })};
+    width: 300,
+    height: 50,
+    color: '#FFF',
+    backgroundColor: colors.button.green
+  })};
 `;
 
 export const AddTagButton = styled.button`
@@ -78,9 +78,9 @@ export const AddTagButton = styled.button`
     border-style: none;
     margin-top: 10px;
     ${buttonProperties({
-        width: 360,
-        height: 40,
-        color: 'white',
-        backgroundColor: colors.button.green
-    })};
+    width: 360,
+    height: 40,
+    color: 'white',
+    backgroundColor: colors.button.green
+  })};
 `;

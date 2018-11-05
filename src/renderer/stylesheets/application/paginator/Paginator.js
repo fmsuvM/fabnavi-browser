@@ -7,8 +7,8 @@ export const PaginatorFrame = styled.div`
 `;
 
 const ButtonProperty = props => {
-    if(props.prev) {
-        return css`
+  if(props.prev) {
+    return css`
             cursor: pointer;
             background: #bdbdbd;
             user-select: none;
@@ -16,8 +16,8 @@ const ButtonProperty = props => {
             text-align: center;
             transition: 0.4s;
         `;
-    }
-    return css`
+  }
+  return css`
         cursor: pointer;
         width: 80px;
         background: #bdbdbd;

@@ -13,5 +13,5 @@ export const togglePlaying = createAction(TOGGLE_PLAYING);
 export const playerExit = createAction(PLAYER_EXIT);
 export const playerChangeMode = createAction(PLAYER_CHANGE_MODE);
 export const calibrate = createAction(CALIBRATE, (config) => {
-    return config;
+  return config;
 });

@@ -11,24 +11,24 @@ import { CenterNavFrame } from '../../stylesheets/application/ProjectIndex/Style
 const debug = Debug('fabnavi:js:LeftNav');
 
 const CenterNav = props => (
-    <CenterNavFrame>
-        <SearchBar />
-        {props.isAdmin || props.isDeveloper ? <HostSelector /> : null}
-    </CenterNavFrame>
+  <CenterNavFrame>
+    <SearchBar />
+    {props.isAdmin || props.isDeveloper ? <HostSelector /> : null}
+  </CenterNavFrame>
 );
 
 CenterNav.propTypes = {
-    isLoggedIn: PropTypes.bool,
-    isAdmin: PropTypes.bool,
-    isDeveloper: PropTypes.bool,
-    Uid: PropTypes.string
+  isLoggedIn: PropTypes.bool,
+  isAdmin: PropTypes.bool,
+  isDeveloper: PropTypes.bool,
+  Uid: PropTypes.string
 };
 
 const mapStateToProps = state => ({
-    isLoggedIn: state.user.isLoggedIn,
-    isAdmin: state.user.isAdmin,
-    isDeveloper: state.user.isDeveloper,
-    Uid: state.user.credential.Uid
+  isLoggedIn: state.user.isLoggedIn,
+  isAdmin: state.user.isAdmin,
+  isDeveloper: state.user.isDeveloper,
+  Uid: state.user.credential.Uid
 });
 
 export default connect(mapStateToProps)(CenterNav);
