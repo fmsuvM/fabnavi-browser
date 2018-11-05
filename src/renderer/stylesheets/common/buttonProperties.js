@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
 export const buttonProperties = ({ width, height, color, backgroundColor }) => {
-    return css`
+  return css`
         padding: 5px 10px;
         width: ${width - 20}px;
         height: ${height - 10}px;

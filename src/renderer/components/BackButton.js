@@ -10,43 +10,43 @@ import { StyledBackButton } from '../stylesheets/application/BackButton';
 
 const debug = Debug('fabnavi:components:backbutton');
 class BackButton extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        const shouldBackButton = !(this.props.mode === 'home' || this.props.mode === 'myprojects');
-        return (
-            <div>
-                {shouldBackButton ? (
-                    <StyledBackButton onClick={this.props.back} src={`${assetsPath}/images/back.png`} />
-                ) : (
-                    null
-                )}
-            </div>
-        );
-    }
+  render() {
+    const shouldBackButton = !(this.props.mode === 'home' || this.props.mode === 'myprojects');
+    return (
+      <div>
+        {shouldBackButton ? (
+          <StyledBackButton onClick={this.props.back} src={`${assetsPath}/images/back.png`} />
+        ) : (
+          null
+        )}
+      </div>
+    );
+  }
 }
 
 BackButton.propTypes = {
-    back: PropTypes.func,
-    mode: PropTypes.string
+  back: PropTypes.func,
+  mode: PropTypes.string
 };
 
 const mapStateToProps = state => ({
-    mode: state.manager.mode
+  mode: state.manager.mode
 });
 
 export function mapDispatchToProps(dispatch) {
-    return {
-        back: () => {
-            api.getTopProject();
-            dispatch(goBack());
-        }
-    };
+  return {
+    back: () => {
+      api.getTopProject();
+      dispatch(goBack());
+    }
+  };
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(BackButton);

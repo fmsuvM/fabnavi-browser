@@ -10,34 +10,34 @@ import { RightFrame } from '../../stylesheets/application/share/Frames';
 const debug = Debug('fabnavi:js:RightNav');
 
 const RightNav = props => (
-    <div>
-        {props.isLoggedIn ? (
-            <RightFrame>
-                <MenuIcon act="sign_out" src={`${assetsPath}/images/sign-out.png`} />
-                <MenuIcon to="/myprojects" src={`https://avatars2.githubusercontent.com/u/${Number(props.Uid)}?v=4`} />
-            </RightFrame>
-        ) : (
-            <MenuIcon act="sign_in" src={`${assetsPath}/images/sign-in.png`} />
-        )}
-    </div>
+  <div>
+    {props.isLoggedIn ? (
+      <RightFrame>
+        <MenuIcon act="sign_out" src={`${assetsPath}/images/sign-out.png`} />
+        <MenuIcon to="/myprojects" src={`https://avatars2.githubusercontent.com/u/${Number(props.Uid)}?v=4`} />
+      </RightFrame>
+    ) : (
+      <MenuIcon act="sign_in" src={`${assetsPath}/images/sign-in.png`} />
+    )}
+  </div>
 );
 
 RightNav.propTypes = {
-    isLoggedIn: PropTypes.bool,
-    isAdmin: PropTypes.bool,
-    isDeveloper: PropTypes.bool,
-    Uid: PropTypes.string
+  isLoggedIn: PropTypes.bool,
+  isAdmin: PropTypes.bool,
+  isDeveloper: PropTypes.bool,
+  Uid: PropTypes.string
 };
 
 const checkCredential = _credential => {
-    return _credential ? _credential : { Uid: 0 };
+  return _credential ? _credential : { Uid: 0 };
 };
 
 const mapStateToProps = state => ({
-    isLoggedIn: state.user.isLoggedIn,
-    isAdmin: state.user.isAdmin,
-    isDeveloper: state.user.isDeveloper,
-    Uid: checkCredential(state.user.credential).Uid
+  isLoggedIn: state.user.isLoggedIn,
+  isAdmin: state.user.isAdmin,
+  isDeveloper: state.user.isDeveloper,
+  Uid: checkCredential(state.user.credential).Uid
 });
 
 export default connect(mapStateToProps)(RightNav);

@@ -29,7 +29,7 @@ export const PrivateLabel = styled.img`
 `;
 
 export const ProjectTypeLabel = styled.img.attrs({
-    src: props => (props.type === 'Photo' ? photoLabelURL : videoLabelURL)
+  src: props => (props.type === 'Photo' ? photoLabelURL : videoLabelURL)
 })`
     z-index: 3;
     position: absolute;
@@ -44,7 +44,7 @@ export const ProjectTypeLabel = styled.img.attrs({
 `;
 
 export const CardProjectTypeLabel = styled.img.attrs({
-    src: props => (props.type === 'Photo' ? cardPhotoLabelURL : cardVideoLabelURL)
+  src: props => (props.type === 'Photo' ? cardPhotoLabelURL : cardVideoLabelURL)
 })`
     margin-left: auto;
     margin-right: 18px;
@@ -144,11 +144,11 @@ export const ProjectUser = styled.img`
     margin: 0;
 
     ${props =>
-        props.user ?
-            css`
+    props.user ?
+      css`
                   border-radius: 100%;
               ` :
-            css`
+      css`
                   margin-left: 10px;
               `};
 `;

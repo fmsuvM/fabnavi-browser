@@ -3,10 +3,10 @@ const isDev = true;
 import { host } from './host';
 
 function createBlobUrl(content, { mimetype = 'text/plain' }) {
-    const props = { type: mimetype };
-    const contents = Array.isArray(content) ? content : [content];
-    const blob = new Blob(contents, props);
-    return URL.createObjectURL(blob);
+  const props = { type: mimetype };
+  const contents = Array.isArray(content) ? content : [content];
+  const blob = new Blob(contents, props);
+  return URL.createObjectURL(blob);
 }
 
 /**
@@ -24,19 +24,19 @@ function createBlobUrl(content, { mimetype = 'text/plain' }) {
  * @return {String}     VTTの文字列
  */
 function createVttText(textTracks, type) {
-    const vtt = new Vtt();
-    switch(type) {
-        case 'captions':
-            textTracks.reverse().forEach(textTrack => vtt.add(textTrack.start_sec, textTrack.end_sec, textTrack.text));
-            break;
-        case 'chapters':
-            textTracks.forEach(textTrack => vtt.add(textTrack.start_sec, textTrack.end_sec, textTrack.name));
-            break;
-        default:
-            console.warn(`in 'createVttText()', type should be 'captions' or 'chapters'.your put '${type}'.`);
-            break;
-    }
-    return vtt.toString();
+  const vtt = new Vtt();
+  switch(type) {
+    case 'captions':
+      textTracks.reverse().forEach(textTrack => vtt.add(textTrack.start_sec, textTrack.end_sec, textTrack.text));
+      break;
+    case 'chapters':
+      textTracks.forEach(textTrack => vtt.add(textTrack.start_sec, textTrack.end_sec, textTrack.name));
+      break;
+    default:
+      console.warn(`in 'createVttText()', type should be 'captions' or 'chapters'.your put '${type}'.`);
+      break;
+  }
+  return vtt.toString();
 }
 
 /**
@@ -47,7 +47,7 @@ function createVttText(textTracks, type) {
  * @return {String}     Blob URL
  */
 function getVttUrl(textTracks, type) {
-    return createBlobUrl(createVttText(textTracks, type), 'text/vtt');
+  return createBlobUrl(createVttText(textTracks, type), 'text/vtt');
 }
 
 /**
@@ -57,14 +57,14 @@ function getVttUrl(textTracks, type) {
  * @return {Object}    Videojsのplayer用のCaption Object
  */
 export function buildCaptions(captions) {
-    if(!captions) return;
-    return {
-        kind: 'captions',
-        srclang: 'ja',
-        label: '日本語',
-        mode: 'showing', // <track>のdefault attribute に相当
-        src: getVttUrl(captions, 'captions')
-    };
+  if(!captions) return;
+  return {
+    kind: 'captions',
+    srclang: 'ja',
+    label: '日本語',
+    mode: 'showing', // <track>のdefault attribute に相当
+    src: getVttUrl(captions, 'captions')
+  };
 }
 
 /**
@@ -74,18 +74,18 @@ export function buildCaptions(captions) {
  * @return {Object}    Videojsのplayer用のChapter Object
  */
 export function buildChapters(chapters) {
-    if(!chapters) return;
-    return {
-        kind: 'chapters',
-        srclang: 'ja',
-        label: 'Chapter',
-        mode: 'showing', // <track>のdefault attribute に相当
-        src: getVttUrl(chapters, 'chapters')
-    };
+  if(!chapters) return;
+  return {
+    kind: 'chapters',
+    srclang: 'ja',
+    label: 'Chapter',
+    mode: 'showing', // <track>のdefault attribute に相当
+    src: getVttUrl(chapters, 'chapters')
+  };
 }
 
 export function buildFigureUrl(url) {
-    return isDev && host.url.includes('localhost') ? host.url + url : url;
+  return isDev && host.url.includes('localhost') ? host.url + url : url;
 }
 
 /**
@@ -96,6 +96,6 @@ export function buildFigureUrl(url) {
  * @return {String}         'HH:MM:SS'形式のstring
  */
 export function secondsToHHMMSS(seconds) {
-    if(typeof seconds !== 'number') return '00:00:00';
-    return new Date(seconds * 1000).toISOString().substr(11, 8);
+  if(typeof seconds !== 'number') return '00:00:00';
+  return new Date(seconds * 1000).toISOString().substr(11, 8);
 }

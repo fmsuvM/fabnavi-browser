@@ -12,67 +12,67 @@ import PrevPageButton from './PaginatorButton/PrevPageButton';
 import ProjectSettings from './ProjectSettings';
 
 import {
-    PageFrame,
-    LeftFrame,
-    CenterFrame,
-    RightFrame,
-    NavFrame,
-    ContentsFrame,
-    FooterFrame
+  PageFrame,
+  LeftFrame,
+  CenterFrame,
+  RightFrame,
+  NavFrame,
+  ContentsFrame,
+  FooterFrame
 } from '../stylesheets/application/share/Frames';
 
 const debug = Debug('fabnavi:jsx:ProjectManager');
 
 export default class ProjectManager extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        return (
-            <div>
-                <div className="body" style={{ background: 'white'}}>
-                    <PageFrame>
-                        <NavFrame>
-                            <LeftFrame>
-                                <LeftNav />
-                            </LeftFrame>
-                            <CenterFrame>
-                                <CenterNav />
-                            </CenterFrame>
-                            <RightFrame>
-                                <RightNav />
-                            </RightFrame>
-                        </NavFrame>
-                        <ContentsFrame>
-                            <LeftFrame>
-                                <PrevPageButton />
-                                <BackButton />
-                            </LeftFrame>
-                            <CenterFrame>{this.props.children}</CenterFrame>
-                            <RightFrame>
-                                <NextPageButton />
-                                <ProjectSettings />
-                            </RightFrame>
-                        </ContentsFrame>
-                        <FooterFrame>
-                            <LeftFrame>
-                                <Footer />
-                            </LeftFrame>
-                            <CenterFrame>
-                                <span />
-                            </CenterFrame>
-                            <RightFrame>
-                                <span />
-                            </RightFrame>
-                        </FooterFrame>
-                    </PageFrame>
-                </div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <div className="body" style={{ background: 'white' }}>
+          <PageFrame>
+            <NavFrame>
+              <LeftFrame>
+                <LeftNav />
+              </LeftFrame>
+              <CenterFrame>
+                <CenterNav />
+              </CenterFrame>
+              <RightFrame>
+                <RightNav />
+              </RightFrame>
+            </NavFrame>
+            <ContentsFrame>
+              <LeftFrame>
+                <PrevPageButton />
+                <BackButton />
+              </LeftFrame>
+              <CenterFrame>{this.props.children}</CenterFrame>
+              <RightFrame>
+                <NextPageButton />
+                <ProjectSettings />
+              </RightFrame>
+            </ContentsFrame>
+            <FooterFrame>
+              <LeftFrame>
+                <Footer />
+              </LeftFrame>
+              <CenterFrame>
+                <span />
+              </CenterFrame>
+              <RightFrame>
+                <span />
+              </RightFrame>
+            </FooterFrame>
+          </PageFrame>
+        </div>
+      </div>
+    );
+  }
 }
 
 ProjectManager.propTypes = {
-    children: PropTypes.element
+  children: PropTypes.element
 };
