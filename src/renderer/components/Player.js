@@ -50,7 +50,7 @@ export class Player extends React.Component {
           index: parseInt(e.target.dataset.index, 10)
         });
       } else {
-        this.props.changePage(parseInt(e.target.dataset.index, 10) - this.props.page)
+        this.props.changePage(parseInt(e.target.dataset.index, 10) - this.props.page);
       }
     };
 
@@ -65,58 +65,72 @@ export class Player extends React.Component {
       this.canvas = new MainView(this.canvasElement);
       this.updateCanvas();
     }
+  }
 
-    render() {
-        return (
-            <div style={{ display: 'table' }}>
-                {this.props.contentType === 'movie' ? (
-                    <VideoPlayer
-                        project={this.state.project}
-                        toggleUpdate={this.state.toggleUpdate}
-                        index={this.state.index}
-                        handleClick={this.handleClick}
-                        videoChanged={this.videoChanged}
-                        size={this.props.size}
-                        isEditable={this.props.isEditable}
-                        ref={instance => (this.videoPlayer = instance)}
-                    />
-                ) : (
-                    <div>
-                        {this.props.isEditable && <ImageType>Preview</ImageType>}
-                        <canvas
-                            style={
-                                this.props.size === 'small' ?
-                                    {
-                                        display: 'table-cell',
-                                        width: '544px',
-                                        height: '306px'
-                                    } :
-                                    {
-                                        display: 'table-cell',
-                                        width: '1040px',
-                                        height: '585px',
-                                        marginTop: '33px'
-                                    }
-                            }
-                            ref={this.setCanvasElement}
-                            onClick={this.handleClick}
-                        />
-                    </div>
-                )}
+  render() {
+    return (
+      <div style={{ display: 'table' }}>
+        {this.props.contentType === 'movie' ? (
+          <VideoPlayer
+            project={this.state.project}
+            toggleUpdate={this.state.toggleUpdate}
+            index={this.state.index}
+            handleClick={this.handleClick}
+            videoChanged={this.videoChanged}
+            size={this.props.size}
+            isEditable={this.props.isEditable}
+            ref={instance => (this.videoPlayer = instance)}
+          />
+        ) : (
+          <div>
+            {this.props.isEditable && <ImageType>Preview</ImageType>}
+            <canvas
+              style={
+                this.props.size === 'small' ?
+                  {
+                    display: 'table-cell',
+                    width: '544px',
+                    height: '306px'
+                  } :
+                  {
+                    display: 'table-cell',
+                    width: '1040px',
+                    height: '585px'
+                  }
+              }
+              ref={this.setCanvasElement}
+              onClick={this.handleClick}
+            />
+          </div>
+        )}
 
-                {this.props.project ? (
-                    <ImageSelector
-                        contents={this.props.project.content}
-                        handleThumbnailClick={this.handleThumbnailClick}
-                        size={this.props.size}
-                        index={this.state.index}
-                        isEditable={this.props.isEditable}
-                        handleThumbnailDeleteButtonClick={this.props.handleThumbnailDeleteButtonClick}
-                        handleThumbanailOrderChange={this.props.handleThumbanailOrderChange}
-                    />
-                ) : null}
-            </div>
-        );
+        {this.props.project ? (
+          <ImageSelector
+            contents={this.props.project.content}
+            handleThumbnailClick={this.handleThumbnailClick}
+            size={this.props.size}
+            index={this.state.index}
+            isEditable={this.props.isEditable}
+            handleThumbnailDeleteButtonClick={this.props.handleThumbnailDeleteButtonClick}
+            handleThumbanailOrderChange={this.props.handleThumbanailOrderChange}
+          />
+        ) : null}
+      </div>
+    );
+  }
+
+  updateCanvas() {
+    const project = this.props.project;
+    const isValidProject = () => {
+      if(project === null) {
+        return false;
+      }
+      return typeof project === 'object' && project.content.length !== 0;
+    };
+
+    if(!isValidProject()) {
+      debug('invalid project data', project);
+      return;
     }
 
     this.currentState = this.props.mode;
@@ -187,11 +201,8 @@ export class Player extends React.Component {
       });
   }
 
-
   getCurrentTime() {
-    return this.videoPlayer ?
-      this.videoPlayer.getWrappedInstance().getCurrentTime() :
-      0;
+    return this.videoPlayer ? this.videoPlayer.getWrappedInstance().getCurrentTime() : 0;
   }
 
   componentWillReceiveProps(props) {
