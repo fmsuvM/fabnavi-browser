@@ -157,6 +157,16 @@ const searchRelatedProjectsEpic = (action$, store) =>
     })
     .map(({ data }) => receiveRelatedProjects(data));
 
+const searchRelatedProjectsEpic = (action$, store) =>
+    action$
+        .ofType(SEARCH_RELATED_PROJECTS)
+        .do(_ => store.dispatch(fetchingProjects()))
+        .switchMap(action => {
+            const{ query } = action.payload;
+            return api.searchProjects(query);
+        })
+        .map(({ data }) => searchRelatedProjectsResult(data));
+
 export default createEpicMiddleware(
   combineEpics(
     signIn,

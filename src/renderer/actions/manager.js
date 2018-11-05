@@ -78,3 +78,15 @@ export const receiveRelatedProjects = createAction(RECEIVE_RELATED_PROJECTS, dat
     data
   };
 });
+
+export const searchRelatedProjects = createAction(SEARCH_RELATED_PROJECTS, query => {
+    return {
+        query
+    };
+});
+
+export const searchRelatedProjectsResult = createAction(SEARCH_RELATED_PROJECTS_RESULT, data => {
+    return {
+        data
+    };
+});

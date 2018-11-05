@@ -46,8 +46,8 @@ function createVttText(textTracks, type) {
  * @param  {String} type Text Trackの種類
  * @return {String}     Blob URL
  */
-function getVttUrl(textTracks, type) {
-  return createBlobUrl(createVttText(textTracks, type), 'text/vtt');
+export function getVttUrl(textTracks, type) {
+    return createBlobUrl(createVttText(textTracks, type), 'text/vtt');
 }
 
 /**
