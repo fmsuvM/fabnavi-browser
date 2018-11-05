@@ -144,3 +144,19 @@ export const StyledTagName = styled.li`
         }
     }
 `;
+
+export const RelatedProjectFrame = styled.div`
+    margin-top: 30px;
+`;
+
+export const FramePerTag = styled.div`
+    margin-top: 20px;
+    margin-bottom: 20px;
+`;
+
+export const TopTag = styled.p`
+    font-size: 16px;
+    margin: 0;
+    color: #000;
+    font-size: 36px;
+`;

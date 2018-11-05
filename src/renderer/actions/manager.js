@@ -17,6 +17,8 @@ export const CONFIRM_DELETE_PROJECT = 'CONFIRM_DELETE_PROJECT';
 export const OPEN_DELETE_CONFIRMATION = 'OPEN_DELETE_CONFIRMATION';
 export const CLOSE_DELETE_CONFIRMATION = 'CLOSE_DELETE_CONFIRMATION';
 export const DELETE_PROJECT = 'DELETE_PROJECT';
+export const SEARCH_RELATED_PROJECTS = 'SEARCH_RELATED_PROJECTS';
+export const SEARCH_RELATED_PROJECTS_RESULT = 'SEARCH_RELATED_PROJECTS_RESULT';
 
 export const fetchingProjects = createAction(FETCHING_PROJECTS);
 export const selectProjectMenu = createAction(SELECT_PROJECT_MENU);
@@ -64,5 +66,17 @@ export const closeDeleteConfirmation = createAction(CLOSE_DELETE_CONFIRMATION);
 export const deleteProject = createAction(DELETE_PROJECT, projectId => {
     return {
         projectId
+    };
+});
+
+export const searchRelatedProjects = createAction(SEARCH_RELATED_PROJECTS, query => {
+    return {
+        query
+    };
+});
+
+export const searchRelatedProjectsResult = createAction(SEARCH_RELATED_PROJECTS_RESULT, data => {
+    return {
+        data
     };
 });
