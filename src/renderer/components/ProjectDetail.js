@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import Debug from 'debug';
 
 import Player from './Player';
@@ -43,6 +44,10 @@ export class ProjectDetail extends React.Component {
     this.searchRelatedProjects = () => {
       this.props.searchRelatedProjects(this.state.tag);
     };
+
+    this.jumpVisualizeProject = () => {
+      if(this.props.project)this.props.visualizeProject(this.props.projectId);
+    };
   }
 
   componentDidMount() {
@@ -68,6 +73,7 @@ export class ProjectDetail extends React.Component {
             <ProjectTitle lang="ja">
               {project.name} {isPrivate && <PrivateNotation>Private Project</PrivateNotation>}
             </ProjectTitle>
+            <div onClick={this.jumpVisualizeProject}>Jump !!</div>
             <TagFrame>
               <TagHeader>Tag: </TagHeader>
               <TagField>
@@ -124,7 +130,8 @@ ProjectDetail.propTypes = {
   targetProject: PropTypes.number,
   contentType: PropTypes.string,
   searchRelatedProjects: PropTypes.func,
-  relatedProjects: PropTypes.object
+  relatedProjects: PropTypes.object,
+  visualizeProject: PropTypes.func
 };
 
 export const mapStateToProps = state => ({
@@ -140,6 +147,9 @@ export const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   searchRelatedProjects: query => {
     dispatch(searchRelatedProjects(query));
+  },
+  visualizeProject: projectId => {
+    dispatch(push(`/visualizer/${projectId}`));
   }
 });
 

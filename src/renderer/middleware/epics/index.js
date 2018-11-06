@@ -62,7 +62,7 @@ const fetchProjectEpic = action$ =>
       action =>
         action.payload.pathname !== '/' &&
         !action.payload.pathname.match('delete') &&
-        !action.payload.pathname.match('help') &&
+        !action.payload.pathname.match('visualizer') &&
         !action.payload.pathname.match('myprojects') &&
         !action.payload.pathname.match('workspace')
     )
