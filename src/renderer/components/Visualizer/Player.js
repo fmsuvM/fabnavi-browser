@@ -8,6 +8,7 @@ import { playerChangePage } from '../../actions/player';
 import VideoPlayer from '../Player/VideoPlayer';
 import ImageSelector from '../Player/ImageSelector';
 import ProcessVisualizer from './ProcessVisualizer';
+import TagPerStep from './TagPerStep';
 import { PlayerFrame } from '../../stylesheets/application/visualizer/Player';
 
 import { buildFigureUrl } from '../../utils/playerUtils';
@@ -47,7 +48,7 @@ export class Player extends React.Component {
     };
     this.handleThumbnailClick = e => {
       // e.stopPropagation();
-      debug('event: ', e);
+      // debug('event: ', e);
       if(this.props.contentType === 'movie') {
         this.setState({
           index: parseInt(e.target.index - 1, 10)
@@ -74,13 +75,16 @@ export class Player extends React.Component {
     return (
       <div>
         {this.props.project ? (
-          <ProcessVisualizer
-            project={this.props.project}
-            contents={this.props.project.content}
-            handleThumbnailClick={this.handleThumbnailClick}
-            size={this.props.size}
-            index={this.state.index}
-          />
+          <div>
+            <ProcessVisualizer
+              project={this.props.project}
+              contents={this.props.project.content}
+              handleThumbnailClick={this.handleThumbnailClick}
+              size={this.props.size}
+              index={this.state.index}
+            />
+            <TagPerStep currentStep={this.state.index} />
+          </div>
         ) : null}
         <PlayerFrame>
           {this.props.contentType === 'movie' ? (
