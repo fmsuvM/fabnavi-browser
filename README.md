@@ -1,55 +1,38 @@
-# fabnavi-app
+# fabnavi-browser
 
-* FabNavi の Electron Client を開発するリポジトリ．
-  * Electron にすることで，ブラウザ依存をなくす．
+- Fabnavi のブラウザ版．Chrome でのみ動作確認．
+  - Host Server は Preview に固定
 
 ## Requirement
 
-* macOS HighSierra
-* XCode
-* Homebrew
-* Node.js
-  * v8.10.0
+- Node.js
+  - latest
+- Google Chrome
 
 ## Setup
 
 ```sh
-# クロスビルド環境を用意
-brew install wine
-brew cask install xquartz
-
-git clone https://github.com/fabnavi/fabnavi-app
-cd fabnavi-app
-npm install
+$ git clone https://github.com/fmsuvM/fabnavi-browser.git
+$ cd fabnavi-browser
+$ npm install
 ```
 
 ## Development
 
 ```sh
-npm run dev
-# 開発をやめる時は Ctrl-C
+$ npm run compile
+# 止めるときは Ctrl + C
 ```
 
 ## Release
 
-```sh
-npm run compile
-export GH_TOKEN="xxxxxxxxxxxxxxxxxxxx"
-# GitHub personal access token is required. You can generate by going to https://github.com/settings/tokens/new. The access token should have the repo scope/permission. Define GH_TOKEN environment variable.
-npm run release
-# https://github.com/fabnavi/fabnavi-app/releases に release が生成されるので Draft を外せば完了
-```
-
-* about more release
-  * https://www.electron.build/configuration/publish
+未定．Netlify にする予定．production compile は webpack．
 
 ## Command
 
-|      Command       |                                                  Description                                                  |
-| :----------------: | :-----------------------------------------------------------------------------------------------------------: |
-|   `npm run dev`    |           Electron が起動しバックグラウンドでソースの変更を監視し、変更があればコンパイルしてくれる           |
-|   `npm run lint`   |                      ESLint を用いてコードを静的にチェックし、結果をコンソールに表示する                      |
-| `npm run lint:fix` |                    ESLint を用いてコードを静的にチェックし、修正可能なものは修正してくれる                    |
-|   `npm run dist`   |                                     インストールバイナリを生成してくれる                                      |
-|  `npm run clean`   |                      生成されたコンパイル済みのファイルやインストールバイナリを削除する                       |
-| `npm run release`  | GitHub に 各プラットフォームのインストールバイナリを配布する(win/mac 両方向けのビルドは macOS でしかできない) |
+|      Command       |                                 Description                                  |
+| :----------------: | :--------------------------------------------------------------------------: |
+| `npm run compile`  | webpack-dev-server が起動してコ ー ドをコンパイルする．localhost:3001 で起動 |
+|   `npm run lint`   |   ESLint を用いてコ ー ドを静的にチェックし、結果をコンソ ー ルに表示する    |
+| `npm run lint:fix` |  ESLint を用いてコ ー ドを静的にチェックし、修正可能なものは修正してくれる   |
+|   `npm run dist`   |                         production compile（未実装）                         |
