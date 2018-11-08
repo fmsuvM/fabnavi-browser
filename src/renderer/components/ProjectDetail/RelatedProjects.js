@@ -22,7 +22,10 @@ class RelatedProjects extends React.Component {
     // const relatedProjects = projects.map((content, index) => (
     //   <ProjectCard project={content} key={index} id={content.id} />
     // ));
-
+    /**
+     * この辺でerror測れる．undefinedになる．
+     * ということはここでlazy load使えばいいのでは？
+     */
     return (
       <ProjectFrame>
         {projects.map((content, index) => (
