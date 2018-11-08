@@ -98,30 +98,6 @@ export class VideoPlayer extends React.Component {
     });
   }
 
-  componentDidMount() {
-    // instantiate Video.js
-    this.player = videojs(this.videoNode);
-    if(typeof this.player.markers === 'function')this.player.markers({ markers: [] });
-    this.updateChapterMarkers(
-      this.props.project.content.filter(content => content.figure).map(content => content.figure)[0]
-    );
-    this.updatePlaylist(this.props.project);
-    this.player.playlist.autoadvance(0);
-    this.player.on('play', () => {
-      this.props.videoChanged(this.player.playlist.currentIndex());
-      this.setState({ index: this.player.playlist.currentIndex() });
-    });
-    this.player.on('timeupdate', () => {
-      if(this.state.isSummaryPlaying) {
-        if(this.player.textTracks().tracks_[0].activeCues_.length > 0) {
-          this.player.playbackRate(1.0);
-        } else {
-          this.player.playbackRate(8.0);
-        }
-      }
-    });
-  }
-
   // destroy player on unmount
   componentWillUnmount() {
     if(this.player) {
