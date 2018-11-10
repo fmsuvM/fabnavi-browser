@@ -5,7 +5,6 @@ import {
   CHANGE_PROJECT_LIST_PAGE,
   REQUEST_SEARCH_PROJECTS,
   RECEIVE_SEARCHING_PROJECTS_RESULT,
-  RECEIVE_RELOADED_PROJECTS_RESULT,
   SEARCH_RELATED_PROJECTS,
   RECEIVE_RELATED_PROJECTS
 } from '../actions/manager';
@@ -61,7 +60,7 @@ export default handleActions(
       };
     },
     '@@router/LOCATION_CHANGE': (state, action) => {
-      let{ currentPage, filter, targetProject, mode } = state;
+      let{ currentPage, filter, targetProject, mode, relatedProjects } = state;
       const pathname = action.payload.pathname;
       if(pathname === '/') {
         targetProject = null;
@@ -74,13 +73,16 @@ export default handleActions(
           currentPage = 0;
         }
       }
+      if(Object.keys(relatedProjects).length) {
+        relatedProjects = {};
+      }
       return {
         ...state,
         targetProject,
         filter,
         mode,
         currentPage,
-        relatedProjects: {}
+        relatedProjects
       };
     },
     FETCHING_PROJECTS: (state, action) => {
@@ -137,13 +139,6 @@ export default handleActions(
       const{ keyword } = action.payload;
       return Object.assign({}, state, {
         searchQuery: keyword
-      });
-    },
-    [RECEIVE_RELOADED_PROJECTS_RESULT]: (state, action) => {
-      const{ data } = action.payload;
-      return Object.assign({}, state, {
-        projects: updateProjects(data, data),
-        isFetching: false
       });
     },
     [SEARCH_RELATED_PROJECTS]: (state, action) => {

@@ -19,17 +19,13 @@ class RelatedProjects extends React.Component {
     const _projects = this.props.projects;
     const tag = this.props.tag;
     const projects = _projects[tag];
-    // const relatedProjects = projects.map((content, index) => (
-    //   <ProjectCard project={content} key={index} id={content.id} />
-    // ));
-
-    return (
-      <ProjectFrame>
-        {projects.map((content, index) => (
-          <ProjectCard project={content} key={index} id={content.id} />
-        ))}
-      </ProjectFrame>
+    const checkProjects = !Object.keys(_projects).length;
+    const projectList = checkProjects ? (
+      <div>Now Loading ...</div>
+    ) : (
+      projects.map((content, index) => <ProjectCard project={content} key={index} id={content.id} />)
     );
+    return <ProjectFrame>{projectList}</ProjectFrame>;
   }
 }
 
