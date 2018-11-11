@@ -10,6 +10,7 @@ import { updateProject } from '../actions/manager';
 import Player from './Player';
 import CaptionsField from './ProjectEditForm/CaptionsField';
 import TagField from './ProjectEditForm/TagField';
+import AnnotationPlayer from './ProjectEditForm/AnnotationPlayer';
 
 import {
   EditPage,
@@ -68,16 +69,18 @@ export class ProjectEditForm extends React.Component {
       if(!this.state.figures) return;
       const currentTime = this.player.getWrappedInstance().getCurrentTime();
       this.setState({
-        figures: this.state.figures.sort((a, b) => a.position - b.position).map((figure, i) => {
-          if(i !== index) return figure;
-          figure.captions.push({
-            id: null,
-            start_sec: currentTime,
-            end_sec: currentTime,
-            text: ''
-          });
-          return figure;
-        })
+        figures: this.state.figures
+          .sort((a, b) => a.position - b.position)
+          .map((figure, i) => {
+            if(i !== index) return figure;
+            figure.captions.push({
+              id: null,
+              start_sec: currentTime,
+              end_sec: currentTime,
+              text: ''
+            });
+            return figure;
+          })
       });
     };
 
@@ -261,6 +264,16 @@ export class ProjectEditForm extends React.Component {
                   contentType={project.content[0].type === 'Figure::Frame' ? 'movie' : 'photo'}
                   handleCaptionsChange={this.handlerCaptionsChange.bind(this)}
                   onAddCaptionButtonClick={this.onAddCaptionButtonClick}
+                />
+              </EditCaption>
+              <EditCaption>
+                <AnnotationPlayer
+                  project={this.state.project}
+                  size="small"
+                  isEditable={true}
+                  handleThumbnailDeleteButtonClick={this.handleThumbnailDeleteButtonClick.bind(this)}
+                  handleThumbanailOrderChange={this.handleThumbanailOrderChange.bind(this)}
+                  ref={instance => (this.player = instance)}
                 />
               </EditCaption>
               <div>
