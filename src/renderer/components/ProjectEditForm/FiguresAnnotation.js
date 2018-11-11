@@ -39,15 +39,15 @@ class FiguresAnnotation extends React.Component {
       this.canvas = new FigureAnnotation(this.canvasElement);
       this.updateCanvas();
     }
-    // this.setState({
-    //   figures: this.props.contents.map(() => {
-    //     const template = {
-    //       settings: false,
-    //       range: {}
-    //     };
-    //     return template;
-    //   })
-    // });
+    this.setState({
+      figures: this.props.contents.map(() => {
+        const template = {
+          settings: false,
+          properties: []
+        };
+        return template;
+      })
+    });
   }
 
   /**
@@ -94,21 +94,21 @@ class FiguresAnnotation extends React.Component {
   // });
 
   addRect(e, x, y) {
-    this.setState({ drawing: true });
     this.canvas.drawRect(x, y, 300, 100, 'rgb(200,0,0)');
-    // this.setState({
-    //   figures: this.state.figures.map((figure, i) => {
-    //     if(i !== this.state.currentFigure) return figure;
-    //     figure.settings = true;
-    //     figure.range = {
-    //       startx: x,
-    //       starty: y,
-    //       endx: 300,
-    //       endy: 100
-    //     };
-    //     return figure;
-    //   })
-    // });
+    this.setState({
+      drawing: true,
+      figures: this.state.figures.map((figure, i) => {
+        if(i !== this.state.currentFigure) return figure;
+        figure.settings = true;
+        figure.properties.push({
+          startx: x,
+          starty: y,
+          endx: 300,
+          endy: 100
+        });
+        return figure;
+      })
+    });
   }
 
   endDrawing() {
@@ -138,9 +138,6 @@ class FiguresAnnotation extends React.Component {
     const getCurrentFigure = index => {
       return new Promise((resolve, reject) => {
         const figure = this.props.contents[index].figure.file.thumb.url;
-        this.setState({
-          currentFigure: index
-        });
         const img = new Image();
         // this.canvas.redraw(); // 毎回走らせないで，前のstateと違う場合のみに走らせる
         img.src = figure;
@@ -155,7 +152,13 @@ class FiguresAnnotation extends React.Component {
       .then(img => {
         this.currentImage = img;
         this.canvas.draw(this.currentImage, this.state.config);
-        debug('state: ', this.state.figures);
+        const properties = this.state.figures[this.props.index].properties;
+        debug('state: ', this.state);
+        if(this.state.figures[this.props.index].settings) {
+          properties.map(property => {
+            this.canvas.drawRect(property.startx, property.starty, property.endx, property.endy, 'rgb(200,0,0)');
+          });
+        }
       })
       .catch(e => {
         debug('failed to load Image', e);
