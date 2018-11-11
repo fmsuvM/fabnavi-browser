@@ -21,7 +21,15 @@ class FiguresAnnotation extends React.Component {
     };
     this.updateCanvas = this.updateCanvas.bind(this);
     this.state = {
-      drawing: false
+      drawing: false,
+      config: {
+        x: 0,
+        y: 0,
+        w: 1280,
+        h: 720
+      },
+      currentFigure: 0,
+      figures: []
     };
   }
 
@@ -31,30 +39,79 @@ class FiguresAnnotation extends React.Component {
       this.canvas = new FigureAnnotation(this.canvasElement);
       this.updateCanvas();
     }
+    // this.setState({
+    //   figures: this.props.contents.map(() => {
+    //     const template = {
+    //       settings: false,
+    //       range: {}
+    //     };
+    //     return template;
+    //   })
+    // });
   }
 
+  /**
+   * update canvasについて
+   * onMouseDownしたら四角形を追加できる様にしたい
+   * しかし，updateCanvasの時点で毎回消して新しく病がしている現実がある
+   * なので，一枚ずつ設定を保存しておく必要がある．
+   * これをstateで行う
+   * 最初に，画像の枚数分のstateを作る．in componentDidMount
+   * this.setState({
+   *    figures: [
+   *        {
+   *            'settings': boolean (init: false)
+   *             'range': {
+   *                  startx: 0,
+   *                  starty: 0,
+   *                  endx: 0,
+   *                  endy: 0
+   *              }
+   *        }
+   *    ]
+   * })
+   * こんな感じで作って，settings: true の時にupdateCanvas内で描画を走らせる．
+   * drawing中は `updateCanvas` を走らせないことも重要
+   * 押してrect 描画たらdrawing: true
+   * かつ，描画する際の設定をstate に保存
+   * そしてdrawing: false
+   * update canvasが走るが，条件分岐をudpate canvas内に書いておけばsettingsを読み込んでdraw rectする
+   * とりあえずこの仕組みを作る
+   */
   componentDidUpdate() {
-    this.updateCanvas();
+    // ここでstateによる条件分岐を行う
+    if(!this.state.drawing)this.updateCanvas();
   }
 
-  startPoint(e, x, y) {
+  // this.setState({
+  //   figures: this.state.figures
+  //     .sort((a, b) => a.position - b.position)
+  //     .map((figure, i) => {
+  //       if(i !== figureIndex) return figure;
+  //       figure.step_tags.splice(tagIndex, 1);
+  //       return figure;
+  //     })
+  // });
+
+  addRect(e, x, y) {
     this.setState({ drawing: true });
-    debug('native event: ', e.nativeEvent);
-    const ctx = this.canvasElement.getContext('2d');
-    debug('ctx: ', ctx);
-    ctx.moveTo(x, y);
+    this.canvas.drawRect(x, y, 300, 100, 'rgb(200,0,0)');
+    // this.setState({
+    //   figures: this.state.figures.map((figure, i) => {
+    //     if(i !== this.state.currentFigure) return figure;
+    //     figure.settings = true;
+    //     figure.range = {
+    //       startx: x,
+    //       starty: y,
+    //       endx: 300,
+    //       endy: 100
+    //     };
+    //     return figure;
+    //   })
+    // });
   }
 
-  draw(x, y) {
-    if(!this.state.drawing) {
-      return;
-    }
-    const ctx = this.canvasElement.getContext('2d');
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  }
-
-  endPoint() {
+  endDrawing() {
     this.setState({ drawing: false });
   }
 
@@ -69,10 +126,9 @@ class FiguresAnnotation extends React.Component {
             border: '1px solid red'
           }}
           ref={this.setCanvasElement}
-          onMouseDown={e => this.startPoint(e, e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
-          onMouseUp={() => this.endPoint()}
-          onMouseLeave={() => this.endPoint()}
-          onMouseMove={e => this.draw(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
+          onMouseDown={e => this.addRect(e, e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
+          onMouseLeave={() => this.endDrawing()}
+          onMouseUp={() => this.endDrawing()}
         />
       </Root>
     );
@@ -82,6 +138,9 @@ class FiguresAnnotation extends React.Component {
     const getCurrentFigure = index => {
       return new Promise((resolve, reject) => {
         const figure = this.props.contents[index].figure.file.thumb.url;
+        this.setState({
+          currentFigure: index
+        });
         const img = new Image();
         // this.canvas.redraw(); // 毎回走らせないで，前のstateと違う場合のみに走らせる
         img.src = figure;
@@ -95,7 +154,8 @@ class FiguresAnnotation extends React.Component {
     getCurrentFigure(this.props.index)
       .then(img => {
         this.currentImage = img;
-        this.canvas.draw(this.currentImage, this.props.config);
+        this.canvas.draw(this.currentImage, this.state.config);
+        debug('state: ', this.state.figures);
       })
       .catch(e => {
         debug('failed to load Image', e);

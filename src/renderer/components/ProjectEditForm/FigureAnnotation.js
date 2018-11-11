@@ -5,12 +5,12 @@ const debug = Debug('fabnavi:ProjectEditForm:FigureAnnotation');
 export default class FigureAnnotation {
   constructor(canvasElement) {
     this.currentImage = null;
-    // this.reset();
+    this.reset();
     this.cvs = canvasElement;
     this.ctx = this.cvs.getContext('2d');
     this.cvs.width = this.width = screen.width;
     this.cvs.height = this.height = screen.height;
-    // this.clear();
+    this.clear();
   }
 
   clear() {
@@ -69,5 +69,11 @@ export default class FigureAnnotation {
     ctx.fillStyle = 'black';
     ctx.drawImage(img, 0, 0, dw, dh);
     ctx.restore();
+  }
+
+  drawRect(x, y, w, h, color) {
+    this.redraw();
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(x, y, w, h);
   }
 }
