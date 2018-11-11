@@ -11,6 +11,7 @@ import Player from './Player';
 import CaptionsField from './ProjectEditForm/CaptionsField';
 import TagField from './ProjectEditForm/TagField';
 import AnnotationPlayer from './ProjectEditForm/AnnotationPlayer';
+import NarrationAnalyzer from './ProjectEditForm/NarrationAnalyzer';
 
 import {
   EditPage,
@@ -276,6 +277,16 @@ export class ProjectEditForm extends React.Component {
                   ref={instance => (this.player = instance)}
                 />
               </EditCaption>
+
+              <NarrationAnalyzer
+                project={this.state.project}
+                size="small"
+                isEditable={true}
+                handleThumbnailDeleteButtonClick={this.handleThumbnailDeleteButtonClick.bind(this)}
+                handleThumbanailOrderChange={this.handleThumbanailOrderChange.bind(this)}
+                ref={instance => (this.player = instance)}
+              />
+
               <div>
                 <EditTarget>Tag List</EditTarget>
                 {isTag ? (
