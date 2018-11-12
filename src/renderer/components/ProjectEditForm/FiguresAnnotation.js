@@ -1,175 +1,157 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Konva from 'konva';
+import { Stage, Layer } from 'react-konva';
 import Debug from 'debug';
+import shortid from 'shortid';
 
-import FigureAnnotation from './FigureAnnotation';
 import { Title, Root } from '../../stylesheets/player/ImageSelector';
+import AnnotationImage from './AnnotationTool/AnnotationImage';
+import Rectangle from './AnnotationTool/Rectangle';
+import RectTransformer from './AnnotationTool/RectTransformer';
 
-const debug = Debug('fabnavi:ProjectEditForm:FiguresAnnotation');
+const debug = Debug('fabnavi:ProjectEditForm:_FiguresAnnotation');
 
 class FiguresAnnotation extends React.Component {
   constructor(props) {
     super(props);
 
-    this.clearCanvas = () => {
-      this.canvas.clear();
-    };
-    this.canvas = null;
-    this.currentImage = null;
-    this.setCanvasElement = cvs => {
-      this.canvasElement = cvs;
-    };
-    this.updateCanvas = this.updateCanvas.bind(this);
     this.state = {
-      drawing: false,
-      config: {
-        x: 0,
-        y: 0,
-        w: 1280,
-        h: 720
-      },
-      currentFigure: 0,
-      figures: []
+      rectangles: [],
+      rectCount: 0,
+      selectedShapeName: '',
+      mouseDown: false,
+      mouseDraw: false,
+      newRectX: 0,
+      newRectY: 0
+    };
+
+    this.handleStageMouseDown = event => {
+      const{ rectangles } = this.state;
+      if(event.target.className === 'Image') {
+        const stage = event.target.getStage();
+        const mousePos = stage.getPointerPosition();
+        this.setState({
+          mouseDown: true,
+          newRectX: mousePos.x,
+          newRectY: mousePos.y,
+          selectedShapeName: ''
+        });
+        return;
+      }
+
+      const clickedOnTransformer = event.target.getParent().className === 'Transformer';
+      if(clickedOnTransformer) return;
+
+      const name = event.target.name();
+      const rect = rectangles.find(r => r.name === name);
+      if(rect) {
+        this.setState({
+          selectedShapeName: name,
+          rectangles
+        });
+      } else {
+        this.setState({
+          selectedShapeName: ''
+        });
+      }
+    };
+
+    this.handleRectChange = (index, newProps) => {
+      const{ rectangles } = this.state;
+      rectangles[index] = {
+        ...rectangles[index],
+        ...newProps
+      };
+      this.setState({
+        rectangles
+      });
+    };
+
+    this.handleNewRectChange = event => {
+      const{ rectangles, rectCount, newRectX, newRectY } = this.state;
+      const stage = event.target.getStage();
+      const mousePos = stage.getPointerPosition();
+      if(!rectangles[rectCount]) {
+        debug('yap');
+        rectangles.push({
+          x: newRectX,
+          y: newRectY,
+          width: mousePos.x - newRectX,
+          height: mousePos - newRectY,
+          name: `rect${rectCount + 1}`,
+          stroke: '#00A3AA',
+          key: shortid.generate()
+        });
+        return this.setState({ rectangles, mouseDraw: true });
+      }
+      debug('yaap');
+      rectangles[rectCount].width = mousePos.x - newRectX;
+      rectangles[rectCount].height = mousePos.y - newRectY;
+      return this.setState({ rectangles });
+    };
+
+    this.handleStageMouseUp = () => {
+      const{ rectCount, mouseDraw } = this.state;
+      if(mouseDraw) {
+        debug('hoge');
+        this.setState({ rectCount: rectCount + 1, mouseDraw: false });
+      }
+      debug('huga');
+      this.setState({ mouseDown: false });
     };
   }
 
   componentDidMount() {
-    debug('canvas element: ', this.canvasElement);
-    if(this.canvasElement) {
-      this.canvas = new FigureAnnotation(this.canvasElement);
-      this.updateCanvas();
-    }
-    this.setState({
-      figures: this.props.contents.map(() => {
-        const template = {
-          settings: false,
-          properties: []
-        };
-        return template;
-      })
-    });
-  }
-
-  /**
-   * update canvasについて
-   * onMouseDownしたら四角形を追加できる様にしたい
-   * しかし，updateCanvasの時点で毎回消して新しく病がしている現実がある
-   * なので，一枚ずつ設定を保存しておく必要がある．
-   * これをstateで行う
-   * 最初に，画像の枚数分のstateを作る．in componentDidMount
-   * this.setState({
-   *    figures: [
-   *        {
-   *            'settings': boolean (init: false)
-   *             'range': {
-   *                  startx: 0,
-   *                  starty: 0,
-   *                  endx: 0,
-   *                  endy: 0
-   *              }
-   *        }
-   *    ]
-   * })
-   * こんな感じで作って，settings: true の時にupdateCanvas内で描画を走らせる．
-   * drawing中は `updateCanvas` を走らせないことも重要
-   * 押してrect 描画たらdrawing: true
-   * かつ，描画する際の設定をstate に保存
-   * そしてdrawing: false
-   * update canvasが走るが，条件分岐をudpate canvas内に書いておけばsettingsを読み込んでdraw rectする
-   * とりあえずこの仕組みを作る
-   */
-  componentDidUpdate() {
-    // ここでstateによる条件分岐を行う
-    if(!this.state.drawing)this.updateCanvas();
-  }
-
-  // this.setState({
-  //   figures: this.state.figures
-  //     .sort((a, b) => a.position - b.position)
-  //     .map((figure, i) => {
-  //       if(i !== figureIndex) return figure;
-  //       figure.step_tags.splice(tagIndex, 1);
-  //       return figure;
-  //     })
-  // });
-
-  addRect(e, x, y) {
-    this.canvas.drawRect(x, y, 300, 100, 'rgb(200,0,0)');
-    this.setState({
-      drawing: true,
-      figures: this.state.figures.map((figure, i) => {
-        if(i !== this.state.currentFigure) return figure;
-        figure.settings = true;
-        figure.properties.push({
-          startx: x,
-          starty: y,
-          endx: 300,
-          endy: 100
-        });
-        return figure;
-      })
-    });
-  }
-
-  endDrawing() {
-    this.setState({ drawing: false });
+    this.img.moveToBottom();
   }
 
   render() {
     return (
       <Root>
         <Title>Annotation</Title>
-        <canvas
-          style={{
-            width: '544px',
-            height: '306px',
-            border: '1px solid red'
+        <Stage
+          ref={node => {
+            this.stage = node;
           }}
-          ref={this.setCanvasElement}
-          onMouseDown={e => this.addRect(e, e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
-          onMouseLeave={() => this.endDrawing()}
-          onMouseUp={() => this.endDrawing()}
-        />
+          onMouseDown={this.handleStageMouseDown}
+          onTouchStart={this.handleStageMouseDown}
+          onMouseMove={this.state.mouseDown && this.handleNewRectChange}
+          onTouchMove={this.state.mouseDown && this.handleNewRectChange}
+          onMouseUp={this.state.mouseDown && this.handleStageMouseUp}
+          onTouchEnd={this.state.mouseDown && this.handleStageMouseUp}
+          width={544}
+          height={306}
+        >
+          <Layer>
+            {this.state.rectangles.map((rect, i) => (
+              <Rectangle
+                sclassName="rect"
+                key={rect.key}
+                {...rect}
+                onTransform={newProps => {
+                  this.handleRectChange(i, newProps);
+                }}
+              />
+            ))}
+            <RectTransformer selectedShapeName={this.state.selectedShapeName} />
+          </Layer>
+          <Layer
+            ref={node => {
+              this.img = node;
+            }}
+          >
+            <AnnotationImage imageUrl={this.props.contents[this.props.index].figure.file.thumb.url} />
+          </Layer>
+        </Stage>
       </Root>
     );
-  }
-
-  updateCanvas() {
-    const getCurrentFigure = index => {
-      return new Promise((resolve, reject) => {
-        const figure = this.props.contents[index].figure.file.thumb.url;
-        const img = new Image();
-        // this.canvas.redraw(); // 毎回走らせないで，前のstateと違う場合のみに走らせる
-        img.src = figure;
-        img.onload = event => {
-          resolve(event.target);
-        };
-        img.onerror = reject;
-      });
-    };
-
-    getCurrentFigure(this.props.index)
-      .then(img => {
-        this.currentImage = img;
-        this.canvas.draw(this.currentImage, this.state.config);
-        const properties = this.state.figures[this.props.index].properties;
-        debug('state: ', this.state);
-        if(this.state.figures[this.props.index].settings) {
-          properties.map(property => {
-            this.canvas.drawRect(property.startx, property.starty, property.endx, property.endy, 'rgb(200,0,0)');
-          });
-        }
-      })
-      .catch(e => {
-        debug('failed to load Image', e);
-      });
   }
 }
 
 FiguresAnnotation.propTypes = {
   contents: PropTypes.array,
-  index: PropTypes.number,
-  config: PropTypes.object
+  index: PropTypes.number
 };
 
 export default FiguresAnnotation;
