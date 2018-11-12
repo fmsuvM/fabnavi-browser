@@ -13,6 +13,10 @@ export const EditFrame = styled.div`
   width: 544px;
 `;
 
+export const ButtonFrame = styled.div`
+  display: flex;
+`;
+
 export const WordInput = styled.input.attrs({
   type: 'text'
 })`
@@ -32,11 +36,24 @@ export const AnnotationButton = styled.button`
   font-size: 12px;
   border-style: none;
   margin-top: 10px;
-  margin-right: 20px;
+  margin-right: 30px;
   ${buttonProperties({
     width: 100,
     height: 35,
     color: 'white',
     backgroundColor: colors.button.green
+  })};
+`;
+
+export const ClearButton = styled.button`
+  font-size: 12px;
+  border-style: none;
+  margin-top: 10px;
+  margin-right: 20px;
+  ${buttonProperties({
+    width: 100,
+    height: 35,
+    color: 'white',
+    backgroundColor: colors.button.gray
   })};
 `;

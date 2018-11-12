@@ -113,6 +113,17 @@ class FiguresAnnotation extends React.Component {
     this.img.moveToBottom();
   }
 
+  handleClearRects(e) {
+    e.preventDefault();
+    this.clearRects(e);
+  }
+
+  clearRects(e) {
+    this.setState({
+      rectangles: []
+    });
+  }
+
   render() {
     return (
       <Root>
@@ -153,7 +164,7 @@ class FiguresAnnotation extends React.Component {
         </Stage>
         <EditFrame>
           <SubTitle>Enter Annotate Objects Word !</SubTitle>
-          <AnnotationWords rectangles={this.state.rectangles} />
+          <AnnotationWords rectangles={this.state.rectangles} onClear={this.handleClearRects.bind(this)} />
         </EditFrame>
       </Root>
     );
