@@ -267,16 +267,15 @@ export class ProjectEditForm extends React.Component {
                   onAddCaptionButtonClick={this.onAddCaptionButtonClick}
                 />
               </EditCaption>
-              <EditCaption>
-                <AnnotationPlayer
-                  project={this.state.project}
-                  size="small"
-                  isEditable={true}
-                  handleThumbnailDeleteButtonClick={this.handleThumbnailDeleteButtonClick.bind(this)}
-                  handleThumbanailOrderChange={this.handleThumbanailOrderChange.bind(this)}
-                  ref={instance => (this.player = instance)}
-                />
-              </EditCaption>
+
+              <AnnotationPlayer
+                project={this.state.project}
+                size="small"
+                isEditable={true}
+                handleThumbnailDeleteButtonClick={this.handleThumbnailDeleteButtonClick.bind(this)}
+                handleThumbanailOrderChange={this.handleThumbanailOrderChange.bind(this)}
+                ref={instance => (this.player = instance)}
+              />
 
               <NarrationAnalyzer
                 project={this.state.project}
