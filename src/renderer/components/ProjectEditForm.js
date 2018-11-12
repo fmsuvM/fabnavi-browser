@@ -10,6 +10,7 @@ import { updateProject } from '../actions/manager';
 import Player from './Player';
 import CaptionsField from './ProjectEditForm/CaptionsField';
 import TagField from './ProjectEditForm/TagField';
+import AnnotationPlayer from './ProjectEditForm/AnnotationPlayer';
 import NarrationAnalyzer from './ProjectEditForm/NarrationAnalyzer';
 
 import {
@@ -266,6 +267,15 @@ export class ProjectEditForm extends React.Component {
                   onAddCaptionButtonClick={this.onAddCaptionButtonClick}
                 />
               </EditCaption>
+
+              <AnnotationPlayer
+                project={this.state.project}
+                size="small"
+                isEditable={true}
+                handleThumbnailDeleteButtonClick={this.handleThumbnailDeleteButtonClick.bind(this)}
+                handleThumbanailOrderChange={this.handleThumbanailOrderChange.bind(this)}
+                ref={instance => (this.player = instance)}
+              />
 
               <NarrationAnalyzer
                 project={this.state.project}
