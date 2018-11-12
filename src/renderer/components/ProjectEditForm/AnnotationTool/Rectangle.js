@@ -43,7 +43,9 @@ class Rectangle extends React.Component {
   }
 
   render() {
-    const{ x, y, width, height, name, stroke } = this.props;
+    const{ x, y, width, name, stroke } = this.props;
+    let height = this.props.height;
+    if(Number.isNaN(height)) height = 'auto';
     return (
       <Rect
         x={x}
