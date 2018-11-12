@@ -58,6 +58,7 @@
     "redux-mock-store": "^1.5.3",
     "rimraf": "^2.6.1",
     "sass-loader": "^6.0.6",
+    "shortid": "^2.2.14",
     "spectron": "^3.7.2",
     "style-loader": "^0.18.2",
     "webpack": "^4.23.0",
