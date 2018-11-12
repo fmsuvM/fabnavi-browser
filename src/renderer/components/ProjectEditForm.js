@@ -11,6 +11,8 @@ import Player from './Player';
 import CaptionsField from './ProjectEditForm/CaptionsField';
 import TagField from './ProjectEditForm/TagField';
 import FiguresTagField from './ProjectEditForm/FiguresTagField';
+import AnnotationPlayer from './ProjectEditForm/AnnotationPlayer';
+import NarrationAnalyzer from './ProjectEditForm/NarrationAnalyzer';
 
 import {
   EditPage,
@@ -312,6 +314,25 @@ export class ProjectEditForm extends React.Component {
                   onAddCaptionButtonClick={this.onAddCaptionButtonClick}
                 />
               </EditCaption>
+
+              <AnnotationPlayer
+                project={this.state.project}
+                size="small"
+                isEditable={true}
+                handleThumbnailDeleteButtonClick={this.handleThumbnailDeleteButtonClick.bind(this)}
+                handleThumbanailOrderChange={this.handleThumbanailOrderChange.bind(this)}
+                ref={instance => (this.player = instance)}
+              />
+
+              <NarrationAnalyzer
+                project={this.state.project}
+                size="small"
+                isEditable={true}
+                handleThumbnailDeleteButtonClick={this.handleThumbnailDeleteButtonClick.bind(this)}
+                handleThumbanailOrderChange={this.handleThumbanailOrderChange.bind(this)}
+                ref={instance => (this.player = instance)}
+              />
+
               <div>
                 <EditTarget>Tag List</EditTarget>
                 {isTag ? (
@@ -323,12 +344,12 @@ export class ProjectEditForm extends React.Component {
               </div>
               <div>
                 <EditTarget>Tag List per figure</EditTarget>
-                <FiguresTagField
+                {/* <FiguresTagField
                   figures={this.state.figures}
                   handleFigureTagChange={this.handleFigureTagName.bind(this)}
                   onAddFigureTagButton={this.onAddFigureTagButton}
                   onDeleteFigureTagButton={this.onDeleteFigureTagButton}
-                />
+                /> */}
               </div>
               <DescriptionFieldWrapper>
                 <EditTarget>Description</EditTarget>
