@@ -41,9 +41,6 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-# Ignore dist files
-dist/
-
 # Ignore jsconfig
 jsconfig.json*### https://raw.github.com/github/gitignore/f1eba3434761ebb9630fb0048500552f3405da03/Global/Vim.gitignore
 

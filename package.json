@@ -13,7 +13,8 @@
     "lint": "eslint -c ./.eslintrc ./src/renderer/**",
     "test": "jest",
     "test:watch": "jest --watch --verbose false",
-    "compile": "webpack-dev-server --colors"
+    "compile": "webpack-dev-server --colors",
+    "dist": "webpack"
   },
   "author": {
     "name": "Kazuma Takada",
