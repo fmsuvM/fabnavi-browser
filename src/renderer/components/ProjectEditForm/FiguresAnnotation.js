@@ -26,6 +26,15 @@ class FiguresAnnotation extends React.Component {
       newRectY: 0
     };
 
+    this.generateRandomColor = () => {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for(let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    };
+
     this.handleStageMouseDown = event => {
       const{ rectangles } = this.state;
       if(event.target.className === 'Image') {
@@ -73,19 +82,17 @@ class FiguresAnnotation extends React.Component {
       const stage = event.target.getStage();
       const mousePos = stage.getPointerPosition();
       if(!rectangles[rectCount]) {
-        debug('yap');
         rectangles.push({
           x: newRectX,
           y: newRectY,
           width: mousePos.x - newRectX,
           height: mousePos - newRectY,
           name: `rect${rectCount + 1}`,
-          stroke: '#00A3AA',
+          stroke: this.generateRandomColor(),
           key: shortid.generate()
         });
         return this.setState({ rectangles, mouseDraw: true });
       }
-      debug('yaap');
       rectangles[rectCount].width = mousePos.x - newRectX;
       rectangles[rectCount].height = mousePos.y - newRectY;
       return this.setState({ rectangles });
@@ -94,10 +101,8 @@ class FiguresAnnotation extends React.Component {
     this.handleStageMouseUp = () => {
       const{ rectCount, mouseDraw } = this.state;
       if(mouseDraw) {
-        debug('hoge');
         this.setState({ rectCount: rectCount + 1, mouseDraw: false });
       }
-      debug('huga');
       this.setState({ mouseDown: false });
     };
   }

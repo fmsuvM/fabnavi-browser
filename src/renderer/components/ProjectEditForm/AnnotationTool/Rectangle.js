@@ -30,9 +30,9 @@ class Rectangle extends React.Component {
 
   handleMouseEnter(event) {
     const shape = event.target;
-    shape.stroke('#3DF6FF'); //TODO: detectionごとに色を変える
     shape.getStage().container().style.cursor = 'move'; // Cursorの形変更
     this.rect.getLayer().draw();
+      shape.stroke(this.props.stroke);
   }
 
   handleMouseLeave(event) {
