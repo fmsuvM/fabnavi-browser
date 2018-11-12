@@ -344,12 +344,12 @@ export class ProjectEditForm extends React.Component {
               </div>
               <div>
                 <EditTarget>Tag List per figure</EditTarget>
-                {/* <FiguresTagField
+                <FiguresTagField
                   figures={this.state.figures}
                   handleFigureTagChange={this.handleFigureTagName.bind(this)}
                   onAddFigureTagButton={this.onAddFigureTagButton}
                   onDeleteFigureTagButton={this.onDeleteFigureTagButton}
-                /> */}
+                />
               </div>
               <DescriptionFieldWrapper>
                 <EditTarget>Description</EditTarget>
