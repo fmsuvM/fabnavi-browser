@@ -5,10 +5,12 @@ import { Stage, Layer } from 'react-konva';
 import Debug from 'debug';
 import shortid from 'shortid';
 
-import { Title, Root } from '../../stylesheets/player/ImageSelector';
 import AnnotationImage from './AnnotationTool/AnnotationImage';
 import Rectangle from './AnnotationTool/Rectangle';
 import RectTransformer from './AnnotationTool/RectTransformer';
+import AnnotationWords from './AnnotationTool/AnnotationWords';
+import { Title, Root } from '../../stylesheets/player/ImageSelector';
+import { EditFrame, SubTitle } from '../../stylesheets/application/ProjectEditForm/FiguresAnnotation';
 
 const debug = Debug('fabnavi:ProjectEditForm:_FiguresAnnotation');
 
@@ -149,6 +151,10 @@ class FiguresAnnotation extends React.Component {
             <AnnotationImage imageUrl={this.props.contents[this.props.index].figure.file.thumb.url} />
           </Layer>
         </Stage>
+        <EditFrame>
+          <SubTitle>Enter Annotate Objects Word !</SubTitle>
+          <AnnotationWords rectangles={this.state.rectangles} />
+        </EditFrame>
       </Root>
     );
   }
