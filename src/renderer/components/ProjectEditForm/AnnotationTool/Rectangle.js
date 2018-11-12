@@ -8,47 +8,42 @@ const debug = Debug('fabnavi:AnnotationTool:Rectangle');
 class Rectangle extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleChange = event => {
+      const{
+        props: { onTransform }
+      } = this;
+      const shape = event.target;
+      onTransform({
+        x: shape.x(),
+        y: shape.y(),
+        width: shape.width() * shape.scaleX(),
+        height: shape.height() * shape.scaleY(),
+        rotation: shape.rotation()
+      });
+    };
+
+    this.handleMouseEnter = event => {
+      const shape = event.target;
+      shape.stroke('#3DF6FF');
+      shape.getStage().container().style.cursor = 'move'; // Cursorの形変更
+      this.rect.getLayer().draw();
+    };
+
+    this.handleMouseLeave = event => {
+      const shape = event.target;
+      shape.stroke(this.props.stroke);
+      shape.getStage().container().style.cursor = 'crosshair';
+      this.rect.getLayer().draw();
+    };
   }
 
   componentDidUpdate() {
     this.rect.getLayer().batchDraw();
   }
 
-  handleChange(event) {
-    const{
-      props: { onTransform }
-    } = this;
-    const shape = event.target;
-    onTransform({
-      x: shape.x(),
-      y: shape.y(),
-      width: shape.width() * shape.scaleX(),
-      height: shape.height() * shape.scaleY(),
-      rotation: shape.rotation()
-    });
-  }
-
-  handleMouseEnter(event) {
-    const shape = event.target;
-    shape.getStage().container().style.cursor = 'move'; // Cursorの形変更
-    this.rect.getLayer().draw();
-      shape.stroke(this.props.stroke);
-  }
-
-  handleMouseLeave(event) {
-    const shape = event.target;
-    shape.stroke('#00A3AA'); // TODO: どこで使われている色なのかを確認
-    shape.getStage().container().style.cursor = 'crosshair';
-    this.rect.getLayer().draw();
-  }
-
   render() {
-    const{
-      props: { x, y, width, height, name, stroke },
-      handleChange,
-      handleMouseEnter,
-      handleMouseLeave
-    } = this;
+    const{ x, y, width, height, name, stroke } = this.props;
     return (
       <Rect
         x={x}
@@ -60,10 +55,10 @@ class Rectangle extends React.Component {
         stroke={stroke}
         strokeWidth={3}
         name={name}
-        onDragEnd={handleChange}
-        onTransformEnd={handleChange}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onDragEnd={this.handleChange}
+        onTransformEnd={this.handleChange}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
         draggable
         ref={node => {
           this.rect = node;
