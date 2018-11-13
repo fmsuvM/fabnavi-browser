@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import Debug from 'debug';
 
 import { changeProjectListPage } from '../actions/manager';
-import Paginator from '../components/Paginator';
-import ProjectCard from '../components/ProjectCard';
+import Paginator from '../components/Paginator.jsx';
+import ProjectCard from '../components/ProjectCard.jsx';
 
 const debug = Debug('fabnavi:jsx:ProjectList');
 

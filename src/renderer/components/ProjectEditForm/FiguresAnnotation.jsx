@@ -5,10 +5,10 @@ import { Stage, Layer } from 'react-konva';
 import Debug from 'debug';
 import shortid from 'shortid';
 
-import AnnotationImage from './AnnotationTool/AnnotationImage';
-import Rectangle from './AnnotationTool/Rectangle';
-import RectTransformer from './AnnotationTool/RectTransformer';
-import AnnotationWords from './AnnotationTool/AnnotationWords';
+import AnnotationImage from './AnnotationTool/AnnotationImage.jsx';
+import Rectangle from './AnnotationTool/Rectangle.jsx';
+import RectTransformer from './AnnotationTool/RectTransformer.jsx';
+import AnnotationWords from './AnnotationTool/AnnotationWords.jsx';
 import { Title, Root } from '../../stylesheets/player/ImageSelector';
 import { EditFrame, SubTitle } from '../../stylesheets/application/ProjectEditForm/FiguresAnnotation';
 

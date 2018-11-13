@@ -7,11 +7,11 @@ import { debounce } from 'throttle-debounce';
 
 import { updateProject } from '../actions/manager';
 
-import Player from './Player';
-import CaptionsField from './ProjectEditForm/CaptionsField';
-import TagField from './ProjectEditForm/TagField';
-import AnnotationPlayer from './ProjectEditForm/AnnotationPlayer';
-import NarrationAnalyzer from './ProjectEditForm/NarrationAnalyzer';
+import Player from './Player.jsx';
+import CaptionsField from './ProjectEditForm/CaptionsField.jsx';
+import TagField from './ProjectEditForm/TagField.jsx';
+import AnnotationPlayer from './ProjectEditForm/AnnotationPlayer.jsx';
+import NarrationAnalyzer from './ProjectEditForm/NarrationAnalyzer.jsx';
 
 import {
   EditPage,

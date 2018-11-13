@@ -3,7 +3,7 @@ import Debug from 'debug';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import MenuIcon from '../MenuIcon';
+import MenuIcon from '../MenuIcon.jsx';
 import { assetsPath } from '../../utils/assetsUtils';
 import { RightFrame } from '../../stylesheets/application/share/Frames';
 

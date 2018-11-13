@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Player from './Player';
-import BackButton from './BackButton';
+import Player from './Player.jsx';
+import BackButton from './BackButton.jsx';
 
 const ProjectPlayer = () => {
   return (
@@ -9,7 +9,7 @@ const ProjectPlayer = () => {
       <Player />
       <BackButton />
     </div>
-  )
+  );
 };
 
 export default ProjectPlayer;

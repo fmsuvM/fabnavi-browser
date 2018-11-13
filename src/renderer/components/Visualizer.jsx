@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Debug from 'debug';
 
-import Player from './Visualizer/Player';
-import ProcessVisualizer from './Visualizer/ProcessVisualizer';
+import Player from './Visualizer/Player.jsx';
+import ProcessVisualizer from './Visualizer/ProcessVisualizer.jsx';
 import { PageFrame } from '../stylesheets/application/Visualizer';
 
 const debug = Debug('fabnavi:components:Visualizer');

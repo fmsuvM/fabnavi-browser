@@ -8,14 +8,14 @@ import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createMemoryHistory from 'history/createMemoryHistory';
 
-import ProjectList from './components/ProjectList';
-import ProjectManager from './components/ProjectManager';
-import ProjectPlayer from './components/ProjectPlayer';
-import CreateProject from './components/CreateProject';
-import ProjectEditForm from './components/ProjectEditForm';
-import ProjectDetail from './components/ProjectDetail';
-import Visualizer from './components/Visualizer';
-import WorkSpace from './components/WorkSpace';
+import ProjectList from './components/ProjectList.jsx';
+import ProjectManager from './components/ProjectManager.jsx';
+import ProjectPlayer from './components/ProjectPlayer.jsx';
+import CreateProject from './components/CreateProject.jsx';
+import ProjectEditForm from './components/ProjectEditForm.jsx';
+import ProjectDetail from './components/ProjectDetail.jsx';
+import Visualizer from './components/Visualizer.jsx';
+import WorkSpace from './components/WorkSpace.jsx';
 
 import reducers from './reducers/index';
 import adjustor from './middleware/epics/adjustor';

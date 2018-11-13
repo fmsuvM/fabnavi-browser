@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import Debug from 'debug';
 
-import Player from './Player';
-import DeleteModal from '../components/DeleteModal';
-import CaptionList from './CaptionList';
+import Player from './Player.jsx';
+import DeleteModal from '../components/DeleteModal.jsx';
+import CaptionList from './CaptionList.jsx';
 import { searchRelatedProjects } from '../actions/manager';
 
 import { sanitizeProject } from '../utils/projectUtils';
@@ -31,7 +31,7 @@ import {
 } from '../stylesheets/application/ProjectShow/StyledProjectDetail';
 
 const debug = Debug('fabnavi:jsx:ProjectDetail');
-const RelatedProjects = lazy(() => import('./ProjectDetail/RelatedProjects'));
+const RelatedProjects = lazy(() => import('./ProjectDetail/RelatedProjects.jsx'));
 
 export class ProjectDetail extends React.Component {
   constructor(props) {
