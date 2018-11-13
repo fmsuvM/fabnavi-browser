@@ -13,7 +13,7 @@ import {
 
 const debug = Debug('fabnavi:AnnotationTool:AnnotationWords');
 
-const AnnotationWords = ({ rectangles, onClear }) => {
+const AnnotationWords = ({ rectangles, onClear, onClick }) => {
   return (
     <AnnotationWordsWrapper>
       {rectangles.length === 0 ? null : (
@@ -24,7 +24,7 @@ const AnnotationWords = ({ rectangles, onClear }) => {
         </EditFrame>
       )}
       <ButtonFrame>
-        <AnnotationButton>Annotation!</AnnotationButton>
+        <AnnotationButton onClick={onClick}>Annotation!</AnnotationButton>
         <ClearButton onClick={onClear}>Clear !</ClearButton>
       </ButtonFrame>
     </AnnotationWordsWrapper>
@@ -33,7 +33,8 @@ const AnnotationWords = ({ rectangles, onClear }) => {
 
 AnnotationWords.propTypes = {
   rectangles: PropTypes.array,
-  onClear: PropTypes.func
+  onClear: PropTypes.func,
+  onClick: PropTypes.func
 };
 
 export default AnnotationWords;

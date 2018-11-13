@@ -107,6 +107,11 @@ class FiguresAnnotation extends React.Component {
       }
       this.setState({ mouseDown: false });
     };
+
+    this.onAnnotationButtonClick = e => {
+      e.preventDefault();
+      debug('annotation!');
+    };
   }
 
   componentDidMount() {
@@ -164,7 +169,11 @@ class FiguresAnnotation extends React.Component {
         </Stage>
         <EditFrame>
           <SubTitle>Enter Annotate Objects Word !</SubTitle>
-          <AnnotationWords rectangles={this.state.rectangles} onClear={this.handleClearRects.bind(this)} />
+          <AnnotationWords
+            rectangles={this.state.rectangles}
+            onClear={this.handleClearRects.bind(this)}
+            onClick={this.onAnnotationButtonClick}
+          />
         </EditFrame>
       </Root>
     );
