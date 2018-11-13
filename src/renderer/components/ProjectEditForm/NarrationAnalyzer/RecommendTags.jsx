@@ -14,7 +14,7 @@ import {
 
 const debug = Debug('fabnavi:ProjectEditForm:RecommendTag');
 
-const RecommendTags = ({ tags }) => {
+const RecommendTags = ({ tags, onChange, onClick, figureIndex }) => {
   return (
     <RecommendTagsFrame>
       <EditFrame>
@@ -22,20 +22,24 @@ const RecommendTags = ({ tags }) => {
           return (
             <TagsFrame key={index}>
               <TagEditor>
-                <TagInput value={tag} />
+                {/* index: tagの番号，figureIndex: 図の番号 */}
+                <TagInput value={tag} onChange={e => onChange(e, index, figureIndex)} />
                 <AcceptCheckBox />
               </TagEditor>
             </TagsFrame>
           );
         })}
       </EditFrame>
-      <AcceptButton>Accept!</AcceptButton>
+      <AcceptButton onClick={onClick}>Accept!</AcceptButton>
     </RecommendTagsFrame>
   );
 };
 
 RecommendTags.propTypes = {
-  tags: PropTypes.array
+  tags: PropTypes.array,
+  onChange: PropTypes.func,
+  onClick: PropTypes.func,
+  figureIndex: PropTypes.number
 };
 
 export default RecommendTags;
