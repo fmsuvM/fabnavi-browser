@@ -334,15 +334,6 @@ export class ProjectEditForm extends React.Component {
               />
 
               <div>
-                <EditTarget>Tag List</EditTarget>
-                {isTag ? (
-                  <TagField tags={tagList} onChange={this.handleTagNameChange} onDelete={this.onDeleteTgButtonClick} />
-                ) : (
-                  <span># --： add project tag !</span>
-                )}
-                <AddTagButton onClick={this.onAddTagButtonClick}>add tag</AddTagButton>
-              </div>
-              <div>
                 <EditTarget>Tag List per figure</EditTarget>
                 <FiguresTagField
                   figures={this.state.figures}
