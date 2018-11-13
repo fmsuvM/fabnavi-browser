@@ -124,7 +124,7 @@ export class Player extends React.Component {
             />
           ) : null}
         </div>
-        {this.props.project && this.props.mode === 'detail' ? (
+        {this.props.project && this.props.rootMode === 'detail' ? (
           <FiguresTag contents={this.props.project.content} figureIndex={this.state.index} />
         ) : null}
       </div>
@@ -231,7 +231,8 @@ export const mapStateToProps = state => ({
   page: state.player.page,
   config: state.player.config,
   contentType: state.player.contentType,
-  mode: state.player.mode
+  mode: state.player.mode,
+  rootMode: state.manager.mode
 });
 
 export const mapDispatchToProps = dispatch => ({
@@ -251,7 +252,8 @@ Player.propTypes = {
   size: PropTypes.string,
   isEditable: PropTypes.bool,
   handleThumbnailDeleteButtonClick: PropTypes.func,
-  handleThumbanailOrderChange: PropTypes.func
+  handleThumbanailOrderChange: PropTypes.func,
+  rootMode: PropTypes.string
 };
 export default connect(
   mapStateToProps,
