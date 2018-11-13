@@ -7,10 +7,17 @@ import MainView from '../player/MainView';
 import { playerChangePage } from '../actions/player';
 import VideoPlayer from './Player/VideoPlayer.jsx';
 import ImageSelector from './Player/ImageSelector.jsx';
+import FiguresTag from './ProjectDetail/FiguresTag.jsx';
 
 import { buildFigureUrl } from '../utils/playerUtils';
 
 import { ImagePlayer, ImageType } from '../stylesheets/player/Player';
+import {
+  TagFrame,
+  TagHeader,
+  TagField,
+  StyledTagName
+} from '../stylesheets/application/ProjectShow/StyledProjectDetail';
 
 const debug = Debug('fabnavi:jsx:Player');
 
@@ -69,51 +76,56 @@ export class Player extends React.Component {
 
   render() {
     return (
-      <div style={{ display: 'table' }}>
-        {this.props.contentType === 'movie' ? (
-          <VideoPlayer
-            project={this.state.project}
-            toggleUpdate={this.state.toggleUpdate}
-            index={this.state.index}
-            handleClick={this.handleClick}
-            videoChanged={this.videoChanged}
-            size={this.props.size}
-            isEditable={this.props.isEditable}
-            ref={instance => (this.videoPlayer = instance)}
-          />
-        ) : (
-          <div>
-            {this.props.isEditable && <ImageType>Preview</ImageType>}
-            <canvas
-              style={
-                this.props.size === 'small' ?
-                  {
-                    display: 'table-cell',
-                    width: '544px',
-                    height: '306px'
-                  } :
-                  {
-                    display: 'table-cell',
-                    width: '1040px',
-                    height: '585px'
-                  }
-              }
-              ref={this.setCanvasElement}
-              onClick={this.handleClick}
+      <div>
+        <div style={{ display: 'table' }}>
+          {this.props.contentType === 'movie' ? (
+            <VideoPlayer
+              project={this.state.project}
+              toggleUpdate={this.state.toggleUpdate}
+              index={this.state.index}
+              handleClick={this.handleClick}
+              videoChanged={this.videoChanged}
+              size={this.props.size}
+              isEditable={this.props.isEditable}
+              ref={instance => (this.videoPlayer = instance)}
             />
-          </div>
-        )}
+          ) : (
+            <div>
+              {this.props.isEditable && <ImageType>Preview</ImageType>}
+              <canvas
+                style={
+                  this.props.size === 'small' ?
+                    {
+                      display: 'table-cell',
+                      width: '544px',
+                      height: '306px'
+                    } :
+                    {
+                      display: 'table-cell',
+                      width: '1040px',
+                      height: '585px'
+                    }
+                }
+                ref={this.setCanvasElement}
+                onClick={this.handleClick}
+              />
+            </div>
+          )}
 
-        {this.props.project ? (
-          <ImageSelector
-            contents={this.props.project.content}
-            handleThumbnailClick={this.handleThumbnailClick}
-            size={this.props.size}
-            index={this.state.index}
-            isEditable={this.props.isEditable}
-            handleThumbnailDeleteButtonClick={this.props.handleThumbnailDeleteButtonClick}
-            handleThumbanailOrderChange={this.props.handleThumbanailOrderChange}
-          />
+          {this.props.project ? (
+            <ImageSelector
+              contents={this.props.project.content}
+              handleThumbnailClick={this.handleThumbnailClick}
+              size={this.props.size}
+              index={this.state.index}
+              isEditable={this.props.isEditable}
+              handleThumbnailDeleteButtonClick={this.props.handleThumbnailDeleteButtonClick}
+              handleThumbanailOrderChange={this.props.handleThumbanailOrderChange}
+            />
+          ) : null}
+        </div>
+        {this.props.project && this.props.mode === 'detail' ? (
+          <FiguresTag contents={this.props.project.content} figureIndex={this.state.index} />
         ) : null}
       </div>
     );
