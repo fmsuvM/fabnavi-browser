@@ -14,7 +14,8 @@
     "test": "jest",
     "test:watch": "jest --watch --verbose false",
     "compile": "webpack-dev-server --colors",
-    "dist": "webpack"
+    "dist": "webpack",
+    "deploy": "npm install && npm run dist"
   },
   "author": {
     "name": "Kazuma Takada",
