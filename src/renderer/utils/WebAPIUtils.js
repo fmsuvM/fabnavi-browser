@@ -283,6 +283,12 @@ class Server {
                   end_sec: caption.end_sec,
                   _destroy: caption._destroy
                 };
+              }),
+              step_tags_attributes: figure.step_tags.map(step_tag => {
+                return {
+                  id: step_tag.id,
+                  step_tag: step_tag.step_tag
+                };
               })
             };
           })

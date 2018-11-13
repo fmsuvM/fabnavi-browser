@@ -10,6 +10,7 @@ import { updateProject } from '../actions/manager';
 import Player from './Player.jsx';
 import CaptionsField from './ProjectEditForm/CaptionsField.jsx';
 import TagField from './ProjectEditForm/TagField.jsx';
+import FiguresTagField from './ProjectEditForm/FiguresTagField.jsx';
 import AnnotationPlayer from './ProjectEditForm/AnnotationPlayer.jsx';
 import NarrationAnalyzer from './ProjectEditForm/NarrationAnalyzer.jsx';
 
@@ -85,6 +86,36 @@ export class ProjectEditForm extends React.Component {
       });
     };
 
+    this.onAddFigureTagButton = e => {
+      e.preventDefault();
+      const index = parseInt(e.target.dataset.index, 10);
+      this.setState({
+        figures: this.state.figures
+          .sort((a, b) => a.position - b.position)
+          .map((figure, i) => {
+            if(i !== index) return figure;
+            figure.step_tags.push({
+              id: null,
+              step_tag: ''
+            });
+            return figure;
+          })
+      });
+    };
+
+    this.onDeleteFigureTagButton = (e, figureIndex, tagIndex) => {
+      e.preventDefault();
+      this.setState({
+        figures: this.state.figures
+          .sort((a, b) => a.position - b.position)
+          .map((figure, i) => {
+            if(i !== figureIndex) return figure;
+            figure.step_tags.splice(tagIndex, 1);
+            return figure;
+          })
+      });
+    };
+
     this.onAddTagButtonClick = e => {
       e.preventDefault();
       this.state.tag_list.push('');
@@ -128,6 +159,22 @@ export class ProjectEditForm extends React.Component {
       figures: [],
       captions: []
     };
+  }
+
+  handleFigureTagName(e, figureIndex, tagIndex) {
+    this.changeFigureTagName(e.target.value, figureIndex, tagIndex);
+  }
+
+  changeFigureTagName(name, figureIndex, tagIndex) {
+    this.setState({
+      figures: this.state.figures
+        .sort((a, b) => a.position - b.position)
+        .map((figure, i) => {
+          if(i !== figureIndex) return figure;
+          figure.step_tags[tagIndex].step_tag = name;
+          return figure;
+        })
+    });
   }
 
   handlerCaptionsChange(e) {
@@ -287,13 +334,13 @@ export class ProjectEditForm extends React.Component {
               />
 
               <div>
-                <EditTarget>Tag List</EditTarget>
-                {isTag ? (
-                  <TagField tags={tagList} onChange={this.handleTagNameChange} onDelete={this.onDeleteTgButtonClick} />
-                ) : (
-                  <span># --： add project tag !</span>
-                )}
-                <AddTagButton onClick={this.onAddTagButtonClick}>add tag</AddTagButton>
+                <EditTarget>Tag List per figure</EditTarget>
+                <FiguresTagField
+                  figures={this.state.figures}
+                  handleFigureTagChange={this.handleFigureTagName.bind(this)}
+                  onAddFigureTagButton={this.onAddFigureTagButton}
+                  onDeleteFigureTagButton={this.onDeleteFigureTagButton}
+                />
               </div>
               <DescriptionFieldWrapper>
                 <EditTarget>Description</EditTarget>

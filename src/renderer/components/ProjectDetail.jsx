@@ -61,6 +61,16 @@ export class ProjectDetail extends React.Component {
     const tags = project.tags.tags;
     const isTag = tags.length > 0 ? true : false;
     const loadingRelatedProjects = <div>なうろーでぃんぐ</div>;
+    const _allTag = [];
+    project.content.map((content, index) => {
+      content.figure.step_tags.map((tag, _index) => {
+        _allTag.push(String(tag.step_tag));
+      });
+    });
+    const allTag = _allTag.filter((x, i, self) => {
+      return self.indexOf(x) === self.lastIndexOf(x);
+    });
+
     const relatedProjects = (
       <Suspense fallback={loadingRelatedProjects}>
         <RelatedProjects projects={this.props.relatedProjects} tag={this.state.tag} />
@@ -74,18 +84,6 @@ export class ProjectDetail extends React.Component {
               {project.name} {isPrivate && <PrivateNotation>Private Project</PrivateNotation>}
             </ProjectTitle>
             <div onClick={this.jumpVisualizeProject}>Jump !!</div>
-            <TagFrame>
-              <TagHeader>Tag: </TagHeader>
-              <TagField>
-                {isTag ? (
-                  tags.map((tag, index) => {
-                    return <StyledTagName key={index}>{tag.name}</StyledTagName>;
-                  })
-                ) : (
-                  <TagHeader>none</TagHeader>
-                )}
-              </TagField>
-            </TagFrame>
             <Player />
             <ContentsFrame>
               <DescriptionFrame>
@@ -112,6 +110,19 @@ export class ProjectDetail extends React.Component {
                 {relatedProjects}
               </FramePerTag>
             </RelatedProjectFrame>
+            <StyledHead>All Tag</StyledHead>
+            <TagFrame>
+              <TagHeader>Tag: </TagHeader>
+              <TagField>
+                {isTag ? (
+                  allTag.map((tag, index) => {
+                    return <StyledTagName key={index}>{tag}</StyledTagName>;
+                  })
+                ) : (
+                  <TagHeader>none</TagHeader>
+                )}
+              </TagField>
+            </TagFrame>
             {this.props.showDeleteConfirmation ? <DeleteModal /> : <span />}
           </StyledDetailFrame>
         ) : (
