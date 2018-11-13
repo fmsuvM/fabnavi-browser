@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Debug from 'debug';
 
-import RecommendTags from './RecommendTags';
-import StepSpliter from './StepSpliter';
+import RecommendTags from './RecommendTags.jsx';
+import StepSpliter from './StepSpliter.jsx';
 
 import { Title, Root } from '../../../stylesheets/player/ImageSelector';
 import {

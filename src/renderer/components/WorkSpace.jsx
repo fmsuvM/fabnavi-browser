@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Debug from 'debug';
 import { ChromePicker } from 'react-color';
 
-import BackButton from './BackButton';
+import BackButton from './BackButton.jsx';
 
 const debug = Debug('fabnavi:jsx:WorkSpace');
 

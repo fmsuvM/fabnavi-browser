@@ -6,7 +6,7 @@ import JSZipUtils from 'jszip-utils';
 import { assetsPath } from '../utils/assetsUtils';
 import { getVttUrl } from '../utils/playerUtils';
 
-import Caption from './Caption';
+import Caption from './Caption.jsx';
 
 import {
   StyledCaptionList,

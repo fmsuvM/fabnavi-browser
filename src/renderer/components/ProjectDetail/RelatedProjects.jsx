@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Debug from 'debug';
 
-import ProjectCard from './ProjectCard';
+import ProjectCard from './ProjectCard.jsx';
 import { ProjectFrame } from '../../stylesheets/application/ProjectShow/RelatedProjects';
 
 const debug = Debug('fabnavi:componens:RelatedProjects');

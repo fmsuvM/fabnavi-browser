@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import Debug from 'debug';
 import { connect } from 'react-redux';
 
-import MenuIcon from './MenuIcon';
-import SearchBar from './Navigation/SearchBar';
-import ReloadButton from './ReloadButton';
-import HostSelector from './HostSelector';
+import MenuIcon from './MenuIcon.jsx';
+import SearchBar from './Navigation/SearchBar.jsx';
+import ReloadButton from './ReloadButton.jsx';
+import HostSelector from './HostSelector.jsx';
 
 import { NavFrame, LeftNav, Logo, RightNav } from '../stylesheets/application/ProjectIndex/StyledNavigation';
 
@@ -26,10 +26,7 @@ export const Navigation = props => (
       {props.isLoggedIn ? (
         <RightNav>
           <MenuIcon act="sign_out" src={`${assetsPath}/images/sign-out.png`} />
-          <MenuIcon
-            to="/myprojects"
-            src={`https://avatars2.githubusercontent.com/u/${Number(props.Uid)}?v=4`}
-          />
+          <MenuIcon to="/myprojects" src={`https://avatars2.githubusercontent.com/u/${Number(props.Uid)}?v=4`} />
           {props.isAdmin || props.isDeveloper ? <HostSelector /> : null}
         </RightNav>
       ) : (

@@ -5,9 +5,9 @@ import Debug from 'debug';
 
 import MainView from '../../player/MainView';
 import { playerChangePage } from '../../actions/player';
-import VideoPlayer from '../Player/VideoPlayer';
-import ImageSelector from '../Player/ImageSelector';
-import FiguresAnnotation from './FiguresAnnotation';
+import VideoPlayer from '../Player/VideoPlayer.jsx';
+import ImageSelector from '../Player/ImageSelector.jsx';
+import FiguresAnnotation from './FiguresAnnotation.jsx';
 
 import { buildFigureUrl } from '../../utils/playerUtils';
 

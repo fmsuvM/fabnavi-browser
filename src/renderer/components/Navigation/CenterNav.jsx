@@ -3,8 +3,8 @@ import Debug from 'debug';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import HostSelector from '../HostSelector';
-import SearchBar from './SearchBar';
+import HostSelector from '../HostSelector.jsx';
+import SearchBar from './SearchBar.jsx';
 import { assetsPath } from '../../utils/assetsUtils';
 import { CenterNavFrame } from '../../stylesheets/application/ProjectIndex/StyledCenterNav';
 

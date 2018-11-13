@@ -5,14 +5,13 @@ import Debug from 'debug';
 
 import MainView from '../../player/MainView';
 import { playerChangePage } from '../../actions/player';
-import VideoPlayer from '../Player/VideoPlayer';
-import ImageSelector from '../Player/ImageSelector';
-import NarrationBox from './NarrationAnalyzer/NarrationAnnotator';
+import VideoPlayer from '../Player/VideoPlayer.jsx';
+import ImageSelector from '../Player/ImageSelector.jsx';
 
 import { buildFigureUrl } from '../../utils/playerUtils';
 
 import { ImagePlayer, ImageType } from '../../stylesheets/player/Player';
-import NarrationAnnotator from './NarrationAnalyzer/NarrationAnnotator';
+import NarrationAnnotator from './NarrationAnalyzer/NarrationAnnotator.jsx';
 
 import { NarrationAnalyzerFrame } from '../../stylesheets/application/ProjectEditForm/NarrationAnalyzer';
 

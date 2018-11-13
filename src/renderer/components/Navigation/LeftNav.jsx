@@ -2,7 +2,7 @@ import React from 'react';
 import Debug from 'debug';
 import { connect } from 'react-redux';
 
-import MenuIcon from '../MenuIcon';
+import MenuIcon from '../MenuIcon.jsx';
 import { assetsPath } from '../../utils/assetsUtils';
 
 const debug = Debug('fabnavi:js:LeftNav');

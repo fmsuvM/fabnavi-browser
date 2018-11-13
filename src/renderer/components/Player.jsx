@@ -3,19 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Debug from 'debug';
 
-import MainView from '../../player/MainView';
-import { playerChangePage } from '../../actions/player';
-import VideoPlayer from '../Player/VideoPlayer';
-import ImageSelector from '../Player/ImageSelector';
-import ProcessVisualizer from './ProcessVisualizer';
-import TagPerStep from './TagPerStep';
-import { PlayerFrame } from '../../stylesheets/application/visualizer/Player';
+import MainView from '../player/MainView';
+import { playerChangePage } from '../actions/player';
+import VideoPlayer from './Player/VideoPlayer.jsx';
+import ImageSelector from './Player/ImageSelector.jsx';
 
-import { buildFigureUrl } from '../../utils/playerUtils';
+import { buildFigureUrl } from '../utils/playerUtils';
 
-import { ImagePlayer, ImageType } from '../../stylesheets/player/Player';
+import { ImagePlayer, ImageType } from '../stylesheets/player/Player';
 
-const debug = Debug('fabnavi:components:visualizer:Player');
+const debug = Debug('fabnavi:jsx:Player');
 
 export class Player extends React.Component {
   constructor(props) {
@@ -47,14 +44,13 @@ export class Player extends React.Component {
       toggleUpdate: false
     };
     this.handleThumbnailClick = e => {
-      // e.stopPropagation();
-      // debug('event: ', e);
+      e.stopPropagation();
       if(this.props.contentType === 'movie') {
         this.setState({
-          index: parseInt(e.target.index - 1, 10)
+          index: parseInt(e.target.dataset.index, 10)
         });
       } else {
-        this.props.changePage(parseInt(e.target.index, 10) - this.props.page);
+        this.props.changePage(parseInt(e.target.dataset.index, 10) - this.props.page);
       }
     };
 
@@ -73,55 +69,52 @@ export class Player extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.props.project ? (
+      <div style={{ display: 'table' }}>
+        {this.props.contentType === 'movie' ? (
+          <VideoPlayer
+            project={this.state.project}
+            toggleUpdate={this.state.toggleUpdate}
+            index={this.state.index}
+            handleClick={this.handleClick}
+            videoChanged={this.videoChanged}
+            size={this.props.size}
+            isEditable={this.props.isEditable}
+            ref={instance => (this.videoPlayer = instance)}
+          />
+        ) : (
           <div>
-            <ProcessVisualizer
-              project={this.props.project}
-              contents={this.props.project.content}
-              handleThumbnailClick={this.handleThumbnailClick}
-              size={this.props.size}
-              index={this.state.index}
+            {this.props.isEditable && <ImageType>Preview</ImageType>}
+            <canvas
+              style={
+                this.props.size === 'small' ?
+                  {
+                    display: 'table-cell',
+                    width: '544px',
+                    height: '306px'
+                  } :
+                  {
+                    display: 'table-cell',
+                    width: '1040px',
+                    height: '585px'
+                  }
+              }
+              ref={this.setCanvasElement}
+              onClick={this.handleClick}
             />
-            <TagPerStep currentStep={this.state.index} />
           </div>
+        )}
+
+        {this.props.project ? (
+          <ImageSelector
+            contents={this.props.project.content}
+            handleThumbnailClick={this.handleThumbnailClick}
+            size={this.props.size}
+            index={this.state.index}
+            isEditable={this.props.isEditable}
+            handleThumbnailDeleteButtonClick={this.props.handleThumbnailDeleteButtonClick}
+            handleThumbanailOrderChange={this.props.handleThumbanailOrderChange}
+          />
         ) : null}
-        <PlayerFrame>
-          {this.props.contentType === 'movie' ? (
-            <VideoPlayer
-              project={this.state.project}
-              toggleUpdate={this.state.toggleUpdate}
-              index={this.state.index}
-              handleClick={this.handleClick}
-              videoChanged={this.videoChanged}
-              size={this.props.size}
-              isEditable={this.props.isEditable}
-              ref={instance => (this.videoPlayer = instance)}
-            />
-          ) : (
-            <div>
-              {this.props.isEditable && <ImageType>Preview</ImageType>}
-              <canvas
-                style={
-                  this.props.size === 'small' ?
-                    {
-                      display: 'table-cell',
-                      width: '544px',
-                      height: '306px'
-                    } :
-                    {
-                      display: 'table-cell',
-                      width: '1040px',
-                      height: '585px',
-                      marginTop: '33px'
-                    }
-                }
-                ref={this.setCanvasElement}
-                onClick={this.handleClick}
-              />
-            </div>
-          )}
-        </PlayerFrame>
       </div>
     );
   }
