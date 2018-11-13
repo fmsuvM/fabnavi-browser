@@ -21,7 +21,7 @@ class NarrationAnnotator extends React.Component {
 
     this.state = {
       narration: [
-        'narration 1',
+        '次にペットボトルにつける草食竜の甲殻です今回は以前使ったかよしが余ってるのでこれを使っていろんな形に切ってますけど保険に入ったにペットボトルの先端を丸めるようにしてとんがり帽にしてからマスキングテープで金テープでつなぎ目を止めて被せこれに比べてしまうので後ろ向く新生児目と口をペットのように3分割4分割にこまるの半径に行きます来ない生えてきた形で広げるとまた延期になっているのでこれをあとちょっと麻生で調整して目玉っぽくなったところで勝手にしてみたかってんて中身の目玉を書いてマスキングテープ裏に貼ってペットボトルに貼り付けますこれを両面テープするのにこの家に丸めてしまってもちょっと取れてしまったので葉っぱの裏側によく行きますねこれで幽霊っぽいペットボトル何か意見が出来上がりました',
         'narration 2',
         'narration 3',
         'narration 4',
@@ -31,7 +31,27 @@ class NarrationAnnotator extends React.Component {
         'narration 8'
       ],
       figure_tags: [
-        ['tag1', 'tag2', 'tag3gg', 'tag3gg'],
+        [
+          '草食',
+          'ペットボトル',
+          '甲殻',
+          '竜',
+          '今回',
+          '以前',
+          '金',
+          '後ろ',
+          'テープ',
+          'つなぎ目',
+          '分割',
+          'マスキング',
+          '帽',
+          '目',
+          '新生児',
+          '目',
+          'ペット',
+          '幽霊',
+          '口'
+        ],
         ['tagg1', 'tag2g', 'tag3gg'],
         ['aaaa', 'tag2', 'tag3'],
         ['bbbb', 'tag2', 'tag3'],
@@ -42,7 +62,7 @@ class NarrationAnnotator extends React.Component {
         ['tag1', 'tag2', 'tag3']
       ],
       split_words: [
-        ['tag1', 'tag2', 'tagaagag', 'tag3gg'],
+        ['次に', '今回', '3番', '4分'],
         ['tagg1', 'tag2g', 'tag3gg'],
         ['aaaa', 'tag2', 'tag3'],
         ['bbbb', 'tag2', 'tag3'],
