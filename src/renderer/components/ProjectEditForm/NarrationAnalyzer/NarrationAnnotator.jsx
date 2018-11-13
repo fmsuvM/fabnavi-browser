@@ -66,18 +66,21 @@ class NarrationAnnotator extends React.Component {
   }
 
   handleChangeNarrationTag(e, index, figureIndex) {
-    // event, tagのinde, 図のindex
-    this.changeNarrationTag(e, index, figureIndex);
+    this.changeNarrationTag(e.target.value, index, figureIndex);
   }
 
-  changeNarrationTag(tag, tagIndex, figureIndex) {
-    debug('event: ', tag);
+  changeNarrationTag(tagName, tagIndex, figureIndex) {
+    const update = this.state.figure_tags[figureIndex]
+      .sort((a, b) => a.position - b.position)
+      .map((tag, index) => {
+        if(index !== figureIndex) return tag;
+        tag = tagName;
+        return tag;
+      });
+    const stateCopy = this.state.figure_tags.slice();
+    stateCopy[figureIndex] = update;
     this.setState({
-      split_words: this.state.split_words[figureIndex].map((value, index) => {
-        if(index !== tagIndex) return value;
-        value[index] = tag;
-        return value;
-      })
+      figure_tags: stateCopy
     });
   }
 

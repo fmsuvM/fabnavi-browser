@@ -22,7 +22,6 @@ const RecommendTags = ({ tags, onChange, onClick, figureIndex }) => {
           return (
             <TagsFrame key={index}>
               <TagEditor>
-                {/* index: tagの番号，figureIndex: 図の番号 */}
                 <TagInput value={tag} onChange={e => onChange(e, index, figureIndex)} />
                 <AcceptCheckBox />
               </TagEditor>
