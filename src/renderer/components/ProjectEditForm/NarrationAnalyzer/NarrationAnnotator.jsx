@@ -53,6 +53,35 @@ class NarrationAnnotator extends React.Component {
         ['tag1', 'tag2', 'tag3']
       ]
     };
+
+    this.onSplitButtonClick = e => {
+      e.preventDefault();
+      debug('split!');
+    };
+
+    this.onAcceptButtonClick = e => {
+      e.preventDefault();
+      debug('accept!');
+    };
+  }
+
+  handleChangeNarrationTag(e, index, figureIndex) {
+    this.changeNarrationTag(e.target.value, index, figureIndex);
+  }
+
+  changeNarrationTag(tagName, tagIndex, figureIndex) {
+    const update = this.state.figure_tags[figureIndex]
+      .sort((a, b) => a.position - b.position)
+      .map((tag, index) => {
+        if(index !== figureIndex) return tag;
+        tag = tagName;
+        return tag;
+      });
+    const stateCopy = this.state.figure_tags.slice();
+    stateCopy[figureIndex] = update;
+    this.setState({
+      figure_tags: stateCopy
+    });
   }
 
   render() {
@@ -61,12 +90,16 @@ class NarrationAnnotator extends React.Component {
         <Title>
           Figure{this.props.index + 1} Narration <AnalyzeButton>Analyze</AnalyzeButton>
         </Title>
-        {/* この辺にAnalyze Buttonをつける */}
         <NarrationField value={this.state.narration[this.props.index]} />
         <SubTitle>Tags from Analized Narration</SubTitle>
-        <RecommendTags tags={this.state.figure_tags[this.props.index]} />
+        <RecommendTags
+          tags={this.state.figure_tags[this.props.index]}
+          onChange={this.handleChangeNarrationTag.bind(this)}
+          onClick={this.onAcceptButtonClick}
+          figureIndex={this.props.index}
+        />
         <SubTitle>Split Position from Analized Narration</SubTitle>
-        <StepSpliter words={this.state.split_words[this.props.index]} />
+        <StepSpliter words={this.state.split_words[this.props.index]} onClick={this.onSplitButtonClick} />
       </NarrationWrapper>
     );
   }

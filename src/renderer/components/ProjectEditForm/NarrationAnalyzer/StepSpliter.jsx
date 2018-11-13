@@ -15,7 +15,7 @@ import {
 
 const debug = Debug('fabnavi:ProjectEditForm:StepSpliter');
 
-const StepSpliter = ({ words }) => {
+const StepSpliter = ({ words, onClick }) => {
   return (
     <RecommendTagsFrame>
       <EditFrame>
@@ -30,13 +30,14 @@ const StepSpliter = ({ words }) => {
           );
         })}
       </EditFrame>
-      <AcceptButton>Split!</AcceptButton>
+      <AcceptButton onClick={onClick}>Split!</AcceptButton>
     </RecommendTagsFrame>
   );
 };
 
 StepSpliter.propTypes = {
-  words: PropTypes.array
+  words: PropTypes.array,
+  onClick: PropTypes.func
 };
 
 export default StepSpliter;
