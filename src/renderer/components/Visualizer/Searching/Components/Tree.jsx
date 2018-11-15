@@ -8,16 +8,34 @@ import { hierarchy } from 'd3-hierarchy';
 
 import Links from './LinksMove.jsx';
 import Nodes from './NodesMove.jsx';
+import {
+  SearchUIFrame,
+  ModeSelectorFrame,
+  ModeLabel,
+  TagsFrame,
+  StyledTagName
+} from '../../../../stylesheets/visualizer/Tree';
+import { Select, Button } from '@smooth-ui/core-sc';
 import PopupModal from './PopupModal.jsx';
 
 const debug = Debug('fabnavi:visualizer:Tree');
 
 export default class extends React.Component {
+  /**
+   * layout ...cartesian(one direction) or polar(circle)
+   * orientation ... vertical(up to down) or horizontal(left to right)
+   * linkType ... diagonal(a little curve) or step(line) or curve or line(binary tree like) or elbow(this is customize)
+   * step percent ... a position of splitting branch
+   * default ... cartesian , horizontal , diagonal. this is ok
+   * original ... cartesian , horizontal , step ?
+   * custom ... polar , (horizontal), step
+   */
+
   state = {
     layout: 'cartesian',
     orientation: 'horizontal',
     linkType: 'diagonal',
-    stepPercent: 0.5
+    stepPercent: 0.5,
     popup: false
   };
 
@@ -35,16 +53,17 @@ export default class extends React.Component {
       height,
       events = false,
       margin = {
-        top: 30,
-        left: 30,
-        right: 30,
-        bottom: 30
+        top: 100,
+        left: 100,
+        right: 100,
+        bottom: 100
       }
     } = this.props;
     const{ layout, orientation, linkType, stepPercent } = this.state;
 
     if(width < 10) return null;
 
+    // a size of inner frame (not root size)
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -70,54 +89,41 @@ export default class extends React.Component {
       }
     }
 
+    // a sanitizeing own data. judge whether data of myself has child data.
     const root = hierarchy(data, d => (d.isExpanded ? d.children : null));
-    // root.each((node, i) => node.onClick = () => {
-    //   console.log('clicked');
-    // });
 
     return (
       <div>
-        <div>
-          <label>layout:</label>
-          <select onChange={e => this.setState({ layout: e.target.value })} value={layout}>
-            <option value="cartesian">cartesian</option>
-            <option value="polar">polar</option>
-          </select>
-
-          <label>orientation:</label>
-          <select
-            onChange={e => this.setState({ orientation: e.target.value })}
-            value={orientation}
-            disabled={layout === 'polar'}
-          >
-            <option value="vertical">vertical</option>
-            <option value="horizontal">horizontal</option>
-          </select>
-
-          <label>link:</label>
-          <select onChange={e => this.setState({ linkType: e.target.value })} value={linkType}>
-            <option value="diagonal">diagonal</option>
-            <option value="step">step</option>
-            <option value="curve">curve</option>
-            <option value="line">line</option>
-            <option value="elbow">elbow</option>
-          </select>
-
-          <label>step:</label>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.1}
-            onChange={e => this.setState({ stepPercent: e.target.value })}
-            value={stepPercent}
-            disabled={linkType !== 'step' || layout === 'polar'}
-          />
-        </div>
+        <SearchUIFrame>
+          <ModeLabel>Mode Selector:</ModeLabel>
+          <ModeSelectorFrame>
+            <Select
+              onChange={e =>
+                this.setState({
+                  layout: e.target.value,
+                  linkType: e.target.value === 'cartesian' ? 'diagonal' : 'step'
+                })
+              }
+              value={layout}
+            >
+              <option value="cartesian">cartesian</option>
+              <option value="polar">polar</option>
+            </Select>
+          </ModeSelectorFrame>
+          <TagsFrame>
+            <ModeLabel>Tags:</ModeLabel>
+            <Button ml={10} variant="success">
+              テスト1
+            </Button>
+            <Button ml={10} variant="success">
+              テスト2
+            </Button>
+          </TagsFrame>
+        </SearchUIFrame>
 
         <svg width={width} height={height}>
-          <LinearGradient id="lg" from="#fd9b93" to="#fe6e9e" />
-          <rect width={width} height={height} rx={14} fill="#272b4d" />
+          <LinearGradient id="lg" from="#fd9b93" to="#fe6e9e" />{' '}
+          <rect width={width} height={height} rx={0} fill="#eff3f9" /> {/* background color */}
           <Tree
             top={margin.top}
             left={margin.left}
@@ -134,7 +140,6 @@ export default class extends React.Component {
                   orientation={orientation}
                   stepPercent={stepPercent}
                 />
-
                 <Nodes
                   nodes={data.descendants()}
                   layout={layout}
