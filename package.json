@@ -69,6 +69,7 @@
     "webpack-sources": "^1.0.1"
   },
   "dependencies": {
+    "@smooth-ui/core-sc": "^7.0.5",
     "@vx/gradient": "0.0.165",
     "@vx/group": "0.0.170",
     "@vx/hierarchy": "0.0.179",
