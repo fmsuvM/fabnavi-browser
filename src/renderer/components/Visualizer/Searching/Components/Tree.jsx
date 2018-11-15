@@ -55,6 +55,12 @@ class VisualizeTree extends React.Component {
         tag: 'test'
       }
     ],
+    custom_query: '',
+    warning: {
+      noQuery: false,
+      duplicateQuery: false
+    },
+    node: null
   };
 
   nodeClick = node => {
@@ -62,6 +68,13 @@ class VisualizeTree extends React.Component {
     const result = this.state.temp_tags.every(query => {
       return !query.filter;
     });
+    if(result) {
+      this.setState({
+        warning: {
+          noQuery: !this.state.warning.noQuery
+        }
+      });
+    } else {
       this.props.searchProjects(['fmsuvM']);
       // TODO: update async
       setTimeout(() => {
@@ -73,6 +86,7 @@ class VisualizeTree extends React.Component {
         node.data.isExpanded = !node.data.isExpanded;
         this.forceUpdate();
       }, 500);
+    }
   };
 
   popupModal = node => {
@@ -80,6 +94,63 @@ class VisualizeTree extends React.Component {
     this.setState({
       popup: !this.state.popup,
       node: node
+    });
+  };
+
+  onTagClick = index => {
+    debug(`tag ${index} is clicked`);
+    this.setState({
+      temp_tags: this.state.temp_tags.map((tag, _index) => {
+        if(_index !== index) return tag;
+        tag.filter = !tag.filter;
+        return tag;
+      })
+    });
+  };
+
+  handleCustomInput = e => {
+    this.setState({
+      custom_query: e.target.value
+    });
+  };
+
+  onAddCustomQuery = () => {
+    const checkDuplicate = this.state.temp_tags.every(val => {
+      return val.tag !== this.state.custom_query;
+    });
+    if(!checkDuplicate) {
+      this.setState({
+        custom_query: '',
+        warning: {
+          duplicateQuery: !this.state.warning.duplicateQuery
+        }
+      });
+    } else {
+      const copy = this.state.temp_tags.slice();
+      copy.push({
+        filter: true,
+        tag: this.state.custom_query
+      });
+      this.setState({
+        temp_tags: copy,
+        custom_query: ''
+      });
+    }
+  };
+
+  warnNoQuery = () => {
+    this.setState({
+      warning: {
+        noQuery: !this.state.warning.noQuery
+      }
+    });
+  };
+
+  warnDuplicateQuery = () => {
+    this.setState({
+      warning: {
+        duplicateQuery: !this.state.warning.duplicateQuery
+      }
     });
   };
 
@@ -166,6 +237,17 @@ class VisualizeTree extends React.Component {
               <TagHeader>None</TagHeader>
             )}
           </TagsFrame>
+          <InputFrame>
+            <Input
+              size="md"
+              placeholder="Add Custom Query"
+              value={this.state.custom_query}
+              onChange={this.handleCustomInput}
+            />
+            <Button variant="info" onClick={this.onAddCustomQuery}>
+              Add
+            </Button>
+          </InputFrame>
         </SearchUIFrame>
 
         <svg width={width} height={height}>
@@ -204,6 +286,20 @@ class VisualizeTree extends React.Component {
         </svg>
         {this.state.popup ? (
           <PopupModal popup={this.state.popup} node={this.state.node} stateChange={() => this.popupModal()} />
+        ) : null}
+        {this.state.warning.noQuery ? (
+          <WarningWindow
+            popup={this.state.warning.noQuery}
+            stateChange={() => this.warnNoQuery()}
+            text="No Query! Please select query ..."
+          />
+        ) : null}
+        {this.state.warning.duplicateQuery ? (
+          <WarningWindow
+            popup={this.state.warning.duplicateQuery}
+            stateChange={() => this.warnDuplicateQuery()}
+            text="Duplicate Query! Please input new query ..."
+          />
         ) : null}
       </div>
     );
