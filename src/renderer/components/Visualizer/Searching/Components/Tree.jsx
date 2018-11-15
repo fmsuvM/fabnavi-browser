@@ -17,9 +17,12 @@ import {
   ModeSelectorFrame,
   ModeLabel,
   TagsFrame,
-  StyledTagName
+  TagHeader,
+  TagInput,
+  TagButton,
+  InputFrame
 } from '../../../../stylesheets/visualizer/Tree';
-import { Select, Button } from '@smooth-ui/core-sc';
+import { Select, Button, Input } from '@smooth-ui/core-sc';
 import PopupModal from './PopupModal.jsx';
 
 const debug = Debug('fabnavi:visualizer:Tree');
