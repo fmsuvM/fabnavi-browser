@@ -5,9 +5,13 @@ import { Group } from '@vx/group';
 import { Tree } from '@vx/hierarchy';
 import { LinearGradient } from '@vx/gradient';
 import { hierarchy } from 'd3-hierarchy';
+import { connect } from 'react-redux';
 
 import Links from './LinksMove.jsx';
 import Nodes from './NodesMove.jsx';
+
+import { requestSearchProjects } from '../../../../actions/manager';
+
 import {
   SearchUIFrame,
   ModeSelectorFrame,
@@ -20,7 +24,7 @@ import PopupModal from './PopupModal.jsx';
 
 const debug = Debug('fabnavi:visualizer:Tree');
 
-export default class extends React.Component {
+class VisualizeTree extends React.Component {
   /**
    * layout ...cartesian(one direction) or polar(circle)
    * orientation ... vertical(up to down) or horizontal(left to right)
@@ -37,6 +41,21 @@ export default class extends React.Component {
     linkType: 'diagonal',
     stepPercent: 0.5,
     popup: false
+  };
+
+  nodeClick = node => {
+    debug('node: ', node);
+    this.props.searchProjects(['fmsuvM']);
+    // TODO: update async
+    setTimeout(() => {
+      debug('state: ', this.props.projects);
+      if(!node.data.isExpanded) {
+        node.data.x0 = node.x;
+        node.data.y0 = node.y;
+      }
+      node.data.isExpanded = !node.data.isExpanded;
+      this.forceUpdate();
+    }, 500);
   };
 
   popupModal = node => {
@@ -145,12 +164,7 @@ export default class extends React.Component {
                   layout={layout}
                   orientation={orientation}
                   onNodeClick={node => {
-                    if(!node.data.isExpanded) {
-                      node.data.x0 = node.x;
-                      node.data.y0 = node.y;
-                    }
-                    node.data.isExpanded = !node.data.isExpanded;
-                    this.forceUpdate();
+                    this.nodeClick(node);
                   }}
                   onPopup={node => {
                     this.popupModal(node);
@@ -165,3 +179,26 @@ export default class extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  projects: state.manager.projects,
+  isFetching: state.manager.isFetching
+});
+
+const mapDispatchToProps = dispatch => ({
+  searchProjects: keyword => {
+    dispatch(
+      requestSearchProjects(
+        keyword
+          .join(',')
+          .split(',')
+          .join(' ')
+      )
+    );
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(VisualizeTree);
