@@ -44,6 +44,7 @@ class PopupModal extends React.Component {
   }
 
   render() {
+    debug('node: ', this.props.node);
     return (
       <ReactModal
         isOpen={this.props.popup}
@@ -53,7 +54,7 @@ class PopupModal extends React.Component {
       >
         <ModalFrame>
           {/* <StyledThumbnail src={thumb} /> */}
-          <StyledProjectName>yeah</StyledProjectName>
+          <StyledProjectName>{this.props.node.data.name}</StyledProjectName>
           <InterfaceFrame>
             <Button cancel onClick={this.closeConfirmation}>
               Cancel

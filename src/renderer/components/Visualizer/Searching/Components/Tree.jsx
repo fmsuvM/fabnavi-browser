@@ -43,7 +43,7 @@ class VisualizeTree extends React.Component {
     orientation: 'horizontal',
     linkType: 'diagonal',
     stepPercent: 0.5,
-    popup: false
+    popup: false,
   };
 
   nodeClick = node => {
@@ -64,7 +64,8 @@ class VisualizeTree extends React.Component {
   popupModal = node => {
     debug('node: ', node);
     this.setState({
-      popup: !this.state.popup
+      popup: !this.state.popup,
+      node: node
     });
   };
 
@@ -177,7 +178,9 @@ class VisualizeTree extends React.Component {
             )}
           </Tree>
         </svg>
-        {this.state.popup ? <PopupModal popup={this.state.popup} stateChange={() => this.popupModal()} /> : null}
+        {this.state.popup ? (
+          <PopupModal popup={this.state.popup} node={this.state.node} stateChange={() => this.popupModal()} />
+        ) : null}
       </div>
     );
   }
