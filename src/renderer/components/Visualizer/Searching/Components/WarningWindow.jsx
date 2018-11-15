@@ -26,7 +26,7 @@ const modalStyles = {
   }
 };
 
-class PopupModal extends React.Component {
+class WarningWindow extends React.Component {
   constructor(props) {
     super(props);
     this.closeConfirmation = () => {
@@ -44,7 +44,6 @@ class PopupModal extends React.Component {
   }
 
   render() {
-    debug('node: ', this.props.node);
     return (
       <ReactModal
         isOpen={this.props.popup}
@@ -54,18 +53,11 @@ class PopupModal extends React.Component {
       >
         <ModalFrame>
           {/* <StyledThumbnail src={thumb} /> */}
-          <StyledProjectName>{this.props.node.data.name}</StyledProjectName>
+          <StyledProjectName>{this.props.text}</StyledProjectName>
           <InterfaceFrame>
             <Button cancel onClick={this.closeConfirmation}>
-              Cancel
+              Close
             </Button>
-            <DeleteButton
-              onClick={() => {
-                this.showProject();
-              }}
-            >
-              Show Contents !
-            </DeleteButton>
           </InterfaceFrame>
         </ModalFrame>
       </ReactModal>
@@ -73,4 +65,4 @@ class PopupModal extends React.Component {
   }
 }
 
-export default PopupModal;
+export default WarningWindow;

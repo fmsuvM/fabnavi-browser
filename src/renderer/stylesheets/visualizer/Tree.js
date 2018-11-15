@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+import { buttonProperties } from '../common/buttonProperties';
+import { colors } from '../common/colors';
+
 export const SearchUIFrame = styled.div`
   display: flex;
   margin-left: 20px;
@@ -17,62 +20,55 @@ export const ModeLabel = styled.label`
   font-size: 18px;
 `;
 
-export const TagsFrame = styled.ul`
-  width: 500px;
+export const TagsFrame = styled.div`
+  width: 800px;
   display: flex;
   overflow-x: scroll;
   margin-left: 30px;
   padding: 0;
-  vertical-align: center;
   align-items: center;
-  text-align: center;
 `;
 
-export const StyledTagName = styled.li`
-  position: relative;
+export const TagHeader = styled.p`
   font-size: 20px;
   font-weight: 700;
+  margin: 0;
+  color: #000;
+  margin-left: 50px;
+`;
+
+export const InputFrame = styled.div`
+  display: flex;
+`;
+
+export const TagInput = styled.input.attrs({
+  type: 'text'
+})`
+  width: 100px;
+  margin-left: 0;
   margin-right: 30px;
-  line-height: 30px;
-  padding: 0 1em;
-  background-color: '#13AE67';
-  border-radius: 0 3px 3px 0;
-  color: #fff;
-  transition: 0.2s;
+  box-shadow: none;
+  background: none;
+  padding-left: 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: ${props => props.objectColor || 'black'};
+`;
 
-  &:before {
-    position: absolute;
-    top: 0;
-    left: -15px;
-    content: '';
-    width: 0;
-    height: 0;
-    border-color: transparent '#13AE67' transparent transparent;
-    border-style: solid;
-    border-width: 15px 15px 15px 0;
-    transition: 0.2s;
-  }
-
-  &:after {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    z-index: 2;
-    display: block;
-    content: '';
-    width: 6px;
-    height: 6px;
-    margin-top: -3px;
-    background-color: #fff;
-    border-radius: 100%;
-  }
-
+export const TagButton = styled.p`
+  overflow: hidden;
+  font-size: 16px;
+  border-style: none;
+  padding: 5px 10px;
+  width: 80px;
+  height: 40px;
+  text-align: center;
+  border-radius: 4px;
+  color: 'white';
+  background-color: ${colors.button};
   &:hover {
-    background-color: #555;
-    color: #fff;
-
-    &:before {
-      border-right-color: #555;
-    }
+    opacity: 0.6;
   }
 `;
