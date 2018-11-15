@@ -334,6 +334,7 @@ class Server {
     const url = `${host.url}/api/v1/projects?${query}`;
     return axios({
       responseType: 'json',
+      headers: await this.prepareHeaders(),
       method: 'GET',
       url: url
     });
