@@ -5,7 +5,7 @@ import { NodeGroup } from 'react-move';
 import Link from './Link.jsx';
 import { findCollapsedParent } from '../utils/getPointUtils';
 
-function Links({ links, linkType, layout, orientation, stepPercent }) {
+const Links = ({ links, linkType, layout, orientation, stepPercent }) => {
   return (
     <NodeGroup
       data={links}
@@ -81,6 +81,6 @@ function Links({ links, linkType, layout, orientation, stepPercent }) {
       )}
     </NodeGroup>
   );
-}
+};
 
 export default Links;

@@ -16,7 +16,7 @@ import {
 } from '@vx/shape';
 import { LinkHorizontalElbow, LinkVerticalElbow } from './elbow';
 
-function Link({ data, linkType, layout, orientation, stepPercent, ...props }) {
+const Link = ({ data, linkType, layout, orientation, stepPercent, ...props }) => {
   let LinkComponent;
 
   if(layout === 'polar') {
@@ -54,6 +54,6 @@ function Link({ data, linkType, layout, orientation, stepPercent, ...props }) {
   }
 
   return <LinkComponent data={data} percent={stepPercent} stroke="#374469" strokeWidth="1" fill="none" {...props} />;
-}
+};
 
 export default Link;
