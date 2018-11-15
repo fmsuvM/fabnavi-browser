@@ -8,6 +8,7 @@ import { hierarchy } from 'd3-hierarchy';
 
 import Links from './LinksMove.jsx';
 import Nodes from './NodesMove.jsx';
+import PopupModal from './PopupModal.jsx';
 
 const debug = Debug('fabnavi:visualizer:Tree');
 
@@ -17,6 +18,14 @@ export default class extends React.Component {
     orientation: 'horizontal',
     linkType: 'diagonal',
     stepPercent: 0.5
+    popup: false
+  };
+
+  popupModal = node => {
+    debug('node: ', node);
+    this.setState({
+      popup: !this.state.popup
+    });
   };
 
   render() {
@@ -138,11 +147,15 @@ export default class extends React.Component {
                     node.data.isExpanded = !node.data.isExpanded;
                     this.forceUpdate();
                   }}
+                  onPopup={node => {
+                    this.popupModal(node);
+                  }}
                 />
               </Group>
             )}
           </Tree>
         </svg>
+        {this.state.popup ? <PopupModal popup={this.state.popup} stateChange={() => this.popupModal()} /> : null}
       </div>
     );
   }

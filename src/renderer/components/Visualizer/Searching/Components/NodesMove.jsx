@@ -5,7 +5,7 @@ import NodeGroup from 'react-move/NodeGroup';
 import Node from './Node.jsx';
 import { findCollapsedParent, getTopLeft } from '../utils/getPointUtils';
 
-function Nodes({ nodes, layout, orientation, onNodeClick }) {
+const Nodes = ({ nodes, layout, orientation, onNodeClick, onPopup }) => {
   return (
     <NodeGroup
       data={nodes}
@@ -60,6 +60,7 @@ function Nodes({ nodes, layout, orientation, onNodeClick }) {
                   layout={layout}
                   orientation={orientation}
                   onClick={() => onNodeClick(node)}
+                  onPopup={() => onPopup(node)}
                   key={key}
                 />
               </Group>
@@ -69,6 +70,6 @@ function Nodes({ nodes, layout, orientation, onNodeClick }) {
       )}
     </NodeGroup>
   );
-}
+};
 
 export default Nodes;
