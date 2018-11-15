@@ -1,5 +1,5 @@
 export default {
-  name: 'T',
+  name: '工程1',
   children: [
     {
       name: 'A',
