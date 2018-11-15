@@ -262,11 +262,20 @@ class Server {
 
   async updateProject(project) {
     debug('updateProject', project);
+    const _allTag = [];
+    project.content.map(content => {
+      content.figure.step_tags.map(tag => {
+        _allTag.push(String(tag.step_tag));
+      });
+    });
+    const allTag = _allTag.filter((x, i, self) => {
+      return self.indexOf(x) === i;
+    });
     const data = {
       project: {
         name: project.name,
         description: project.description,
-        tag_list: project.tag_list.join(','),
+        tag_list: allTag.join(','),
         private: project.private,
         content_attributes: {
           figures_attributes: project.figures.map(figure => {
