@@ -44,21 +44,35 @@ class VisualizeTree extends React.Component {
     linkType: 'diagonal',
     stepPercent: 0.5,
     popup: false,
+    temp_tags: [
+      // temp tag
+      {
+        filter: true,
+        tag: 'tkd'
+      },
+      {
+        filter: true,
+        tag: 'test'
+      }
+    ],
   };
 
   nodeClick = node => {
     debug('node: ', node);
-    this.props.searchProjects(['fmsuvM']);
-    // TODO: update async
-    setTimeout(() => {
-      debug('state: ', this.props.projects);
-      if(!node.data.isExpanded) {
-        node.data.x0 = node.x;
-        node.data.y0 = node.y;
-      }
-      node.data.isExpanded = !node.data.isExpanded;
-      this.forceUpdate();
-    }, 500);
+    const result = this.state.temp_tags.every(query => {
+      return !query.filter;
+    });
+      this.props.searchProjects(['fmsuvM']);
+      // TODO: update async
+      setTimeout(() => {
+        debug('state: ', this.props.projects);
+        if(!node.data.isExpanded) {
+          node.data.x0 = node.x;
+          node.data.y0 = node.y;
+        }
+        node.data.isExpanded = !node.data.isExpanded;
+        this.forceUpdate();
+      }, 500);
   };
 
   popupModal = node => {
@@ -133,14 +147,24 @@ class VisualizeTree extends React.Component {
               <option value="polar">polar</option>
             </Select>
           </ModeSelectorFrame>
+          <TagHeader>Tag: </TagHeader>
           <TagsFrame>
-            <ModeLabel>Tags:</ModeLabel>
-            <Button ml={10} variant="success">
-              テスト1
-            </Button>
-            <Button ml={10} variant="success">
-              テスト2
-            </Button>
+            {this.state.temp_tags.length !== 0 ? (
+              this.state.temp_tags.map((tag, index) => {
+                return (
+                  <Button
+                    variant={tag.filter ? 'success' : 'secondary'}
+                    key={index}
+                    ml={15}
+                    onClick={() => this.onTagClick(index)}
+                  >
+                    {tag.tag}
+                  </Button>
+                );
+              })
+            ) : (
+              <TagHeader>None</TagHeader>
+            )}
           </TagsFrame>
         </SearchUIFrame>
 
