@@ -16,6 +16,7 @@ import ProjectEditForm from './components/ProjectEditForm.jsx';
 import ProjectDetail from './components/ProjectDetail.jsx';
 import Visualizer from './components/Visualizer.jsx';
 import WorkSpace from './components/WorkSpace.jsx';
+import SearchVisualizer from './components/Visualizer/Searching/SearchVisualizer.jsx';
 
 import reducers from './reducers/index';
 import adjustor from './middleware/epics/adjustor';
@@ -90,6 +91,7 @@ window.addEventListener('DOMContentLoaded', () => {
           <Route component={ProjectPlayer} path="/play/:projectId" />
           <Route component={WorkSpace} path="/workspace" />
           <Route component={Visualizer} path="/visualizer/:projectId" />
+          <Route component={SearchVisualizer} path="/search/visualizer/:projectId" />
           <Route
             path="/"
             render={() => (

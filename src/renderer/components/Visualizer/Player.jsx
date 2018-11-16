@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import Debug from 'debug';
 
 import MainView from '../../player/MainView';
@@ -61,6 +62,10 @@ export class Player extends React.Component {
     this.videoChanged = index => {
       this.setState({ index: index });
     };
+
+    this.jumpSearchVisualizer = () => {
+      this.props.jumpToSearchVisualizer(10000);
+    };
   }
 
   componentDidMount() {
@@ -83,7 +88,8 @@ export class Player extends React.Component {
               size={this.props.size}
               index={this.state.index}
             />
-            <TagPerStep currentStep={this.state.index} />
+            <TagPerStep currentStep={this.state.index} contents={this.props.project.content} />
+            <p onClick={this.jumpSearchVisualizer}>jumppppppp</p>
           </div>
         ) : null}
         <PlayerFrame>
@@ -232,6 +238,9 @@ export const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   changePage: step => {
     dispatch(playerChangePage({ step: step }));
+  },
+  jumpToSearchVisualizer: projectId => {
+    dispatch(push(`/search/visualizer/${projectId}`));
   }
 });
 
@@ -246,7 +255,8 @@ Player.propTypes = {
   size: PropTypes.string,
   isEditable: PropTypes.bool,
   handleThumbnailDeleteButtonClick: PropTypes.func,
-  handleThumbanailOrderChange: PropTypes.func
+  handleThumbanailOrderChange: PropTypes.func,
+  jumpToSearchVisualizer: PropTypes.func
 };
 export default connect(
   mapStateToProps,

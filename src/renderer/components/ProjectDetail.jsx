@@ -68,7 +68,7 @@ export class ProjectDetail extends React.Component {
       });
     });
     const allTag = _allTag.filter((x, i, self) => {
-      return self.indexOf(x) === self.lastIndexOf(x);
+      return self.indexOf(x) === i;
     });
 
     const relatedProjects = (
