@@ -11,7 +11,7 @@ const TagPerStep = ({ currentStep, contents }) => (
   <TagView>
     {contents[currentStep].figure.step_tags.length !== 0 ? (
       contents[currentStep].figure.step_tags.map((tag, index) => {
-        return <StyledTagName key={index}>{tag}</StyledTagName>;
+        return <StyledTagName key={index}>{tag.step_tag}</StyledTagName>;
       })
     ) : (
       <NoTag>There is no figure tag</NoTag>
