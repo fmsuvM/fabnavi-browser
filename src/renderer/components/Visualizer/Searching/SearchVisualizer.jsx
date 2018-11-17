@@ -4,11 +4,12 @@ import Debug from 'debug';
 
 import Tree from './Components/Tree.jsx';
 import data from './utils/data';
+import TempData from './utils/TempData';
 
 const debug = Debug('fabnavi:visualizer:SearchVisualizer');
 
 const SearchVisualizer = () => {
-  return <Tree data={data} width={window.innerWidth} height={window.innerHeight} />;
+  return <Tree data={TempData} width={window.innerWidth} height={window.innerHeight} />;
 };
 
 export default SearchVisualizer;

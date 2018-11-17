@@ -77,7 +77,9 @@ ProjectCard.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   toProjectDetail: projectId => {
-    dispatch(push(`/detail/${projectId}`));
+    const koteiId = 3209;
+    debug('propropr: ', projectId);
+    dispatch(push(`/detail/${koteiId}`));
   }
 });
 

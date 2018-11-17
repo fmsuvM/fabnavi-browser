@@ -11,6 +11,7 @@ import Links from './LinksMove.jsx';
 import Nodes from './NodesMove.jsx';
 
 import { requestSearchProjects } from '../../../../actions/manager';
+import { convertProject } from '../utils/convertProjectUtil';
 
 import {
   SearchUIFrame,
@@ -28,45 +29,54 @@ import WarningWindow from './WarningWindow.jsx';
 
 const debug = Debug('fabnavi:visualizer:Tree');
 
+/**
+ * layout ...cartesian(one direction) or polar(circle)
+ * orientation ... vertical(up to down) or horizontal(left to right)
+ * linkType ... diagonal(a little curve) or step(line) or curve or line(binary tree like) or elbow(this is customize)
+ * step percent ... a position of splitting branch
+ * default ... cartesian , horizontal , diagonal.
+ * original ... cartesian , horizontal , step ?
+ * custom ... polar , (horizontal), step
+ */
 class VisualizeTree extends React.Component {
-  /**
-   * layout ...cartesian(one direction) or polar(circle)
-   * orientation ... vertical(up to down) or horizontal(left to right)
-   * linkType ... diagonal(a little curve) or step(line) or curve or line(binary tree like) or elbow(this is customize)
-   * step percent ... a position of splitting branch
-   * default ... cartesian , horizontal , diagonal. this is ok
-   * original ... cartesian , horizontal , step ?
-   * custom ... polar , (horizontal), step
-   */
-
-  state = {
-    layout: 'cartesian',
-    orientation: 'horizontal',
-    linkType: 'diagonal',
-    stepPercent: 0.5,
-    popup: false,
-    temp_tags: [
-      // temp tag
-      {
-        filter: true,
-        tag: 'tkd'
+  constructor(props) {
+    super(props);
+    this.state = {
+      layout: 'cartesian',
+      orientation: 'horizontal',
+      linkType: 'diagonal',
+      stepPercent: 0.5,
+      popup: false,
+      node_tags: [],
+      custom_query: '',
+      warning: {
+        noQuery: false,
+        duplicateQuery: false
       },
-      {
-        filter: true,
-        tag: 'test'
-      }
-    ],
-    custom_query: '',
-    warning: {
-      noQuery: false,
-      duplicateQuery: false
-    },
-    node: null
-  };
+      node: null
+      // root: null
+    };
+  }
+
+  componentWillMount() {
+    const project = this.props.targetProject;
+    const lastFigure = project.content.slice(-1)[0]; //TODO: reducerにcurrentFigureIndexを保存して，ここに持ってくる
+    // TODO: must re-design data mount type
+    // TODO: this root data must be updated per node & query
+    this.setState({
+      // root: hierarchy(convertProject(project), d => (d.isExpanded ? d.children : null)),
+      node_tags: lastFigure.figure.step_tags.map(tag => {
+        return {
+          filter: true,
+          tag: String(tag.step_tag)
+        };
+      })
+    });
+  }
 
   nodeClick = node => {
     debug('node: ', node);
-    const result = this.state.temp_tags.every(query => {
+    const result = this.state.node_tags.every(query => {
       return !query.filter;
     });
     if(result) {
@@ -76,17 +86,21 @@ class VisualizeTree extends React.Component {
         }
       });
     } else {
-      this.props.searchProjects(['fmsuvM']);
-      // TODO: update async
-      setTimeout(() => {
-        debug('state: ', this.props.projects);
-        if(!node.data.isExpanded) {
-          node.data.x0 = node.x;
-          node.data.y0 = node.y;
-        }
-        node.data.isExpanded = !node.data.isExpanded;
-        this.forceUpdate();
-      }, 500);
+      this.props.searchProjects(['tkd']);
+      // ClickしたNodeの下にChildrenをつける
+      // debug('onClickNode: ', this.state.root);
+      const targetProject =
+        // TODO: update async
+        setTimeout(() => {
+          // TODO: mount new data
+          debug('props: ', this.props.projects);
+          if(!node.data.isExpanded) {
+            node.data.x0 = node.x;
+            node.data.y0 = node.y;
+          }
+          node.data.isExpanded = !node.data.isExpanded;
+          this.forceUpdate();
+        }, 500);
     }
   };
 
@@ -101,7 +115,7 @@ class VisualizeTree extends React.Component {
   onTagClick = index => {
     debug(`tag ${index} is clicked`);
     this.setState({
-      temp_tags: this.state.temp_tags.map((tag, _index) => {
+      node_tags: this.state.node_tags.map((tag, _index) => {
         if(_index !== index) return tag;
         tag.filter = !tag.filter;
         return tag;
@@ -116,7 +130,7 @@ class VisualizeTree extends React.Component {
   };
 
   onAddCustomQuery = () => {
-    const checkDuplicate = this.state.temp_tags.every(val => {
+    const checkDuplicate = this.state.node_tags.every(val => {
       return val.tag !== this.state.custom_query;
     });
     if(!checkDuplicate) {
@@ -127,13 +141,13 @@ class VisualizeTree extends React.Component {
         }
       });
     } else {
-      const copy = this.state.temp_tags.slice();
+      const copy = this.state.node_tags.slice();
       copy.push({
         filter: true,
         tag: this.state.custom_query
       });
       this.setState({
-        temp_tags: copy,
+        node_tags: copy,
         custom_query: ''
       });
     }
@@ -200,7 +214,7 @@ class VisualizeTree extends React.Component {
 
     // a sanitizeing own data. judge whether data of myself has child data.
     const root = hierarchy(data, d => (d.isExpanded ? d.children : null));
-
+    debug('root: ', root);
     return (
       <div>
         <SearchUIFrame>
@@ -221,8 +235,8 @@ class VisualizeTree extends React.Component {
           </ModeSelectorFrame>
           <TagHeader>Tag: </TagHeader>
           <TagsFrame>
-            {this.state.temp_tags.length !== 0 ? (
-              this.state.temp_tags.map((tag, index) => {
+            {this.state.node_tags.length !== 0 ? (
+              this.state.node_tags.map((tag, index) => {
                 return (
                   <Button
                     variant={tag.filter ? 'success' : 'secondary'}
@@ -309,7 +323,8 @@ class VisualizeTree extends React.Component {
 
 const mapStateToProps = state => ({
   projects: state.manager.projects,
-  isFetching: state.manager.isFetching
+  isFetching: state.manager.isFetching,
+  targetProject: state.manager.targetProject
 });
 
 const mapDispatchToProps = dispatch => ({

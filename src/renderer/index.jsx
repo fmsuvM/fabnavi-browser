@@ -69,7 +69,7 @@ window.addEventListener('DOMContentLoaded', () => {
   debug('======> Mount App');
   const history = createMemoryHistory();
   // const composeEnhancers = isDev ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose : compose;
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+  const composeEnhancers = compose;
   const store = createStore(
     reducers,
     composeEnhancers(applyMiddleware(adjustor, epicsMiddleware, routerMiddleware(history)))

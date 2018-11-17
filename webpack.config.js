@@ -42,7 +42,9 @@ module.exports = [
     devServer: {
       contentBase: path.resolve(__dirname, 'dist'),
       port: 3001,
-      open: true
+      open: true,
+      host: '0.0.0.0',
+      disableHostCheck: true
     },
     resolve: {
       extensions: ['.js', 'jsx']

@@ -89,7 +89,7 @@ export class Player extends React.Component {
               index={this.state.index}
             />
             <TagPerStep currentStep={this.state.index} contents={this.props.project.content} />
-            <p onClick={this.jumpSearchVisualizer}>jumppppppp</p>
+            <p onClick={this.jumpSearchVisualizer}>Search</p>
           </div>
         ) : null}
         <PlayerFrame>
