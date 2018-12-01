@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import { colors } from '../../common/colors';
-import { buttonProperties } from '../../common/buttonProperties';
 
 export const EditFrame = styled.div`
   display: flex;
+  margin-top: 20px;
 `;
 export const SubTitle = styled.p`
   font-size: 16px;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
 
-export const NarrationAnalyzerFrame = styled.div`
+export const AnnotationPlayerFrame = styled.div`
   display: flex;
 `;

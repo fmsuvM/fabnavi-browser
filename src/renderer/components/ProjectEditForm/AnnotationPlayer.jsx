@@ -13,6 +13,7 @@ import AnnotationInterface from './AnnotationTool/AnnotationInterface.jsx';
 import { buildFigureUrl } from '../../utils/playerUtils';
 
 import { ImagePlayer, ImageType } from '../../stylesheets/player/Player';
+import { AnnotationPlayerFrame } from '../../stylesheets/application/ProjectEditForm/AnnotationPlater';
 
 const debug = Debug('fabnavi:jsx:Player');
 
@@ -80,7 +81,7 @@ export class AnnotationPlayer extends React.Component {
   render() {
     const mode = ['all', 'detected', 'unknown', 'raw'];
     return (
-      <div style={{ display: 'table' }}>
+      <AnnotationPlayerFrame>
         {this.props.project ? (
           <ImageSelector
             contents={this.props.project.content}
@@ -113,7 +114,7 @@ export class AnnotationPlayer extends React.Component {
             mode={this.state.mode}
           />
         ) : null}
-      </div>
+      </AnnotationPlayerFrame>
     );
   }
 
