@@ -8,6 +8,7 @@ import { playerChangePage } from '../../actions/player';
 import VideoPlayer from '../Player/VideoPlayer.jsx';
 import ImageSelector from '../Player/ImageSelector.jsx';
 import FiguresAnnotation from './FiguresAnnotation.jsx';
+import AnnotationInterface from './AnnotationTool/AnnotationInterface.jsx';
 
 import { buildFigureUrl } from '../../utils/playerUtils';
 
@@ -42,7 +43,8 @@ export class AnnotationPlayer extends React.Component {
     };
     this.state = {
       index: 0,
-      toggleUpdate: false
+      toggleUpdate: false,
+      mode: 'all'
     };
     this.handleThumbnailClick = e => {
       e.stopPropagation();
@@ -58,6 +60,13 @@ export class AnnotationPlayer extends React.Component {
     this.videoChanged = index => {
       this.setState({ index: index });
     };
+
+    this.selectMode = (e, mode) => {
+      e.preventDefault();
+      this.setState({
+        mode: mode
+      });
+    };
   }
 
   componentDidMount() {
@@ -69,42 +78,9 @@ export class AnnotationPlayer extends React.Component {
   }
 
   render() {
+    const mode = ['all', 'detected', 'unknown', 'raw'];
     return (
       <div style={{ display: 'table' }}>
-        {this.props.contentType === 'movie' ? (
-          <VideoPlayer
-            project={this.state.project}
-            toggleUpdate={this.state.toggleUpdate}
-            index={this.state.index}
-            handleClick={this.handleClick}
-            videoChanged={this.videoChanged}
-            size={this.props.size}
-            isEditable={this.props.isEditable}
-            ref={instance => (this.videoPlayer = instance)}
-          />
-        ) : (
-          <div>
-            {this.props.isEditable && <ImageType>Preview</ImageType>}
-            <canvas
-              style={
-                this.props.size === 'small' ?
-                  {
-                    display: 'table-cell',
-                    width: '544px',
-                    height: '306px'
-                  } :
-                  {
-                    display: 'table-cell',
-                    width: '1040px',
-                    height: '585px'
-                  }
-              }
-              ref={this.setCanvasElement}
-              onClick={this.handleClick}
-            />
-          </div>
-        )}
-
         {this.props.project ? (
           <ImageSelector
             contents={this.props.project.content}
@@ -116,11 +92,25 @@ export class AnnotationPlayer extends React.Component {
             handleThumbanailOrderChange={this.props.handleThumbanailOrderChange}
           />
         ) : null}
+
+        {/* TODO: ここを矩形選択した画像に変更する */}
         {this.props.project ? (
           <FiguresAnnotation
             contents={this.props.project.content}
             index={this.state.index}
             config={this.props.config}
+            mode={mode}
+            selectMode={this.state.mode}
+            onSelectMode={this.selectMode}
+          />
+        ) : null}
+
+        {this.props.project ? (
+          <AnnotationInterface
+            contents={this.props.project.content}
+            index={this.state.index}
+            config={this.props.config}
+            mode={this.state.mode}
           />
         ) : null}
       </div>

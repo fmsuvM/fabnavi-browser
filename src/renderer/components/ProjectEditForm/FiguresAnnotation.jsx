@@ -10,7 +10,7 @@ import Rectangle from './AnnotationTool/Rectangle.jsx';
 import RectTransformer from './AnnotationTool/RectTransformer.jsx';
 import AnnotationWords from './AnnotationTool/AnnotationWords.jsx';
 import { Title, Root } from '../../stylesheets/player/ImageSelector';
-import { EditFrame, SubTitle } from '../../stylesheets/application/ProjectEditForm/FiguresAnnotation';
+import { EditFrame, SubTitle, ModeSelector } from '../../stylesheets/application/ProjectEditForm/FiguresAnnotation';
 
 const debug = Debug('fabnavi:ProjectEditForm:_FiguresAnnotation');
 
@@ -133,6 +133,7 @@ class FiguresAnnotation extends React.Component {
     return (
       <Root>
         <Title>Annotation</Title>
+        {/* ここを矩形選択表示にする．というかタブ選択？ */}
         <Stage
           ref={node => {
             this.stage = node;
@@ -168,12 +169,15 @@ class FiguresAnnotation extends React.Component {
           </Layer>
         </Stage>
         <EditFrame>
-          <SubTitle>Enter Annotate Objects Word !</SubTitle>
-          <AnnotationWords
-            rectangles={this.state.rectangles}
-            onClear={this.handleClearRects.bind(this)}
-            onClick={this.onAnnotationButtonClick}
-          />
+          {this.props.mode.map((mode, index) => (
+            <ModeSelector
+              key={index}
+              onClick={e => this.props.onSelectMode(e, mode)}
+              selected={mode === this.props.selectMode}
+            >
+              {mode}
+            </ModeSelector>
+          ))}
         </EditFrame>
       </Root>
     );
