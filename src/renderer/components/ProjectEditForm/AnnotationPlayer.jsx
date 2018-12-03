@@ -45,7 +45,9 @@ export class AnnotationPlayer extends React.Component {
     this.state = {
       index: 0,
       toggleUpdate: false,
-      mode: 'all'
+      mode: 'all',
+      rectangles: [],
+      detection: []
     };
     this.handleThumbnailClick = e => {
       e.stopPropagation();
@@ -68,6 +70,14 @@ export class AnnotationPlayer extends React.Component {
         mode: mode
       });
     };
+
+    this.addRectangles = (rect, count) => {
+      debug('rect: ', rect);
+      debug('count: ', count);
+      this.setState({
+        rectangles: this.state.rectangles.push(rect)
+      });
+    };
   }
 
   componentDidMount() {
@@ -83,6 +93,30 @@ export class AnnotationPlayer extends React.Component {
     return (
       <AnnotationPlayerFrame>
         {this.props.project ? (
+          this.state.mode === 'raw' ? (
+            <FiguresAnnotation
+              contents={this.props.project.content}
+              index={this.state.index}
+              config={this.props.config}
+              mode={mode}
+              selectMode={this.state.mode}
+              onSelectMode={this.selectMode}
+              addRectangles={this.addRectangles}
+            />
+          ) : (
+            <FiguresAnnotation
+              contents={this.props.project.content}
+              index={this.state.index}
+              config={this.props.config}
+              mode={mode}
+              selectMode={this.state.mode}
+              onSelectMode={this.selectMode}
+              addRectangles={this.addRectangles}
+            />
+          )
+        ) : null}
+
+        {this.props.project ? (
           <ImageSelector
             contents={this.props.project.content}
             handleThumbnailClick={this.handleThumbnailClick}
@@ -94,24 +128,13 @@ export class AnnotationPlayer extends React.Component {
           />
         ) : null}
 
-        {/* TODO: ここを矩形選択した画像に変更する */}
-        {this.props.project ? (
-          <FiguresAnnotation
-            contents={this.props.project.content}
-            index={this.state.index}
-            config={this.props.config}
-            mode={mode}
-            selectMode={this.state.mode}
-            onSelectMode={this.selectMode}
-          />
-        ) : null}
-
         {this.props.project ? (
           <AnnotationInterface
             contents={this.props.project.content}
             index={this.state.index}
             config={this.props.config}
             mode={this.state.mode}
+            labels={this.state.rectangles}
           />
         ) : null}
       </AnnotationPlayerFrame>
@@ -218,7 +241,8 @@ export const mapStateToProps = state => ({
   page: state.player.page,
   config: state.player.config,
   contentType: state.player.contentType,
-  mode: state.player.mode
+  mode: state.player.mode,
+  figures: state.analyzer.figures
 });
 
 export const mapDispatchToProps = dispatch => ({

@@ -101,16 +101,11 @@ class FiguresAnnotation extends React.Component {
     };
 
     this.handleStageMouseUp = () => {
-      const{ rectCount, mouseDraw } = this.state;
+      const{ rectCount, mouseDraw, rectangles } = this.state;
       if(mouseDraw) {
         this.setState({ rectCount: rectCount + 1, mouseDraw: false });
       }
       this.setState({ mouseDown: false });
-    };
-
-    this.onAnnotationButtonClick = e => {
-      e.preventDefault();
-      debug('annotation!');
     };
   }
 
@@ -133,7 +128,6 @@ class FiguresAnnotation extends React.Component {
     return (
       <Root>
         <Title>Annotation</Title>
-        {/* ここを矩形選択表示にする．というかタブ選択？ */}
         <Stage
           ref={node => {
             this.stage = node;
