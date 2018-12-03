@@ -8,9 +8,10 @@ export const AnnotationWordsWrapper = styled.div`
 
 export const EditFrame = styled.div`
   display: flex;
-  overflow-x: scroll;
+  flex-direction: column;
   margin: 0;
   width: 544px;
+  overflow: scroll;
 `;
 
 export const ButtonFrame = styled.div`
@@ -21,6 +22,8 @@ export const WordInput = styled.input.attrs({
   type: 'text'
 })`
   width: 100px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   margin-right: 30px;
   box-shadow: none;
   background: none;
@@ -30,6 +33,13 @@ export const WordInput = styled.input.attrs({
   border-width: 2px;
   border-style: solid;
   border-color: ${props => props.objectColor || 'black'};
+`;
+
+export const AcceptCheckBox = styled.input.attrs({
+  type: 'checkbox'
+})`
+  margin-left: 5px;
+  margin-right: 15px;
 `;
 
 export const AnnotationButton = styled.button`

@@ -120,7 +120,7 @@ export class NarrationAnalyzer extends React.Component {
         ) : null}
 
         {this.props.project ? (
-          <NarrationAnnotator contents={this.props.project.content} index={this.state.index} narration="test" />
+          <NarrationAnnotator contents={this.props.project.content} index={this.state.index} />
         ) : null}
       </NarrationAnalyzerFrame>
     );

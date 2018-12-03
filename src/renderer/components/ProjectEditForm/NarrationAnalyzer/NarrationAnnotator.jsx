@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Debug from 'debug';
 
 import RecommendTags from './RecommendTags.jsx';
 import StepSpliter from './StepSpliter.jsx';
+
+import { requestTranscription } from '../../../actions/analyzer';
 
 import { Title, Root } from '../../../stylesheets/player/ImageSelector';
 import {
@@ -63,6 +66,11 @@ class NarrationAnnotator extends React.Component {
       e.preventDefault();
       debug('accept!');
     };
+
+    this.onRequestTranscription = e => {
+      e.preventDefault();
+      this.props.requestTranscription(this.props.figures[this.props.index].source, this.props.index);
+    };
   }
 
   handleChangeNarrationTag(e, index, figureIndex) {
@@ -88,18 +96,40 @@ class NarrationAnnotator extends React.Component {
     return (
       <NarrationWrapper>
         <Title>
-          Figure{this.props.index + 1} Narration <AnalyzeButton>Analyze</AnalyzeButton>
+          Figure{this.props.index + 1} Narration{' '}
+          <AnalyzeButton onClick={e => this.onRequestTranscription(e)}>Analyze</AnalyzeButton>
         </Title>
-        <NarrationField value={this.state.narration[this.props.index]} />
+        {!this.props.isFetching ? (
+          !Object.keys(this.props.figures[this.props.index].transcription).length ? (
+            <NarrationField defaultValue="Please click analyze button" />
+          ) : (
+            <NarrationField value={this.state.narration[this.props.index]} />
+          )
+        ) : (
+          <div>
+            <p>now loading...</p>
+          </div>
+        )}
+        {/* <NarrationField value={this.state.narration[this.props.index]} /> */}
         <SubTitle>Tags from Analized Narration</SubTitle>
-        <RecommendTags
-          tags={this.state.figure_tags[this.props.index]}
-          onChange={this.handleChangeNarrationTag.bind(this)}
-          onClick={this.onAcceptButtonClick}
-          figureIndex={this.props.index}
-        />
-        <SubTitle>Split Position from Analized Narration</SubTitle>
-        <StepSpliter words={this.state.split_words[this.props.index]} onClick={this.onSplitButtonClick} />
+        {!this.props.isFetching ? (
+          !Object.keys(this.props.figures[this.props.index].transcription).length ? (
+            <p>please analyze...</p>
+          ) : (
+            <RecommendTags
+              tags={this.state.figure_tags[this.props.index]}
+              onChange={this.handleChangeNarrationTag.bind(this)}
+              onClick={this.onAcceptButtonClick}
+              figureIndex={this.props.index}
+            />
+          )
+        ) : (
+          <div>
+            <p>now loading...</p>
+          </div>
+        )}
+        {/* <SubTitle>Split Position from Analized Narration</SubTitle>
+        <StepSpliter words={this.state.split_words[this.props.index]} onClick={this.onSplitButtonClick} /> */}
       </NarrationWrapper>
     );
   }
@@ -110,4 +140,19 @@ NarrationAnnotator.propTypes = {
   index: PropTypes.number
 };
 
-export default NarrationAnnotator;
+const mapStateToProps = state => ({
+  isFetching: state.analyzer.isFetching,
+  figures: state.analyzer.figures
+});
+
+const mapDispatchToProps = dispatch => ({
+  requestTranscription: (url, index) => {
+    debug('request API: ', url);
+    dispatch(requestTranscription(url, index));
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NarrationAnnotator);
