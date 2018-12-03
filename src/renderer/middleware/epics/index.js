@@ -25,6 +25,15 @@ import {
   receiveRelatedProjects
 } from '../../actions/manager';
 
+import {
+  initializeData,
+  REQUEST_DETECTION,
+  REQUEST_TRANSCRIPTION,
+  fetchingResults,
+  receiveDetectionResults,
+  receiveTranscriptionResults
+} from '../../actions/analyzer';
+
 const debug = Debug('fabnavi:epics');
 
 const signIn = action$ => {
@@ -71,6 +80,59 @@ const fetchProjectEpic = action$ =>
       return api.getProject(projectId);
     })
     .map(({ data }) => receiveProject(data));
+
+const requestDetectionEpic = (action$, store) =>
+  action$
+    .ofType(REQUEST_DETECTION)
+    .do(_ => store.dispatch(fetchingResults()))
+    // .switchMap(action => {
+    //   const projectId = action.payload.pathname.match(/\d+/)[0];
+    //   return api.getProject(projectId);
+    // })
+    .map(() => {
+      // TODO: ここをAPIリクエストの結果にする
+      const temp = {
+        index: 0,
+        detected: ['hoge', 'fuga'],
+        unknown: ['hogefuga', 'fugafuga']
+      };
+      return receiveDetectionResults(temp);
+    });
+
+const requestTranscriptionEpic = (action$, store) =>
+  action$
+    .ofType(REQUEST_TRANSCRIPTION)
+    .do(_ => store.dispatch(fetchingResults()))
+    // .switchMap(action => {
+    //   const projectId = action.payload.pathname.match(/\d+/)[0];
+    //   return api.getProject(projectId);
+    // })
+    .map(() => {
+      // TODO: ここをAPIリクエストの結果にする
+      const temp = {
+        index: 0,
+        narration: 'hogehogehogeohgehogehoge',
+        words: ['hogefuga', 'hogehogheoghoe']
+      };
+      return receiveTranscriptionResults(temp);
+    });
+
+const initislizeProjectEpic = action$ =>
+  action$
+    .ofType('@@router/LOCATION_CHANGE')
+    .filter(
+      action =>
+        action.payload.pathname !== '/' &&
+        !action.payload.pathname.match('delete') &&
+        !action.payload.pathname.match('visualizer') &&
+        !action.payload.pathname.match('myprojects') &&
+        !action.payload.pathname.match('workspace')
+    )
+    .switchMap(action => {
+      const projectId = action.payload.pathname.match(/\d+/)[0];
+      return api.getProject(projectId);
+    })
+    .map(({ data }) => initializeData(data));
 
 const fetchProjectsEpic = (action$, store) =>
   action$
@@ -170,6 +232,9 @@ export default createEpicMiddleware(
     reloadProjectsEpic,
     goBackHomeEpic,
     changedProjectListPageHookEpic,
-    searchRelatedProjectsEpic
+    searchRelatedProjectsEpic,
+    initislizeProjectEpic,
+    requestDetectionEpic,
+    requestTranscriptionEpic
   )
 );
