@@ -93,8 +93,45 @@ const requestDetectionEpic = (action$, store) =>
       // TODO: ここをAPIリクエストの結果にする
       const temp = {
         index: 0,
-        detected: ['hoge', 'fuga'],
-        unknown: ['hogefuga', 'fugafuga']
+        detected: [
+          {
+            points: [0, 0, 100, 100],
+            candidate: [
+              {
+                name: 'scissors',
+                confidence: 0.8
+              },
+              {
+                name: 'cutter',
+                confidence: 0.1
+              },
+              {
+                name: 'brush',
+                confidence: 0.05
+              }
+            ]
+          },
+          {
+            points: [100, 100, 200, 200],
+            candidate: [
+              {
+                name: 'brush',
+                confidence: 0.6
+              }
+            ]
+          }
+        ],
+        unknown: [
+          {
+            points: [0, 0, 100, 100],
+            candidate: [
+              {
+                name: '???',
+                confidence: 0
+              }
+            ]
+          }
+        ]
       };
       return receiveDetectionResults(temp);
     });
