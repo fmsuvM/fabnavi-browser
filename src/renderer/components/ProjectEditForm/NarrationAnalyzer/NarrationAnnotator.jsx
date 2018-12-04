@@ -93,6 +93,7 @@ class NarrationAnnotator extends React.Component {
   }
 
   render() {
+    const figure = this.props.figures[this.props.index]
     return (
       <NarrationWrapper>
         <Title>
@@ -100,10 +101,10 @@ class NarrationAnnotator extends React.Component {
           <AnalyzeButton onClick={e => this.onRequestTranscription(e)}>Analyze</AnalyzeButton>
         </Title>
         {!this.props.isFetching ? (
-          !Object.keys(this.props.figures[this.props.index].transcription).length ? (
+          !Object.keys(figure.transcription).length ? (
             <NarrationField defaultValue="Please click analyze button" />
           ) : (
-            <NarrationField value={this.state.narration[this.props.index]} />
+            <NarrationField value={figure.transcription.narration} />
           )
         ) : (
           <div>
@@ -113,11 +114,11 @@ class NarrationAnnotator extends React.Component {
         {/* <NarrationField value={this.state.narration[this.props.index]} /> */}
         <SubTitle>Tags from Analized Narration</SubTitle>
         {!this.props.isFetching ? (
-          !Object.keys(this.props.figures[this.props.index].transcription).length ? (
+          !Object.keys(figure.transcription).length ? (
             <p>please analyze...</p>
           ) : (
             <RecommendTags
-              tags={this.state.figure_tags[this.props.index]}
+              tags={figure.transcription.words}
               onChange={this.handleChangeNarrationTag.bind(this)}
               onClick={this.onAcceptButtonClick}
               figureIndex={this.props.index}
