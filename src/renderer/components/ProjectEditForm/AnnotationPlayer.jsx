@@ -8,6 +8,7 @@ import { playerChangePage } from '../../actions/player';
 import VideoPlayer from '../Player/VideoPlayer.jsx';
 import ImageSelector from '../Player/ImageSelector.jsx';
 import FiguresAnnotation from './FiguresAnnotation.jsx';
+import DetectedFigures from './AnnotationTool/DetectedFigures.jsx';
 import AnnotationInterface from './AnnotationTool/AnnotationInterface.jsx';
 
 import { buildFigureUrl } from '../../utils/playerUtils';
@@ -20,28 +21,6 @@ const debug = Debug('fabnavi:jsx:Player');
 export class AnnotationPlayer extends React.Component {
   constructor(props) {
     super(props);
-    this.clearCanvas = () => {
-      this.canvas.clear();
-    };
-    this.canvas = null;
-    this.currentImage = null;
-    this.lastPage = 0;
-    this.lastState = '';
-    this.currentState = '';
-
-    this.updateCanvas = this.updateCanvas.bind(this);
-    this.setCanvasElement = cvs => {
-      this.canvasElement = cvs;
-    };
-    this.handleClick = e => {
-      if(this.props.mode === 'play') {
-        if(e.button !== 0) {
-          this.props.changePage(1);
-        } else {
-          this.props.changePage(-1);
-        }
-      }
-    };
     this.state = {
       index: 0,
       toggleUpdate: false,
@@ -80,13 +59,7 @@ export class AnnotationPlayer extends React.Component {
     };
   }
 
-  componentDidMount() {
-    debug('canvas element', this.canvasElement);
-    if(this.canvasElement) {
-      this.canvas = new MainView(this.canvasElement);
-      this.updateCanvas();
-    }
-  }
+  componentDidMount() {}
 
   render() {
     const mode = ['all', 'detected', 'unknown', 'raw'];
@@ -104,14 +77,12 @@ export class AnnotationPlayer extends React.Component {
               addRectangles={this.addRectangles}
             />
           ) : (
-            <FiguresAnnotation
+            <DetectedFigures
               contents={this.props.project.content}
               index={this.state.index}
-              config={this.props.config}
               mode={mode}
-              selectMode={this.state.mode}
+              selectedMode={this.state.mode}
               onSelectMode={this.selectMode}
-              addRectangles={this.addRectangles}
             />
           )
         ) : null}
@@ -139,100 +110,6 @@ export class AnnotationPlayer extends React.Component {
         ) : null}
       </AnnotationPlayerFrame>
     );
-  }
-
-  updateCanvas() {
-    const project = this.props.project;
-    const isValidProject = () => {
-      if(project === null) {
-        return false;
-      }
-      return typeof project === 'object' && project.content.length !== 0;
-    };
-
-    if(!isValidProject()) {
-      debug('invalid project data', project);
-      return;
-    }
-
-    this.currentState = this.props.mode;
-
-    if(this.currentState != this.lastState) {
-      this.canvas.clear();
-    }
-    this.lastState = this.currentState;
-
-    const getCurrentImage = () => {
-      return new Promise((resolve, reject) => {
-        if(this.lastPage === this.props.page && this.currentImage != null) {
-          resolve(this.currentImage);
-        }
-
-        const fig = this.props.project.content[this.props.page].figure;
-        this.lastPage = this.props.page;
-        if(fig.hasOwnProperty('clientContent') && fig.clientContent.hasOwnProperty('dfdImage')) {
-          fig.clientContent.dfdImage
-            .then(img => {
-              resolve(img, true);
-            })
-            .catch(reject);
-          return;
-        }
-
-        const img = new Image();
-        this.canvas.redraw();
-        this.canvas.drawWaitingMessage();
-        if(this.lastPage === 0) {
-          this.canvas.drawInstructionMessage();
-        }
-        this.canvas.drawCaptions(fig.captions.filter(caption => caption._destroy !== true));
-        img.src = buildFigureUrl(fig.file.url);
-        img.onload = event => {
-          resolve(event.target);
-        };
-        img.onerror = reject;
-      });
-    };
-
-    getCurrentImage()
-      .then(img => {
-        this.currentImage = img;
-        this.canvas.draw(this.currentImage, this.props.config);
-
-        if(this.lastPage === 0) {
-          this.canvas.drawInstructionMessage();
-        }
-        const fig = this.props.project.content[this.props.page].figure;
-        this.canvas.drawCaptions(fig.captions.filter(caption => caption._destroy !== true));
-
-        switch(this.currentState) {
-          case 'calibrateCenter':
-            this.canvas.drawCalibrateCenterLine();
-            this.canvas.drawCenterInstruction();
-            break;
-          case 'calibrateScale':
-            this.canvas.drawCalibrateScaleLine();
-            this.canvas.drawScaleInstruction();
-            break;
-          default:
-            break;
-        }
-      })
-      .catch(e => {
-        debug('failed to load Image', e);
-      });
-  }
-
-  getCurrentTime() {
-    return this.videoPlayer ? this.videoPlayer.getWrappedInstance().getCurrentTime() : 0;
-  }
-
-  componentWillReceiveProps(props) {
-    if(props.project)this.setState({ project: props.project, toggleUpdate: !this.state.toggleUpdate });
-  }
-
-  componentDidUpdate() {
-    if(this.props.contentType === 'photo')this.updateCanvas();
   }
 }
 
