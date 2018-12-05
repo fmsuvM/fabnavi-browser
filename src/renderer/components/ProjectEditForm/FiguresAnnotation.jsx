@@ -9,7 +9,7 @@ import AnnotationImage from './AnnotationTool/AnnotationImage.jsx';
 import Rectangle from './AnnotationTool/Rectangle.jsx';
 import RectTransformer from './AnnotationTool/RectTransformer.jsx';
 import AnnotationWords from './AnnotationTool/AnnotationWords.jsx';
-import { Title, Root } from '../../stylesheets/player/ImageSelector';
+import { Title, Root, ExtendRoot } from '../../stylesheets/player/ImageSelector';
 import { EditFrame, SubTitle, ModeSelector } from '../../stylesheets/application/ProjectEditForm/FiguresAnnotation';
 
 const debug = Debug('fabnavi:ProjectEditForm:_FiguresAnnotation');
@@ -126,8 +126,8 @@ class FiguresAnnotation extends React.Component {
 
   render() {
     return (
-      <Root>
-        <Title>Annotation</Title>
+      <ExtendRoot>
+        <Title>Image</Title>
         <Stage
           ref={node => {
             this.stage = node;
@@ -173,7 +173,7 @@ class FiguresAnnotation extends React.Component {
             </ModeSelector>
           ))}
         </EditFrame>
-      </Root>
+      </ExtendRoot>
     );
   }
 }

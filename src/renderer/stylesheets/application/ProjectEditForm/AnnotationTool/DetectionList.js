@@ -6,6 +6,8 @@ export const DetectionListFrame = styled.div`
   display: block;
   height: 306px;
   overflow: scroll;
+  margin: 0px;
+  padding: 0px;
 `;
 
 export const ObjectFrame = styled.div`

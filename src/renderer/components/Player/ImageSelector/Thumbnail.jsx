@@ -22,8 +22,8 @@ const Thumbnail = SortableElement(
         onClick={onClick}
       />
       <Index>{sortIndex + 1}</Index>
-      {isEditable && <DeleteButton onClick={onDeleteButtonClick} />}
-      {!isEditable && contentType === 'movie' && figure && <DownloadButton src={buildFigureUrl(figure.file.url)} />}
+      {/* {isEditable && <DeleteButton onClick={onDeleteButtonClick} />} */}
+      {/* {!isEditable && contentType === 'movie' && figure && <DownloadButton src={buildFigureUrl(figure.file.url)} />} */}
     </StyledThumbnail>
   )
 );

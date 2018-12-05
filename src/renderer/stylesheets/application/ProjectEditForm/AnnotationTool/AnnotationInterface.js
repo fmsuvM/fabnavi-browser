@@ -7,7 +7,6 @@ export const Frame = styled.div`
   flex: 2;
   display: flex;
   flex-direction: column;
-  margin-left: 30px;
 `;
 
 export const EditFrame = styled.div`

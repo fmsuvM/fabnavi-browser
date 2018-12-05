@@ -5,7 +5,7 @@ import Konva from 'konva';
 import { Stage, Layer, Image, Rect } from 'react-konva';
 import Debug from 'debug';
 
-import { Title, Root } from '../../../stylesheets/player/ImageSelector';
+import { Title, Root, ExtendRoot } from '../../../stylesheets/player/ImageSelector';
 import { EditFrame, ModeSelector } from '../../../stylesheets/application/ProjectEditForm/FiguresAnnotation';
 
 const debug = Debug('fabnavi:AnnotationPlayer:DetectedFigures');
@@ -32,8 +32,8 @@ class DetectedFigures extends React.Component {
   render() {
     const figure = this.props.figures[this.props.index];
     return (
-      <Root>
-        <Title>Annotation</Title>
+      <ExtendRoot>
+        <Title>Image</Title>
         <Stage width={544} height={306}>
           <Layer>
             <Image
@@ -69,7 +69,7 @@ class DetectedFigures extends React.Component {
             </ModeSelector>
           ))}
         </EditFrame>
-      </Root>
+      </ExtendRoot>
     );
   }
 }
