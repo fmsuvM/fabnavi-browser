@@ -5,6 +5,7 @@ import Konva from 'konva';
 import { Stage, Layer, Image, Rect } from 'react-konva';
 import Debug from 'debug';
 
+import Portal from './Portal.jsx';
 import { Title, Root, ExtendRoot } from '../../../stylesheets/player/ImageSelector';
 import { EditFrame, ModeSelector } from '../../../stylesheets/application/ProjectEditForm/FiguresAnnotation';
 
@@ -45,18 +46,15 @@ class DetectedFigures extends React.Component {
               height={306}
             />
           </Layer>
-          {/* <Layer> */}
           {!this.props.isFetching ? (
             !Object.keys(figure.detection).length ? null : (
-              // <Rect x={20} y={50} width={100} height={100} fill="red" shadowBlur={10} />
               <RectanglesView mode={this.props.selectedMode} result={figure.detection} />
             )
           ) : (
-            <div>
+            <Portal>
               <p>now loading...</p>
-            </div>
+            </Portal>
           )}
-          {/* </Layer> */}
         </Stage>
         <EditFrame>
           {this.props.mode.map((mode, index) => (
@@ -75,26 +73,48 @@ class DetectedFigures extends React.Component {
 }
 
 const RectanglesView = ({ mode, result }) => {
-  const detected = result.detected;
-  const unknown = result.unknown;
+  const detected =
+    result.detected.length !== 0 ?
+      result.detected :
+      [
+        {
+          x: 0,
+          y: 0,
+          w: 0,
+          h: 0
+        }
+      ];
+  const unknown =
+    result.unknown.length !== 0 ?
+      result.unknown :
+      [
+        {
+          x: 0,
+          y: 0,
+          w: 0,
+          h: 0
+        }
+      ];
   return (
     <Layer>
       {mode === 'detected' || mode === 'all' ?
         detected.map((content, index) => {
-          const x = content.points[0];
-          const y = content.points[1];
-          const width = content.points[2];
-          const height = content.points[3];
-          return <Rect key={index} x={x} y={y} width={width} height={height} stroke="red" strokeWidth={3} />;
+          const resize = 1280 / 544;
+          const x = content.x / resize;
+          const y = content.y / resize;
+          const width = content.w / resize;
+          const height = content.h / resize;
+          return <Rect key={index} x={x} y={y} width={width} height={height} stroke="red" strokeWidth={1} />;
         }) :
         null}
       {mode === 'unknown' || mode === 'all' ?
         unknown.map((content, index) => {
-          const x = content.points[0];
-          const y = content.points[1];
-          const width = content.points[2];
-          const height = content.points[3];
-          return <Rect key={index} x={x} y={y} width={width} height={height} stroke="red" strokeWidth={3} />;
+          const resize = 1280 / 544;
+          const x = content.x / resize;
+          const y = content.y / resize;
+          const width = content.w / resize;
+          const height = content.h / resize;
+          return <Rect key={index} x={x} y={y} width={width} height={height} stroke="red" strokeWidth={1} />;
         }) :
         null}
     </Layer>

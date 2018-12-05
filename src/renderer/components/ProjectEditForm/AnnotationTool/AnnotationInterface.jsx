@@ -22,91 +22,6 @@ class AnnotationInterface extends React.Component {
     super(props);
 
     this.state = {
-      figure: [
-        {
-          detected: [
-            {
-              points: [0, 0, 100, 100],
-              candidate: [
-                {
-                  name: 'scissors',
-                  confidence: 0.8
-                },
-                {
-                  name: 'cutter',
-                  confidence: 0.1
-                },
-                {
-                  name: 'brush',
-                  confidence: 0.05
-                }
-              ]
-            },
-            {
-              points: [100, 100, 200, 200],
-              candidate: [
-                {
-                  name: 'brush',
-                  confidence: 0.6
-                }
-              ]
-            }
-          ],
-          unknown: [
-            {
-              points: [0, 0, 100, 100],
-              candidate: [
-                {
-                  name: '???',
-                  confidence: 0
-                }
-              ]
-            },
-            {
-              points: [100, 100, 200, 200],
-              candidate: [
-                {
-                  name: '???',
-                  confidence: 0
-                }
-              ]
-            }
-          ]
-        },
-        {
-          detected: [
-            {
-              points: [0, 0, 100, 100],
-              candidate: [
-                {
-                  name: 'scissors',
-                  confidence: 0.8
-                }
-              ]
-            },
-            {
-              points: [100, 100, 200, 200],
-              candidate: [
-                {
-                  name: 'brush',
-                  confidence: 0.6
-                }
-              ]
-            }
-          ],
-          unknown: [
-            {
-              points: [0, 0, 100, 100],
-              candidate: [
-                {
-                  name: '???',
-                  confidence: 0
-                }
-              ]
-            }
-          ]
-        }
-      ],
       labels: []
     };
 
@@ -140,7 +55,7 @@ class AnnotationInterface extends React.Component {
               !Object.keys(this.props.figures[this.props.index].detection).length ? (
                 <p>Please Detection</p>
               ) : (
-                <DetectionList data={this.state.figure[this.props.index]} mode={this.props.mode} />
+                <DetectionList data={this.props.figures[this.props.index]} mode={this.props.mode} />
               )
             ) : (
               <AnnotationWords rectangles={this.state.labels} />
@@ -154,7 +69,7 @@ class AnnotationInterface extends React.Component {
         <RequestFrame>
           {this.props.mode !== 'raw' ? (
             !Object.keys(this.props.figures[this.props.index].detection).length ? (
-              <AcceptButton onClick={e => this.onRequestDetection(e)}>Request</AcceptButton>
+              <AcceptButton onClick={e => this.onRequestDetection(e)}>Analyze</AcceptButton>
             ) : (
               <AcceptButton>Accept</AcceptButton>
             )

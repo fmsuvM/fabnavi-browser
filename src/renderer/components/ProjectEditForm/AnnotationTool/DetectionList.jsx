@@ -17,14 +17,16 @@ export default class DetectionList extends React.Component {
   }
 
   render() {
-    const data = this.props.data;
+    const data = this.props.data.detection;
+    const detected_list =
+      data.detected.length !== 0 ? data.detected : [{ candidate: [{ name: 'none', confidence: 0.0 }] }];
+    const unknown_list = data.unknown.length !== 0 ? data.unknown : ['nown'];
     const mode = this.props.mode;
-    const sanitizedData = mode === 'unknown' ? data.unknown : data;
     return (
       <DetectionListFrame>
         {mode !== 'unknown' ?
-          data.detected.map((object, index) => (
-            <ObjectFrame>
+          detected_list.map((object, index) => (
+            <ObjectFrame key={index}>
               <ObjectTitle>Detected Object #{index + 1}</ObjectTitle>
               {object.candidate.map((item, index) => (
                 <ObjectName key={index}>
@@ -36,16 +38,12 @@ export default class DetectionList extends React.Component {
           )) :
           null}
         {mode !== 'detected' ?
-          data.unknown.map((object, index) => (
-            <ObjectFrame>
+          unknown_list.map((object, index) => (
+            <ObjectFrame key={index}>
               <ObjectTitle>Unknown Object #{index + 1}</ObjectTitle>
-              {object.candidate.map((item, index) => (
-                <ObjectFrame>
-                  <ObjectName>
-                    <UnknownInput value={item.name} /> <AcceptCheckBox />
-                  </ObjectName>
-                </ObjectFrame>
-              ))}
+              <ObjectName>
+                <UnknownInput value={object.name} /> <AcceptCheckBox />
+              </ObjectName>
             </ObjectFrame>
           )) :
           null}
