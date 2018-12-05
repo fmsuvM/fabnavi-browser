@@ -19,10 +19,9 @@ class Server {
   }
 
   // for object detetion
-  async requestObjectDetection(filename) {
+  async requestObjectDetection(filename, index) {
     debug('request object detection: ', filename);
-    const param = new URLSearchParams();
-    param.append('movie_url', filename);
+    debug('detection figure number: ', index);
     const url = `${host}/detection`;
     return axios({
       responseType: 'json',
@@ -40,14 +39,17 @@ class Server {
   // for analyze narration
   async requetTranscription(filename) {
     debug('request narration transcription: ', filename);
-    const query = qs.stringify({
-      movie_url: filename
-    });
-    const url = `${host}/narration?${query}`;
+    const url = `${host}/narration`;
     return axios({
       responseType: 'json',
       method: 'POST',
-      url: url
+      url: url,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        movie_url: filename
+      }
     });
   }
 }
