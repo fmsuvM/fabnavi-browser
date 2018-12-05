@@ -29,13 +29,13 @@ const createFiguresInfo = figures => {
   return format;
 };
 
-const addDetectionInfo = (state, detection) => {
+const addDetectionInfo = (state, data, index) => {
   const copyFigures = state;
-  const original = state[detection.index];
+  const original = state[index];
   const copy = Object.assign({}, original);
-  copy.detection['detected'] = detection.detected;
-  copy.detection['unknown'] = detection.unknown;
-  copyFigures[detection.index] = copy;
+  copy.detection['detected'] = data.detection.detected;
+  copy.detection['unknown'] = data.detection.unknown;
+  copyFigures[index] = copy;
   return copyFigures;
 };
 
@@ -67,9 +67,9 @@ export default handleActions(
       });
     },
     [RECEIVE_DETECTION_RESULTS]: (state, action) => {
-      const{ data } = action.payload;
+      const{ data, index } = action.payload;
       return Object.assign({}, state, {
-        figures: addDetectionInfo(state.figures, data),
+        figures: addDetectionInfo(state.figures, data, index),
         isFetching: false
       });
     },

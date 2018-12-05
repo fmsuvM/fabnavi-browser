@@ -29,9 +29,10 @@ export const fetchResults = createAction(FETCH_RESULTS, url => {
   };
 });
 export const fetchingResults = createAction(FETCHING_RESULTS);
-export const receiveDetectionResults = createAction(RECEIVE_DETECTION_RESULTS, data => {
+export const receiveDetectionResults = createAction(RECEIVE_DETECTION_RESULTS, (data, index) => {
   return {
-    data
+    data,
+    index
   };
 });
 export const receiveTranscriptionResults = createAction(RECEIVE_TRANSCRIPTION_RESULTS, data => {

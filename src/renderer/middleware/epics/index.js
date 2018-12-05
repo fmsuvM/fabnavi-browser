@@ -34,6 +34,8 @@ import {
   receiveTranscriptionResults
 } from '../../actions/analyzer';
 
+import mlAPI from '../../utils/AnalyzerAPIUtils';
+
 const debug = Debug('fabnavi:epics');
 
 const signIn = action$ => {
@@ -85,55 +87,14 @@ const requestDetectionEpic = (action$, store) =>
   action$
     .ofType(REQUEST_DETECTION)
     .do(_ => store.dispatch(fetchingResults()))
-    // .switchMap(action => {
-    //   const projectId = action.payload.pathname.match(/\d+/)[0];
-    //   return api.getProject(projectId);
-    // })
-    .map(() => {
-      // TODO: ここをAPIリクエストの結果にする
-      const temp = {
-        index: 0,
-        detected: [
-          {
-            points: [0, 0, 100, 100],
-            candidate: [
-              {
-                name: 'scissors',
-                confidence: 0.8
-              },
-              {
-                name: 'cutter',
-                confidence: 0.1
-              },
-              {
-                name: 'brush',
-                confidence: 0.05
-              }
-            ]
-          },
-          {
-            points: [100, 100, 200, 200],
-            candidate: [
-              {
-                name: 'brush',
-                confidence: 0.6
-              }
-            ]
-          }
-        ],
-        unknown: [
-          {
-            points: [0, 0, 100, 100],
-            candidate: [
-              {
-                name: '???',
-                confidence: 0
-              }
-            ]
-          }
-        ]
-      };
-      return receiveDetectionResults(temp);
+    .switchMap(action => {
+      const{ url } = action.payload;
+      return mlAPI.requestObjectDetection(url);
+    })
+    .map((res, action) => {
+      // data: detection result
+      // action: figure index
+      return receiveDetectionResults(res.data, action);
     });
 
 const requestTranscriptionEpic = (action$, store) =>
