@@ -25,6 +25,18 @@ import {
   receiveRelatedProjects
 } from '../../actions/manager';
 
+import {
+  initializeData,
+  REQUEST_DETECTION,
+  REQUEST_TRANSCRIPTION,
+  fetchingResults,
+  receiveDetectionResults,
+  receiveTranscriptionResults,
+  checkFigureNum
+} from '../../actions/analyzer';
+
+import mlAPI from '../../utils/AnalyzerAPIUtils';
+
 const debug = Debug('fabnavi:epics');
 
 const signIn = action$ => {
@@ -71,6 +83,51 @@ const fetchProjectEpic = action$ =>
       return api.getProject(projectId);
     })
     .map(({ data }) => receiveProject(data));
+
+const requestDetectionEpic = (action$, store) =>
+  action$
+    .ofType(REQUEST_DETECTION)
+    .do(_ => store.dispatch(fetchingResults()))
+    .switchMap(action => {
+      const{ url, index } = action.payload;
+      store.dispatch(checkFigureNum(index));
+      return mlAPI.requestObjectDetection(url, index);
+    })
+    .map(res => {
+      // data: detection result
+      // action: figure index
+      return receiveDetectionResults(res.data);
+    });
+
+const requestTranscriptionEpic = (action$, store) =>
+  action$
+    .ofType(REQUEST_TRANSCRIPTION)
+    .do(_ => store.dispatch(fetchingResults()))
+    .switchMap(action => {
+      const{ url, index } = action.payload;
+      store.dispatch(checkFigureNum(index));
+      return mlAPI.requetTranscription(url);
+    })
+    .map(res => {
+      return receiveTranscriptionResults(res.data);
+    });
+
+const initislizeProjectEpic = action$ =>
+  action$
+    .ofType('@@router/LOCATION_CHANGE')
+    .filter(
+      action =>
+        action.payload.pathname !== '/' &&
+        !action.payload.pathname.match('delete') &&
+        !action.payload.pathname.match('visualizer') &&
+        !action.payload.pathname.match('myprojects') &&
+        !action.payload.pathname.match('workspace')
+    )
+    .switchMap(action => {
+      const projectId = action.payload.pathname.match(/\d+/)[0];
+      return api.getProject(projectId);
+    })
+    .map(({ data }) => initializeData(data));
 
 const fetchProjectsEpic = (action$, store) =>
   action$
@@ -170,6 +227,9 @@ export default createEpicMiddleware(
     reloadProjectsEpic,
     goBackHomeEpic,
     changedProjectListPageHookEpic,
-    searchRelatedProjectsEpic
+    searchRelatedProjectsEpic,
+    initislizeProjectEpic,
+    requestDetectionEpic,
+    requestTranscriptionEpic
   )
 );

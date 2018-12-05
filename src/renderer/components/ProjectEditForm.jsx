@@ -298,6 +298,7 @@ export class ProjectEditForm extends React.Component {
                 </div>
               </div>
 
+              <EditTarget>Edit Caption</EditTarget>
               <EditCaption>
                 <Player
                   project={this.state.project}
@@ -315,6 +316,7 @@ export class ProjectEditForm extends React.Component {
                 />
               </EditCaption>
 
+              <EditTarget>Object Detection</EditTarget>
               <AnnotationPlayer
                 project={this.state.project}
                 size="small"
@@ -324,6 +326,7 @@ export class ProjectEditForm extends React.Component {
                 ref={instance => (this.player = instance)}
               />
 
+              <EditTarget>Narration Analyze</EditTarget>
               <NarrationAnalyzer
                 project={this.state.project}
                 size="small"

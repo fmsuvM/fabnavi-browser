@@ -6,27 +6,26 @@ import {
   AnnotationWordsWrapper,
   EditFrame,
   WordInput,
-  ButtonFrame,
-  AnnotationButton,
-  ClearButton
+  AcceptCheckBox
 } from '../../../stylesheets/application/ProjectEditForm/AnnotationTool/AnnotationWords';
 
 const debug = Debug('fabnavi:AnnotationTool:AnnotationWords');
 
-const AnnotationWords = ({ rectangles, onClear, onClick }) => {
+const AnnotationWords = ({ rectangles }) => {
   return (
     <AnnotationWordsWrapper>
       {rectangles.length === 0 ? null : (
         <EditFrame>
           {rectangles.map((object, index) => {
-            return <WordInput key={index} objectColor={object.stroke} />;
+            return (
+              <div style={{ display: 'flex' }}>
+                <WordInput key={index} objectColor={object.stroke} />
+                <AcceptCheckBox />
+              </div>
+            );
           })}
         </EditFrame>
       )}
-      <ButtonFrame>
-        <AnnotationButton onClick={onClick}>Annotation!</AnnotationButton>
-        <ClearButton onClick={onClear}>Clear !</ClearButton>
-      </ButtonFrame>
     </AnnotationWordsWrapper>
   );
 };
