@@ -5,14 +5,16 @@ import {
   INITIALIZE_DATA,
   RECEIVE_DETECTION_RESULTS,
   FETCHING_RESULTS,
-  RECEIVE_TRANSCRIPTION_RESULTS
+  RECEIVE_TRANSCRIPTION_RESULTS,
+  CHECK_FIGURE_NUM
 } from '../actions/analyzer';
 
 const debug = Debug('fabnavi:reducer:analyzer');
 
 const initialState = {
   figures: [],
-  isFetching: false
+  isFetching: false,
+  requestNum: 0
 };
 
 const createFiguresInfo = figures => {
@@ -30,6 +32,7 @@ const createFiguresInfo = figures => {
 };
 
 const addDetectionInfo = (state, data, index) => {
+  debug('index: ', index);
   const copyFigures = state;
   const original = state[index];
   const copy = Object.assign({}, original);
@@ -39,13 +42,15 @@ const addDetectionInfo = (state, data, index) => {
   return copyFigures;
 };
 
-const addTranscriptionInfo = (state, transcription) => {
+const addTranscriptionInfo = (state, data, index) => {
+  debug('index: ', index);
+  const result = data.transcript_result;
   const copyFigures = state;
-  const original = state[transcription.index];
+  const original = state[index];
   const copy = Object.assign({}, original);
-  copy.transcription['narration'] = transcription.narration;
-  copy.transcription['words'] = transcription.words;
-  copyFigures[transcription.index] = copy;
+  copy.transcription['narration'] = result.narration;
+  copy.transcription['words'] = result.keywords;
+  copyFigures[index] = copy;
   return copyFigures;
 };
 
@@ -63,21 +68,31 @@ export default handleActions(
     [FETCHING_RESULTS]: (state, action) => {
       return Object.assign({}, state, {
         ...state,
-        isFetching: true
+        isFetching: true,
+        requestNum: 0
       });
     },
     [RECEIVE_DETECTION_RESULTS]: (state, action) => {
-      const{ data, index } = action.payload;
+      const{ data } = action.payload;
       return Object.assign({}, state, {
-        figures: addDetectionInfo(state.figures, data, index),
-        isFetching: false
+        figures: addDetectionInfo(state.figures, data, state.requestNum),
+        isFetching: false,
+        requestNum: 0
       });
     },
     [RECEIVE_TRANSCRIPTION_RESULTS]: (state, action) => {
       const{ data } = action.payload;
       return {
-        figures: addTranscriptionInfo(state.figures, data),
-        isFetching: false
+        figures: addTranscriptionInfo(state.figures, data, state.requestNum),
+        isFetching: false,
+        requestNum: 0
+      };
+    },
+    [CHECK_FIGURE_NUM]: (state, action) => {
+      const{ index } = action.payload;
+      return {
+        ...state,
+        requestNum: index
       };
     }
   },

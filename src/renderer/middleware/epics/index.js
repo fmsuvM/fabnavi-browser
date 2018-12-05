@@ -31,7 +31,8 @@ import {
   REQUEST_TRANSCRIPTION,
   fetchingResults,
   receiveDetectionResults,
-  receiveTranscriptionResults
+  receiveTranscriptionResults,
+  checkFigureNum
 } from '../../actions/analyzer';
 
 import mlAPI from '../../utils/AnalyzerAPIUtils';
@@ -88,31 +89,27 @@ const requestDetectionEpic = (action$, store) =>
     .ofType(REQUEST_DETECTION)
     .do(_ => store.dispatch(fetchingResults()))
     .switchMap(action => {
-      const{ url } = action.payload;
-      return mlAPI.requestObjectDetection(url);
+      const{ url, index } = action.payload;
+      store.dispatch(checkFigureNum(index));
+      return mlAPI.requestObjectDetection(url, index);
     })
-    .map((res, action) => {
+    .map(res => {
       // data: detection result
       // action: figure index
-      return receiveDetectionResults(res.data, action);
+      return receiveDetectionResults(res.data);
     });
 
 const requestTranscriptionEpic = (action$, store) =>
   action$
     .ofType(REQUEST_TRANSCRIPTION)
     .do(_ => store.dispatch(fetchingResults()))
-    // .switchMap(action => {
-    //   const projectId = action.payload.pathname.match(/\d+/)[0];
-    //   return api.getProject(projectId);
-    // })
-    .map(() => {
-      // TODO: ここをAPIリクエストの結果にする
-      const temp = {
-        index: 0,
-        narration: 'hogehogehogeohgehogehoge',
-        words: ['hogefuga', 'hogehogheoghoe']
-      };
-      return receiveTranscriptionResults(temp);
+    .switchMap(action => {
+      const{ url, index } = action.payload;
+      store.dispatch(checkFigureNum(index));
+      return mlAPI.requetTranscription(url);
+    })
+    .map(res => {
+      return receiveTranscriptionResults(res.data);
     });
 
 const initislizeProjectEpic = action$ =>
