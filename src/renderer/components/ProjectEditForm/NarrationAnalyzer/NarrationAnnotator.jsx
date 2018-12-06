@@ -23,29 +23,8 @@ class NarrationAnnotator extends React.Component {
     super(props);
 
     this.state = {
-      narration: [
-        'narration 1',
-        'narration 2',
-        'narration 3',
-        'narration 4',
-        'narration 5',
-        'narration 6',
-        'narration 7',
-        'narration 8'
-      ],
       figure_tags: [
         ['tag1', 'tag2', 'tag3gg', 'tag3gg'],
-        ['tagg1', 'tag2g', 'tag3gg'],
-        ['aaaa', 'tag2', 'tag3'],
-        ['bbbb', 'tag2', 'tag3'],
-        ['cccc', 'tag2', 'tag3'],
-        ['tag1', 'tag2', 'tag3'],
-        ['tag1', 'tag2', 'tag3'],
-        ['tag1', 'tag2', 'tag3'],
-        ['tag1', 'tag2', 'tag3']
-      ],
-      split_words: [
-        ['tag1', 'tag2', 'tagaagag', 'tag3gg'],
         ['tagg1', 'tag2g', 'tag3gg'],
         ['aaaa', 'tag2', 'tag3'],
         ['bbbb', 'tag2', 'tag3'],
