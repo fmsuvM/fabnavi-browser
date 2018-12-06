@@ -41,6 +41,10 @@ class AnnotationInterface extends React.Component {
       e.preventDefault();
       this.props.requestDetection(this.props.figures[this.props.index].source, this.props.index);
     };
+
+    this.onAcceptTags = e => {
+      e.preventDefault();
+    };
   }
 
   render() {
@@ -71,7 +75,7 @@ class AnnotationInterface extends React.Component {
             !Object.keys(this.props.figures[this.props.index].detection).length ? (
               <AcceptButton onClick={e => this.onRequestDetection(e)}>Analyze</AcceptButton>
             ) : (
-              <AcceptButton>Accept</AcceptButton>
+              <AcceptButton onClick={e => this.onAcceptTags(e)}>Accept</AcceptButton>
             )
           ) : (
             <div>
