@@ -47,7 +47,7 @@ function createVttText(textTracks, type) {
  * @return {String}     Blob URL
  */
 export function getVttUrl(textTracks, type) {
-    return createBlobUrl(createVttText(textTracks, type), 'text/vtt');
+  return createBlobUrl(createVttText(textTracks, type), 'text/vtt');
 }
 
 /**

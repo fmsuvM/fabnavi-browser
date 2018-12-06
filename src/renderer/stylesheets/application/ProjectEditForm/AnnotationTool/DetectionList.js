@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { colors } from "../../../common/colors";
-import { buttonProperties } from "../../../common/buttonProperties";
+import styled from 'styled-components';
+import { colors } from '../../../common/colors';
+import { buttonProperties } from '../../../common/buttonProperties';
 
 export const DetectionListFrame = styled.div`
   display: block;
@@ -33,7 +33,7 @@ export const ObjectName = styled.p`
 `;
 
 export const AcceptCheckBox = styled.input.attrs({
-  type: "checkbox"
+  type: 'checkbox'
 })`
   margin-left: 5px;
   margin-right: 15px;

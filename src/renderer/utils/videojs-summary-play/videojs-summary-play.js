@@ -3,52 +3,52 @@ import './videojs-summary-play.scss';
 
 // Default options for the plugin.
 const defaults = {
-    beforeElement: 'fullscreenToggle',
-    textControl: 'Summary Play',
-    name: 'summaryPlayButton'
+  beforeElement: 'fullscreenToggle',
+  textControl: 'Summary Play',
+  name: 'summaryPlayButton'
 };
 
 const vjsButton = videojs.getComponent('Button');
 
 class SummaryPlayButton extends vjsButton {
-    constructor(player, options) {
-        super(player, options);
-        this.isSummaryPlaying = false;
-        player.on('timeupdate', () => {
-            if(this.isSummaryPlaying) {
-                if(player.textTracks().tracks_[0] && player.textTracks().tracks_[0].activeCues_.length > 0) {
-                    player.playbackRate(1.0);
-                } else {
-                    player.playbackRate(8.0);
-                }
-            }
-        });
-    }
+  constructor(player, options) {
+    super(player, options);
+    this.isSummaryPlaying = false;
+    player.on('timeupdate', () => {
+      if(this.isSummaryPlaying) {
+        if(player.textTracks().tracks_[0] && player.textTracks().tracks_[0].activeCues_.length > 0) {
+          player.playbackRate(1.0);
+        } else {
+          player.playbackRate(8.0);
+        }
+      }
+    });
+  }
 
-    /**
+  /**
     * Allow sub components to stack CSS class names
     *
     * @return {String} The constructed class name
     * @method buildCSSClass
     */
-    buildCSSClass() {
-        return `vjs-summary-play ${super.buildCSSClass()}`;
-    }
+  buildCSSClass() {
+    return `vjs-summary-play ${super.buildCSSClass()}`;
+  }
 
-    /**
+  /**
     * Handles click for summary play
     *
     * @method handleClick
     */
-    handleClick(e) {
-        e.stopPropagation();
-        this.isSummaryPlaying = !this.isSummaryPlaying;
-        if(e.target.getAttribute('working') === 'true') {
-            e.target.setAttribute('working', 'false');
-        } else {
-            e.target.setAttribute('working', 'true');
-        }
+  handleClick(e) {
+    e.stopPropagation();
+    this.isSummaryPlaying = !this.isSummaryPlaying;
+    if(e.target.getAttribute('working') === 'true') {
+      e.target.setAttribute('working', 'false');
+    } else {
+      e.target.setAttribute('working', 'true');
     }
+  }
 }
 
 /**
@@ -63,15 +63,15 @@ class SummaryPlayButton extends vjsButton {
  * @param    {Object} [options={}]
  */
 const onPlayerReady = (player, options) => {
-    const summaryPlayButton = player.controlBar.addChild(new SummaryPlayButton(player, options), {});
-    summaryPlayButton.controlText(options.textControl);
+  const summaryPlayButton = player.controlBar.addChild(new SummaryPlayButton(player, options), {});
+  summaryPlayButton.controlText(options.textControl);
 
-    player.controlBar.el().insertBefore(
-        summaryPlayButton.el(),
-        player.controlBar.getChild(options.beforeElement).el()
-    );
+  player.controlBar.el().insertBefore(
+    summaryPlayButton.el(),
+    player.controlBar.getChild(options.beforeElement).el()
+  );
 
-    player.addClass('vjs-summary-play');
+  player.addClass('vjs-summary-play');
 };
 
 /**
@@ -87,9 +87,9 @@ const onPlayerReady = (player, options) => {
  *           An object of options left to the plugin author to define.
  */
 const vjsSummaryPlay = function(options) {
-    this.ready(() => {
-        onPlayerReady(this, videojs.mergeOptions(defaults, options));
-    });
+  this.ready(() => {
+    onPlayerReady(this, videojs.mergeOptions(defaults, options));
+  });
 };
 
 // Register the plugin with video.js.
