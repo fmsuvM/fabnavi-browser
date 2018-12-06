@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import Debug from 'debug';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Debug from "debug";
 
-import DetectionList from './DetectionList.jsx';
-import AnnotationWords from './AnnotationWords.jsx';
-import { requestDetection } from '../../../actions/analyzer';
-import { Title, Root } from '../../../stylesheets/player/ImageSelector';
+import DetectionList from "./DetectionList.jsx";
+import AnnotationWords from "./AnnotationWords.jsx";
+import { requestDetection, changeDetectionTag, checkDetectionTag } from "../../../actions/analyzer";
+import { Title, Root } from "../../../stylesheets/player/ImageSelector";
 import {
   Frame,
   EditFrame,
   SubTitle,
   RequestFrame,
   AcceptButton
-} from '../../../stylesheets/application/ProjectEditForm/AnnotationTool/AnnotationInterface';
+} from "../../../stylesheets/application/ProjectEditForm/AnnotationTool/AnnotationInterface";
 
-const debug = Debug('fabnavi:AnnotationPlayer:AnnotationInterface');
+const debug = Debug("fabnavi:AnnotationPlayer:AnnotationInterface");
 
 class AnnotationInterface extends React.Component {
   constructor(props) {
@@ -28,13 +28,13 @@ class AnnotationInterface extends React.Component {
     this.addLabel = e => {
       e.preventDefault();
       this.setState({
-        labels: this.state.labels.concat('')
+        labels: this.state.labels.concat("")
       });
     };
 
     this.clickAnnotation = e => {
       e.preventDefault();
-      debug('annotation');
+      debug("annotation");
     };
 
     this.onRequestDetection = e => {
@@ -44,6 +44,16 @@ class AnnotationInterface extends React.Component {
 
     this.onAcceptTags = e => {
       e.preventDefault();
+    };
+
+    this.handleDetectionTag = (e, figureIndex, index, mode) => {
+      e.preventDefault();
+      this.props.changeDetectionTag(e.target.value, figureIndex, index, mode);
+    };
+
+    this.checkDetectionTag = (e, figureIndex, tagIndex) => {
+      e.preventDefault();
+      this.props.checkDetectionTag(event.target.checked, figureIndex, tagIndex);
     };
   }
 
@@ -55,11 +65,17 @@ class AnnotationInterface extends React.Component {
         </Title>
         <EditFrame>
           {!this.props.isFetching ? (
-            this.props.mode !== 'raw' ? (
+            this.props.mode !== "raw" ? (
               !Object.keys(this.props.figures[this.props.index].detection).length ? (
                 <p>Please Detection</p>
               ) : (
-                <DetectionList data={this.props.figures[this.props.index]} mode={this.props.mode} />
+                <DetectionList
+                  handleDetectionTag={this.handleDetectionTag}
+                  checkDetectionTag={this.checkDetectionTag}
+                  figureIndex={this.props.index}
+                  data={this.props.figures[this.props.index]}
+                  mode={this.props.mode}
+                />
               )
             ) : (
               <AnnotationWords rectangles={this.state.labels} />
@@ -71,7 +87,7 @@ class AnnotationInterface extends React.Component {
           )}
         </EditFrame>
         <RequestFrame>
-          {this.props.mode !== 'raw' ? (
+          {this.props.mode !== "raw" ? (
             !Object.keys(this.props.figures[this.props.index].detection).length ? (
               <AcceptButton onClick={e => this.onRequestDetection(e)}>Analyze</AcceptButton>
             ) : (
@@ -96,8 +112,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   requestDetection: (url, index) => {
-    debug('request API: ', url);
+    debug("request API: ", url);
     dispatch(requestDetection(url, index));
+  },
+  changeDetectionTag: (input, figureIndex, index, mode) => {
+    dispatch(changeDetectionTag(input, figureIndex, index, mode));
+  },
+  checkDetectionTag: (checked, figureIndex, tagIndex) => {
+    dispatch(checkDetectionTag(checked, figureIndex, tagIndex));
   }
 });
 

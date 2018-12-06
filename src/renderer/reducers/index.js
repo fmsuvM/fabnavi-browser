@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import { reducer as formReducer} from 'redux-form';
 import Debug from 'debug';
 
 import player from './player';
@@ -18,5 +19,6 @@ export default combineReducers({
   modals,
   analyzer,
   errors,
-  router: routerReducer
+  router: routerReducer,
+  form: formReducer
 });

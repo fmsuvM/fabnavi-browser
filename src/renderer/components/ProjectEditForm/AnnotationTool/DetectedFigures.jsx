@@ -104,7 +104,7 @@ const RectanglesView = ({ mode, result }) => {
           const y = content.y / resize;
           const width = content.w / resize;
           const height = content.h / resize;
-          return <Rect key={index} x={x} y={y} width={width} height={height} stroke="red" strokeWidth={1} />;
+          return <Rect key={index} x={x} y={y} width={width} height={height} stroke="blue" strokeWidth={1} />;
         }) :
         null}
       {mode === 'unknown' || mode === 'all' ?
