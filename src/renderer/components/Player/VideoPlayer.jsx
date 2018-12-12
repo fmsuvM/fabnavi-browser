@@ -122,7 +122,7 @@ export class VideoPlayer extends React.Component {
     const dataSetup =
       this.props.size === 'small' ?
         '{ "playbackRates": [0.5, 1, 1.5, 2, 4, 8, 16, 32], "width": 544, "height": 306 }' :
-        '{ "playbackRates": [0.5, 1, 1.5, 2, 4, 8, 16, 32], "width": 1280, "height": 720 }';
+        '{ "playbackRates": [0.5, 1, 1.5, 2, 4, 8, 16, 32], "width": 2400, "height": 1350 }';
     return (
       <div>
         {this.props.isEditable && <ImageType>Preview</ImageType>}

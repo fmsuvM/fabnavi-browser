@@ -7,7 +7,6 @@ export const ImagePlayer = styled.canvas`
 `;
 
 export const VideoPanel = styled.video`
-  margin-left: -200px;
   &::-webkit-media-controls-panel {
     display: flex !important;
     opacity: 1 !important;
