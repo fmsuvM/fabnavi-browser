@@ -88,16 +88,64 @@ const requestDetectionEpic = (action$, store) =>
   action$
     .ofType(REQUEST_DETECTION)
     .do(_ => store.dispatch(fetchingResults()))
-    .switchMap(action => {
-      const{ url, index } = action.payload;
+    .map(action => {
+      const{ index } = action.payload;
       store.dispatch(checkFigureNum(index));
-      return mlAPI.requestObjectDetection(url, index);
-    })
-    .map(res => {
-      // data: detection result
-      // action: figure index
-      return receiveDetectionResults(res.data);
+      const temp = {
+        detection: {
+          detected: [
+            {
+              candidate: [{ name: 'ハサミ', confidence: 0.8 }]
+            },
+            {
+              candidate: [{ name: 'ペン', confidence: 0.8 }]
+            },
+            {
+              candidate: [{ name: '紙コップ', confidence: 0.8 }]
+            },
+            {
+              candidate: [{ name: '色厚紙', confidence: 0.8 }]
+            },
+            {
+              candidate: [{ name: '輪ゴム', confidence: 0.8 }]
+            },
+            {
+              candidate: [{ name: 'カッター', confidence: 0.8 }]
+            }
+          ],
+          unknown: [
+            {
+              name: '???',
+              candidate: 0.0
+            }
+          ]
+        }
+      };
+      return receiveDetectionResults(temp);
     });
+// .switchMap(action => {
+//   const{ url, index } = action.payload;
+//   store.dispatch(checkFigureNum(index));
+//   return mlAPI.requestObjectDetection(url, index);
+// })
+// .map(res => {
+//   // data: detection result
+//   debug(res.data)
+//   /**
+//    * detection: {
+//    *    detected: [{
+//    *    'name': 'ハサミ',
+//    *    candidate; 0.8
+//    * }]
+//    *    unknown: [{
+//    *    name: '???'
+//    *     candidate: 0.0
+//    * }]
+//    * }
+//    */
+//   const temp = {}
+//   return receiveDetectionResults(res.data);
+// });
 
 const requestTranscriptionEpic = (action$, store) =>
   action$

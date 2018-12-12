@@ -11,6 +11,7 @@ import {
   UnknownInput
 } from '../../../stylesheets/application/ProjectEditForm/AnnotationTool/DetectionList';
 
+const debug = Debug('fabnavi:DetecvtionList');
 export default class DetectionList extends React.Component {
   constructor(props) {
     super(props);

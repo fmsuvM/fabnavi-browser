@@ -37,9 +37,9 @@ class AnnotationInterface extends React.Component {
       debug('annotation');
     };
 
-    this.onRequestDetection = e => {
+    this.onRequestDetection = (e, index) => {
       e.preventDefault();
-      this.props.requestDetection(this.props.figures[this.props.index].source, this.props.index);
+      this.props.requestDetection(this.props.figures[this.props.index].source, index);
     };
   }
 
@@ -69,9 +69,9 @@ class AnnotationInterface extends React.Component {
         <RequestFrame>
           {this.props.mode !== 'raw' ? (
             !Object.keys(this.props.figures[this.props.index].detection).length ? (
-              <AcceptButton onClick={e => this.onRequestDetection(e)}>Analyze</AcceptButton>
+              <AcceptButton onClick={e => this.onRequestDetection(e, this.props.index)}>Analyze</AcceptButton>
             ) : (
-              <AcceptButton>Accept</AcceptButton>
+              <AcceptButton onClick={e => this.clickAnnotation(e)}>Accept</AcceptButton>
             )
           ) : (
             <div>
@@ -92,7 +92,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   requestDetection: (url, index) => {
-    debug('request API: ', url);
+    debug('request API: ', index);
     dispatch(requestDetection(url, index));
   }
 });
