@@ -95,10 +95,10 @@ const requestDetectionEpic = (action$, store) =>
         detection: {
           detected: [
             {
-              candidate: [{ name: 'ハサミ', confidence: 0.8 }]
+              candidate: [{ name: 'ニッパー', confidence: 0.8 }]
             },
             {
-              candidate: [{ name: 'ペン', confidence: 0.8 }]
+              candidate: [{ name: 'クリップ', confidence: 0.8 }]
             },
             {
               candidate: [{ name: '紙コップ', confidence: 0.8 }]
@@ -110,7 +110,7 @@ const requestDetectionEpic = (action$, store) =>
               candidate: [{ name: '輪ゴム', confidence: 0.8 }]
             },
             {
-              candidate: [{ name: 'カッター', confidence: 0.8 }]
+              candidate: [{ name: 'ペン', confidence: 0.8 }]
             }
           ],
           unknown: [

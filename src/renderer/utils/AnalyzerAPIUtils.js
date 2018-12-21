@@ -5,7 +5,7 @@ import 'babel-polyfill';
 
 const debug = Debug('fabnavi:api:analyzer');
 
-const host = 'http://192.168.100.32:5000/analyze';
+const host = 'http://192.168.100.32:3000/analyze';
 
 class Server {
   constructor() {
