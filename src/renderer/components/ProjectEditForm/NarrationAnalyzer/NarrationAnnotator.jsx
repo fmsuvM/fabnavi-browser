@@ -24,28 +24,16 @@ class NarrationAnnotator extends React.Component {
 
     this.state = {
       narration: [
-        'narration 1',
-        'narration 2',
-        'narration 3',
-        'narration 4',
-        'narration 5',
-        'narration 6',
-        'narration 7',
-        'narration 8'
+        'はじめに，ハサミを使って穴を開けます．穴を開けたら，輪ゴムを通します．輪ゴムを通したら，クリップを使って穴から輪ゴムが抜けないようにします．最後に，折り紙やペンを使って装飾します．',
+        'となります',
+        '女いけなく.なりま.す',
+        '次にとても身近な.んで伸ばしたい.と思い.ますもう一個の間に通して',
+        '私はこのような.書きま..した',
+        '紙コップのおもちゃの賛成ありがとうござい.ま..した'
       ],
-      figure_tags: [
-        ['tag1', 'tag2', 'tag3gg', 'tag3gg'],
-        ['tagg1', 'tag2g', 'tag3gg'],
-        ['aaaa', 'tag2', 'tag3'],
-        ['bbbb', 'tag2', 'tag3'],
-        ['cccc', 'tag2', 'tag3'],
-        ['tag1', 'tag2', 'tag3'],
-        ['tag1', 'tag2', 'tag3'],
-        ['tag1', 'tag2', 'tag3'],
-        ['tag1', 'tag2', 'tag3']
-      ],
+      figure_tags: [['ハサミ'], ['穴'], ['クリップ'], ['おもちゃ']],
       split_words: [
-        ['tag1', 'tag2', 'tagaagag', 'tag3gg'],
+        ['コップ', '紙', 'tagaagag', 'tag3gg'],
         ['tagg1', 'tag2g', 'tag3gg'],
         ['aaaa', 'tag2', 'tag3'],
         ['bbbb', 'tag2', 'tag3'],
@@ -97,7 +85,7 @@ class NarrationAnnotator extends React.Component {
     return (
       <NarrationWrapper>
         <Title>Figure{this.props.index + 1} Narration </Title>
-        {!this.props.isFetching ? (
+        {/* {!this.props.isFetching ? (
           !Object.keys(figure.transcription).length ? (
             <NarrationField defaultValue="Please click analyze button" />
           ) : (
@@ -107,10 +95,16 @@ class NarrationAnnotator extends React.Component {
           <div>
             <p>now loading...</p>
           </div>
-        )}
-        {/* <NarrationField value={this.state.narration[this.props.index]} /> */}
+        )} */}
+        <NarrationField value={this.state.narration[this.props.index]} />
         <SubTitle>Tags from Analized Narration</SubTitle>
-        {!this.props.isFetching ? (
+        <RecommendTags
+          tags={this.state.figure_tags}
+          onChange={this.handleChangeNarrationTag.bind(this)}
+          onClick={this.onAcceptButtonClick}
+          figureIndex={this.props.index}
+        />
+        {/* {!this.props.isFetching ? (
           !Object.keys(figure.transcription).length ? (
             <AnalyzeButton onClick={e => this.onRequestTranscription(e)}>Analyze</AnalyzeButton>
           ) : (
@@ -125,7 +119,7 @@ class NarrationAnnotator extends React.Component {
           <div>
             <p>now loading...</p>
           </div>
-        )}
+        )} */}
         {/* <SubTitle>Split Position from Analized Narration</SubTitle>
         <StepSpliter words={this.state.split_words[this.props.index]} onClick={this.onSplitButtonClick} /> */}
       </NarrationWrapper>
